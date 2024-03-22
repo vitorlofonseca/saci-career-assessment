@@ -1,3 +1,4 @@
-# Saci API
+# Saci APP
 
-This is the folder that contains Saci API application
+This is the folder that contains Saci backend application
+
