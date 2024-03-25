@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import saci.domain.service.RoleService;
 import saci.domain.model.Role;
+import saci.domain.service.RoleService;
 
 @RestController
 @RequestMapping("/api/roles")
@@ -22,5 +22,4 @@ public class RoleController {
     public Role createRole(@RequestBody Role role) {
         return roleService.createRole(role);
     }
-
 }

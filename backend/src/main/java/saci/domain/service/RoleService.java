@@ -2,8 +2,8 @@ package saci.domain.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import saci.infrastructure.persistence.RoleRepository;
 import saci.domain.model.Role;
+import saci.infrastructure.persistence.RoleRepository;
 
 @Service
 @AllArgsConstructor
@@ -14,5 +14,4 @@ public class RoleService {
     public Role createRole(Role role) {
         return roleRepository.save(role);
     }
-
 }

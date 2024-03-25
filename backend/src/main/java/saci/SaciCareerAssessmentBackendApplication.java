@@ -9,5 +9,4 @@ public class SaciCareerAssessmentBackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(SaciCareerAssessmentBackendApplication.class, args);
     }
-
 }
