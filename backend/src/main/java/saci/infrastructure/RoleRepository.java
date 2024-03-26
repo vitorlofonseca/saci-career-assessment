@@ -1,4 +1,4 @@
-package saci.infrastructure.persistence;
+package saci.infrastructure;
 
 import org.springframework.data.repository.CrudRepository;
 import saci.domain.model.Role;

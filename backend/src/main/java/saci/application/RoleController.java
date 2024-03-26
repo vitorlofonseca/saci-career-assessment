@@ -1,4 +1,4 @@
-package saci.application.web;
+package saci.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

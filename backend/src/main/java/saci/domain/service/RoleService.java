@@ -3,7 +3,7 @@ package saci.domain.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import saci.domain.model.Role;
-import saci.infrastructure.persistence.RoleRepository;
+import saci.infrastructure.RoleRepository;
 
 @Service
 @AllArgsConstructor
