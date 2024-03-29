@@ -1,1 +1,1 @@
-spring:flyway:locations: classpath:db/migration/prod,classpath:db/migration/local
+spring.flyway.locations: classpath:db/migration
