@@ -5,7 +5,34 @@
 - Programmed in **Java** with the support of **Spring**;
 - It's integrated with an embedded database (**H2**) and with a **MySQL** database;
 - Uses **Flyway** for automated database migrations and versioning;
-- Follows a **DDD (Domain Driven Design)** architecture.
+- Follows a **DDD (Domain-Driven Design)** architecture.
+
+## Architecture
+> Domain-Driven Design (DDD) is a software development approach that focuses on understanding the business domain and creating 
+a software model that reflects it. The goal is to align the software’s structure and language (class names, methods, variables) 
+with the business domain. This helps in closing the gap between the business reality and code.
+
+**Example of DDD Structure:**
+```
+src
+└── main
+    └── java
+        └── saci
+            ├── application
+            │   └── RoleController.java
+            ├── domain
+            │   ├── model
+            │   │   └── Role.java
+            │   └── service
+            │       └── RoleService.java
+            ├── infrastructure
+            │   └── RoleRepository.java
+            └── Application.java
+```
+In this architecture the core domain and it's logic should be the center of attention. The domain layer should be isolated 
+from both the infrastructure and the application layers, allowing it's logic to be easily tested and evolved independently of the other layers.
+- Infrastructure Layer Examples: API's, databases and event sources that the project consumes;
+- Application Layer Examples: API's that are consumed by the project or events that trigger its execution; 
 
 ## Getting Started
 ### Development Environment Setup
