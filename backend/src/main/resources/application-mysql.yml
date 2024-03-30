@@ -1,5 +1,5 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/flyway
+    url: jdbc:mysql://localhost:3306/saci
     username: root
-    password: password
+    password: esp
