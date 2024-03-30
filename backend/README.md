@@ -3,12 +3,23 @@
 
 ## General Overview
 - Programmed in **Java** with the support of **Spring**;
-- It's integrated with a **MySQL** database;
+- It's integrated with an embedded database (**H2**) and with a **MySQL** database;
 - Uses **Flyway** for automated database migrations and versioning;
 - Follows a **DDD (Domain Driven Design)** architecture.
 
 ## Getting Started
 ### Development Environment Setup
+### Installation
+```bash
+$ mvn clean install
+```
+### Run
+```bash
+$ mvn spring-boot:run
+```
+Default page: http://localhost:8080/api/roles
+
+## Run with MySQL database:
 ### Run Database
 ```bash
 $ docker-compose up -d
@@ -19,9 +30,8 @@ $ mvn clean install
 ```
 ### Run
 ```bash
-$ mvn spring-boot:run -"Dspring-boot.run.profiles"=local
+$ mvn spring-boot:run -"Dspring-boot.run.profiles"=mysql -Pmysql
 ```
-Default page: http://localhost:8080
 
 ## How to manage database migrations
 Migrations will be done through the usage of the framework **Flyway**, which allows to place schema migration scripts in the 
@@ -68,7 +78,7 @@ _flyway_schema_history_ and contains important information about each migration 
     - Manually reverting the changed sql file, for example through git.
 - If everything is good for the migration, then run the command:
   ```bash
-  $ mvn flyway:migration 
+  $ mvn flyway:migrate
   ``` 
 - To check the migration history:
   ```bash

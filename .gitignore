@@ -2,5 +2,8 @@
 /backend/.idea/
 /backend/target/
 /backend/mysql-data/
+/backend/*.mv.db
+/backend/*.lock.db
+/backend/*.trace.db
 
 /frontend/public
