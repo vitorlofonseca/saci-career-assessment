@@ -1,0 +1,10 @@
+a {
+  text-decoration: none;
+  color: #a94438;
+  transition: 0.4s;
+  padding: 3px;
+
+  &:hover {
+    background-color: #f4d8ca;
+  }
+}
