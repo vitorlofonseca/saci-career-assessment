@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { RouterLink, RouterView } from 'vue-router'
 import ReferencesSection from './ReferencesSection.vue'
 import DemoSection from './DemoSection.vue'
 
