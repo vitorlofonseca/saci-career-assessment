@@ -144,3 +144,72 @@ Disable Flyway execution on the run of the Spring App:
 ```
 spring.flyway.enabled: false
 ```
+
+
+## Swagger UI
+This is a popular framework used for API documentation and testing, it enables a visualization of the API resources without
+having any of the implementation logic in place.
+
+### How to manage it?
+Run the application and go to the default swagger ui page:
+- http://localhost:8080/swagger-ui.html
+
+Other option is to go to the default JSON format page:
+- http://localhost:8080/v3/api-docs
+
+### How to document the API resources?
+The documentation is based of the usage of annotations along with descriptions, here are the most impactful ones:
+- **@Operation**: has a property called "summary" that is a string that should describe what the endpoint does;
+- **@ApiResponses**: has a property called "value" that aggregates a list of @ApiResponse annotations;
+- **@ApiResponse**: has 3 main properties that describe the http status returned from the API:
+  - "responseCode": the http status returned;
+  - "description": description of what happened in that specific http status;
+  - "content": what will be returned in that specific http status for the API, through the usage of a @Content annotation;
+- **@Content**: has 2 properties to identify what will be returned:
+  - "mediaType": describes in what format it will be returned (usually in _application/json_);
+  - "array"/"schema": if it is returned a list it must be used the property array (@ArraySchema) otherwise it is used the property schema,
+  which contains the annotation @Schema;
+- **@ArraySchema**: has a property called "schema" that contains a @Schema annotation, and it's purpose is to show that it 
+  will be returned a list of objects and not only one;
+- **@Schema**: has a property called "implementation" that contains a class to identify the schema format returned by the API.
+
+**Example:**
+```
+@Operation(summary = "Get all of the objects")
+@ApiResponses(
+  value = {
+    @ApiResponse(
+      responseCode = "200",
+      description = "List of all objects",
+      content = {
+        @Content(
+          mediaType = "application/json",
+          array =
+            @ArraySchema(
+              schema = @Schema(implementation = Object.class)))
+    }),
+    @ApiResponse(
+      responseCode = "500",
+      description = "Internal error while fetching list of objects")
+    })
+@GetMapping
+public ResponseEntity<List<Object>> getObjects() {
+  ...
+}
+```
+
+### Useful properties
+To change the default page url change the following application.yml property:
+```
+springdoc.swagger-ui.path: /<EXAMPLE_URL>.html
+```
+Same thing for the JSON page:
+```
+springdoc.api-docs.path: /<EXAMPLE_URL>
+```
+
+Sort API paths, in this case through their HTTP methods:
+```
+springdoc.swagger-ui.operationsSorter: method
+```
+
