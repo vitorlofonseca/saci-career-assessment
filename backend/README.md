@@ -16,6 +16,10 @@
   * [How does Flyway work](#how-does-flyway-work)
   * [Update Flyway changes through maven plugin](#update-flyway-changes-through-maven-plugin)
   * [Other possible Flyway properties](#other-possible-flyway-properties)
+* [Swagger UI](#swagger-ui)
+  * [How to manage it](#how-to-manage-it)
+  * [How to document the API resources](#how-to-document-the-api-resources)
+  * [Useful properties](#useful-properties)
 
 ## General Overview
 - Follows a **DDD (Domain-Driven Design)** architecture;
