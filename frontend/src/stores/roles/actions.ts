@@ -36,6 +36,10 @@ async function removeRole(roleId: string) {
 
 export { fetchRoles, addRole, editRole, removeRole }
 
+function setRoles(newRoles: Role[]): void {
+  roles.value = newRoles
+}
+
 export const saveKnowledge = async (newKnowledge: string): Promise<boolean> => {
   try {
     const response = await fetch('/api/knowledges', {
