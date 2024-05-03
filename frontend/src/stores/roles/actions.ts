@@ -13,9 +13,9 @@ async function fetchRoles(): Promise<void> {
   setRoles(roles)
 }
 
-async function addRole(role: Role): Promise<void> {
-  await post<Role[]>('/roles', role)
+async function addRole(role: Role) {
   roles.value.push(role)
+  await post<Role[]>('/roles', role)
 }
 
 function setRoles(newRoles: Role[]): void {
