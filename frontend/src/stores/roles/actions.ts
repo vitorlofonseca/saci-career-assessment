@@ -19,6 +19,10 @@ async function addRole(role: Role): Promise<void> {
   setRoles(updatedRoles)
 }
 
+function setRoles(newRoles: Role[]): void {
+  roles.value = newRoles
+}
+
 export { fetchRoles, addRole }
 
 export const saveKnowledge = async (newKnowledge: string): Promise<boolean> => {
