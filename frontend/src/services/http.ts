@@ -1,10 +1,17 @@
+import { ErrorMessage } from './messages/messages'
+
+enum HttpServerError {
+  HTTP_SERVER_ERROR = 500,
+  HTTP_STATUS_CODE_CONFLICT = 409
+}
+
 const fetchWrapper = async (url: string, init: RequestInit): Promise<Response> => {
   const headers = new Headers({
     'Content-Type': 'application/json',
     Accept: 'application/json'
   })
 
-  //TODO: create an env file to store the URL
+  // TODO: create an env file to store the URL
   return await fetch(`http://localhost:8080/api${url}`, {
     method: init.method,
     headers,
@@ -22,7 +29,10 @@ const doRequest = async <T>(url: string, method: string, body?: object | string)
   })
 
   if (!response.ok) {
-    throw new Error(`There was an error with your request: ${JSON.stringify(response)}`)
+    if (response.status === HttpServerError.HTTP_SERVER_ERROR) {
+      ErrorMessage('Technical error')
+    }
+    throw response
   }
 
   let result
@@ -52,4 +62,4 @@ const post = async <T>(url: string, body: object): Promise<T> => {
   return doRequest(url, 'POST', body)
 }
 
-export { fetchWrapper, get, patch, doRequest, deleteRequest, post }
+export { fetchWrapper, get, patch, doRequest, deleteRequest, post, HttpServerError }
