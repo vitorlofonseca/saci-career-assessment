@@ -18,3 +18,20 @@ input {
   text-align: right;
   margin-top: 10px;
 }
+.el-table-v2__header-cell-text {
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  margin-left: -894px;
+}
+
+.el-button--text {
+  background: transparent;
+  border-color: transparent;
+  color: $color-link;
+  padding-left: 0;
+  padding-right: 0;
+}
