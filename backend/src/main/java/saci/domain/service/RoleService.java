@@ -26,7 +26,7 @@ public class RoleService {
     public List<Role> getRoles() {
         return roleRepository.findAll();
     }
-
+    
     public Role editRole(Long roleId, Role updatedRole) {
         Role existingRole =
                 roleRepository
@@ -37,7 +37,6 @@ public class RoleService {
 
         return roleRepository.save(existingRole);
     }
-
     public void deleteRoleById(long roleId) {
         roleRepository.deleteById(roleId);
     }
