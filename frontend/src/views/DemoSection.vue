@@ -31,7 +31,7 @@ const onSaveRole = async () => {
       <li v-for="role in rolesStore.getRoles">{{ role.name }}</li>
     </ul>
 
-    <Divider />
+    <Divider/>
 
     <h4>Through this field you can send to the backend a new role, just to test</h4>
 
