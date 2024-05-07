@@ -2,8 +2,6 @@
   <hr class="solid" />
 </template>
 
-<template><hr class="solid" /></template>
-
 <style lang="scss" scoped>
 .solid {
   width: 95%;
