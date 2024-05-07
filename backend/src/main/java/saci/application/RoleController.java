@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
+
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import saci.domain.model.Role;
 import saci.domain.service.RoleService;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @RestController
 @RequestMapping("/api/roles")
@@ -63,4 +68,13 @@ public class RoleController {
         List<Role> roles = roleService.getRoles();
         return roles.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(roles);
     }
+
+
+    @PutMapping("/{roleId}")
+    public ResponseEntity<Role> editRole(@PathVariable Long roleId, @RequestBody Role updatedRole) {
+        Role editedRole = roleService.editRole(roleId, updatedRole);
+        return ResponseEntity.ok(editedRole);
+    }
+
+
 }

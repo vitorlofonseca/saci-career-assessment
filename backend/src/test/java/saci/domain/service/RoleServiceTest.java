@@ -13,7 +13,7 @@ import saci.domain.model.Role;
 import saci.infrastructure.RoleRepository;
 
 @ExtendWith(MockitoExtension.class)
-class RoleServiceTest {
+class yarRoleServiceTest {
 
     @Mock RoleRepository roleRepository;
     @InjectMocks RoleService roleService;
