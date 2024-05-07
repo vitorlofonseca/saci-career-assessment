@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { ElButton, ElInput, ElMessage } from 'element-plus'
-import Divider from '@/components/Divider.vue'
+import Divider from '@/components/DividerView.vue'
 import { useRolesStore } from '@/stores/roles/index'
 
 const rolesStore = useRolesStore()
