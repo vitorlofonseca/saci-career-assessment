@@ -8,21 +8,20 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import saci.domain.model.Role;
 import saci.domain.service.RoleService;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
 
 @RestController
 @RequestMapping("/api/roles")
@@ -63,18 +62,30 @@ public class RoleController {
                                                     schema = @Schema(implementation = Role.class)))
                         })
             })
+
     @GetMapping
     public ResponseEntity<List<Role>> getRoles() {
+
         List<Role> roles = roleService.getRoles();
         return roles.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(roles);
     }
 
-
     @PutMapping("/{roleId}")
-    public ResponseEntity<Role> editRole(@PathVariable Long roleId, @RequestBody Role updatedRole) {
+    @Operation(summary = "Edit a role", description = "Edit an existing role with the provided role ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Role edited successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input data"),
+            @ApiResponse(responseCode = "404", description = "Role not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<Role> editRole(@PathVariable Long roleId, @Valid @RequestBody Role updatedRole) {
         Role editedRole = roleService.editRole(roleId, updatedRole);
         return ResponseEntity.ok(editedRole);
     }
+
+
+
+
 
 
 }

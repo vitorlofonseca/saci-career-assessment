@@ -4,8 +4,8 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import saci.domain.model.Role;
+import saci.domain.service.exceptions.NotFoundException;
 import saci.infrastructure.RoleRepository;
-
 
 @Service
 @AllArgsConstructor
@@ -22,16 +22,13 @@ public class RoleService {
     }
 
     public Role editRole(Long roleId, Role updatedRole) {
-        Role existingRole = roleRepository.findById(roleId)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
+        Role existingRole =
+                roleRepository
+                        .findById(roleId)
+                        .orElseThrow(() -> new NotFoundException("Role not found"));
 
         existingRole.setName(updatedRole.getName());
-        // Adicione outras propriedades que você deseja editar
 
         return roleRepository.save(existingRole);
     }
-
-
-
-
 }

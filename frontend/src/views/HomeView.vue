@@ -1,54 +1,58 @@
 <script setup lang="ts">
-import { ElButton, ElInput, ElMessage, ElFormItem, ElDialog, ElForm } from 'element-plus'
-import { reactive, ref } from 'vue'
-import axios from 'axios';
+import { ElButton, ElInput, ElMessage, ElDialog} from 'element-plus'
+import { ref } from 'vue'
+import { patch } from '@/services/http';
+
 
 const dialogFormVisible = ref(false)
-const formLabelWidth = '140px'
-const form = reactive({
-  name: '',
-  
-})
+const editRole = ref({name:''})
 
-const saveForm = (roleId:number) => 
-{
-  axios.put(`/api/roles/${roleId}`, form)
-    .then(response => {
-      // Trate a resposta do backend
-      console.log(response.data);
-      // Exiba uma mensagem de sucesso para o usuário
+
+const onClickEditRole = () => {
+  dialogFormVisible.value = true
+}
+
+const onClickCancel = () => {
+  dialogFormVisible.value = false
+}
+
+const saveForm = async (roleId: number) => {
+  try {
+    const response: { message?: string } = await patch(`/api/roles/${roleId}`, editRole.value);
+
+    if (response && response.message) {
       ElMessage({
-        message: response.data.message,
+        message: response.message,
         type: 'success'
       });
-      dialogFormVisible.value = false;
-    })
-    .catch((error:any) => {
-      // Se ocorrer um erro, exiba uma mensagem de erro para o usuário
-      console.error('Error updating role:', error);
+    } else {
       ElMessage({
-        message: 'Failed to update role',
-        type: 'error'
+        message: 'Role updated successfully',
+        type: 'success'
       });
+    }
+    
+    dialogFormVisible.value = false;
+  } catch (error) {
+    ElMessage({
+      message: 'Failed to update role',
+      type: 'error'
     });
-};
+  }
+}
   dialogFormVisible.value = false;
   const roleId = ref(0);
 </script>
 
 <template>
-  <ElButton link style="color: #29517A;" @click="dialogFormVisible = true ">
+  <ElButton link class="custom-button" @click="onClickEditRole">
     Edit
   </ElButton>
   <ElDialog v-model="dialogFormVisible" title="Edit Role" width="500">
-    <ElForm :model="form">
-      <ElFormItem label="Role" :label-width="formLabelWidth">
-        <ElInput v-model="form.name" autocomplete="on" />
-      </ElFormItem>
-    </ElForm>
+        <ElInput v-model="editRole.name" autocomplete="on" />
     <template #footer>
       <div class="dialog-footer">
-        <ElButton @click="dialogFormVisible = false">Cancel</ElButton>
+        <ElButton @click="onClickCancel">Cancel</ElButton>
         <ElButton type="primary" @click="() => saveForm(roleId)">Save</ElButton>
       </div>
     </template>
