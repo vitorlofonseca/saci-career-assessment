@@ -157,4 +157,18 @@ const createKnowledge = async () => {
   text-align: right;
   margin-top: 10px;
 }
+
+.demo {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  .el-input,
+  h4 {
+    text-align: center;
+  }
+}
 </style>
