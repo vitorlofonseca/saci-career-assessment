@@ -23,3 +23,23 @@ function setRoles(newRoles: Role[]): void {
 }
 
 export { fetchRoles, addRole }
+
+export const saveKnowledge = async (newKnowledge: string) => {
+  try {
+    const response = await fetch('/api/knowledges', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name: newKnowledge })
+    })
+    if (!response.ok) {
+      throw new Error('Failed to save knowledge')
+    }
+
+    return true // Indicate success
+  } catch (error) {
+    console.error('Error:', error)
+    return false // Indicate failure
+  }
+}

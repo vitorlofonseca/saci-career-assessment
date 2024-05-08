@@ -11,11 +11,21 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "knowledge")
-public class Role {
+public class Knowledge {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "role_id")
+    private long roleId;
+
+    @Column(name = "level_id")
+    private long levelId;
+
+    @Column(name = "weight")
+    private int weight;
+
 }
