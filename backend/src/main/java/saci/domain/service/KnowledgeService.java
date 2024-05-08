@@ -7,6 +7,8 @@ import saci.domain.model.Knowledge;
 import saci.domain.service.exceptions.AlreadyExistsException;
 import saci.infrastructure.KnowledgeRepository;
 
+
+
 @Service
 public class KnowledgeService {
 
