@@ -115,8 +115,4 @@ const saveForm = async () => {
   margin: auto;
   text-align: center;
 }
-.dialog-footer {
-  text-align: right;
-  margin-top: 10px;
-}
 </style>
