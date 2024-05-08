@@ -9,9 +9,9 @@ async function fetchRoles(): Promise<void> {
     return
   }
 
-  const roles = await get<Role[]>('/roles')
+  const fetchedRoles = await get<Role[]>('/roles')
 
-  setRoles(roles)
+  setRoles(fetchedRoles)
 }
 
 async function addRole(role: Role) {
@@ -23,7 +23,7 @@ function setRoles(newRoles: Role[]): void {
   roles.value = newRoles
 }
 
-async function editRoleAction(role: Role): Promise<void> {
+async function editRole(role: Role): Promise<void> {
   await put<Role[]>(`/roles/${role.id}`, role)
   roles.value = roles.value.map((item) => {
     if (item.id === role.id) {
@@ -37,4 +37,5 @@ async function removeRole(roleId: string) {
   await deleteRequest(`/roles/${roleId}`)
   roles.value = roles.value.filter((role) => role.id !== parseInt(roleId))
 }
-export { fetchRoles, addRole, editRoleAction, removeRole }
+
+export { fetchRoles, addRole, editRole, removeRole }
