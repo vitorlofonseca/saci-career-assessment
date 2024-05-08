@@ -23,19 +23,24 @@ function setRoles(newRoles: Role[]): void {
   roles.value = newRoles
 }
 
-async function editRole(role: Role): Promise<void> {
-  await put<Role[]>(`/roles/${role.id}`, role)
-  roles.value = roles.value.map((item) => {
-    if (item.id === role.id) {
-      return role
+export { fetchRoles, addRole }
+
+export const saveKnowledge = async (newKnowledge: string) => {
+  try {
+    const response = await fetch('/api/knowledges', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name: newKnowledge })
+    })
+    if (!response.ok) {
+      throw new Error('Failed to save knowledge')
     }
-    return item
-  })
-}
 
-async function removeRole(roleId: string) {
-  await deleteRequest(`/roles/${roleId}`)
-  roles.value = roles.value.filter((role) => role.id !== parseInt(roleId))
+    return true // Indicate success
+  } catch (error) {
+    console.error('Error:', error)
+    return false // Indicate failure
+  }
 }
-
-export { fetchRoles, addRole, editRole, removeRole }

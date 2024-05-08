@@ -27,4 +27,5 @@ public class Knowledge {
 
     @Column(name = "weight")
     private int weight;
+
 }
