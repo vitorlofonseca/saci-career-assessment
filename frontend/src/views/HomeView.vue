@@ -1,78 +1,11 @@
-<script setup lang="ts">
-import { useRolesStore } from '@/stores/roles/index'
-import type { Role } from '@/domain/Role'
-import { ElButton, ElInput, ElMessage, ElDialog, ElTable, ElTableColumn } from 'element-plus'
-import { ref, onMounted } from 'vue'
+<script lang="ts" setup>
+import { onMounted, ref } from 'vue'
+import { ElButton, ElDialog, ElInput, ElMessage } from 'element-plus'
 
 const dialogFormVisible = ref(false)
-const rolesStore = useRolesStore()
-const selectedRoleToUpdate = ref()
-const selectedRoleToDelete = ref()
-const deleteDialogForm = ref(false)
-const createKnowledgedialogFormVisible = ref(false)
 const newKnowledgeName = ref('')
 
-const openUpdateDialog = (row: Role) => {
-  dialogFormVisible.value = true
-  selectedRoleToUpdate.value = row
-}
-
-const openDeleteDialog = (row: Role) => {
-  deleteDialogForm.value = true
-  selectedRoleToDelete.value = row.id
-}
-
-onMounted(async () => {
-  await rolesStore.fetchRoles()
-})
-
-async function deleteRole() {
-  if (selectedRoleToDelete.value !== null) {
-    try {
-      await rolesStore.removeRole(selectedRoleToDelete.value)
-      ElMessage({
-        message: 'Role removed!',
-        type: 'success'
-      })
-      closeDeleteDialog()
-    } catch (error) {
-      ElMessage({
-        message: 'Failed to delete role',
-        type: 'error'
-      })
-    }
-  }
-}
-
-const closeDeleteDialog = () => {
-  deleteDialogForm.value = false
-}
-
-const closeDialog = () => {
-  dialogFormVisible.value = false
-}
-
-const saveForm = async () => {
-  if (selectedRoleToUpdate.value !== null) {
-    try {
-      await rolesStore.editRoleAction(selectedRoleToUpdate.value)
-      ElMessage({
-        message: 'Role updated successfully',
-        type: 'success'
-      })
-      closeDialog()
-    } catch (error) {
-      ElMessage({
-        message: 'Unexpected error updating the role',
-        type: 'error'
-      })
-    }
-  }
-}
-
-const showDialog = () => {
-  createKnowledgedialogFormVisible.value = true
-}
+onMounted(async () => {})
 
 const createKnowledge = async () => {
   if (newKnowledgeName.value === '') {
@@ -81,7 +14,7 @@ const createKnowledge = async () => {
       type: 'error'
     })
   } else {
-    createKnowledgedialogFormVisible.value = false
+    dialogFormVisible.value = false
     try {
       ElMessage({
         message: 'Congrats, your knowledge is now added',
@@ -107,6 +40,7 @@ const createKnowledge = async () => {
 </script>
 
 <template>
+  <<<<<<< HEAD
   <ElDialog v-model="dialogFormVisible" title="Edit Role" width="500">
     <ElInput v-model="selectedRoleToUpdate.name" autocomplete="on" />
     <template #footer>
@@ -154,9 +88,18 @@ const createKnowledge = async () => {
   </div>
 </template>
 
-<style scoped>
-.dialog-footer {
-  text-align: right;
-  margin-top: 10px;
+<style scoped lang="scss">
+.demo {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  .el-input,
+  h4 {
+    text-align: center;
+  }
 }
 </style>
