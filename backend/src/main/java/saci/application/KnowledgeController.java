@@ -46,26 +46,26 @@ public class KnowledgeController {
 
     @Operation(summary = "Get all of the knowledges")
     @ApiResponses(
-            value = {
+            value = 
                 @ApiResponse(
                         responseCode = "200",
                         description = "List of all knowledges",
                         content = {
                             @Content(
                                     mediaType = "application/json",
-                                    array =
-                                            @ArraySchema(
-                                                    schema =
-                                                            @Schema(
-                                                                    implementation =
-                                                                            Knowledge.class)))
-                        })
-            })
+                                    array = @ArraySchema(
+                                        schema =@Schema( implementation = Knowledge.class)))}
+                                  schema = @Schema(implementation = Knowledge.class)))
+                                }
     @GetMapping
     public ResponseEntity<List<Knowledge>> getKnowledges() {
         List<Knowledge> knowledges = knowledgeService.getKnowledges();
+
         return knowledges.isEmpty()
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.ok(knowledges);
+
+        return knowledges.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(knowledges);
+
     }
-}
+

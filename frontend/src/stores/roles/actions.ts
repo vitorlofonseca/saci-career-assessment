@@ -1,8 +1,7 @@
-import { get, post, put } from '@/services/http'
+import { get, post, put, deleteRequest } from '@/services/http'
 import { getRoles } from './getters'
 import { roles } from './state'
 import type { Role } from '@/domain/Role'
-import { deleteRequest } from '@/services/http'
 
 async function fetchRoles(): Promise<void> {
   if (getRoles?.value?.length > 0) {
@@ -39,3 +38,23 @@ async function removeRole(roleId: string) {
 }
 
 export { fetchRoles, addRole, editRole, removeRole }
+
+export const saveKnowledge = async (newKnowledge: string) => {
+  try {
+    const response = await fetch('/api/knowledges', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name: newKnowledge })
+    })
+    if (!response.ok) {
+      throw new Error('Failed to save knowledge')
+    }
+
+    return true
+  } catch (error) {
+    console.error('Error:', error)
+    return false
+  }
+}

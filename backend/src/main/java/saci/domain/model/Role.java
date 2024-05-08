@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 @Data
 @Builder
@@ -18,6 +18,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "role")
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "knowledge")
+
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

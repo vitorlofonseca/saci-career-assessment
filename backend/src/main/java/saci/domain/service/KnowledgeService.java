@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import saci.domain.model.Knowledge;
 import saci.domain.service.exceptions.AlreadyExistsException;
 import saci.infrastructure.KnowledgeRepository;
+import saci.domain.model.Knowledge;
+
 
 @Service
 public class KnowledgeService {
