@@ -27,11 +27,4 @@ public class Knowledge {
 
     @Column(name = "weight")
     private int weight;
-    private long roleId;
-
-    @Column(name = "level_id")
-    private long levelId;
-
-    @Column(name = "weight")
-    private int weight;
 }

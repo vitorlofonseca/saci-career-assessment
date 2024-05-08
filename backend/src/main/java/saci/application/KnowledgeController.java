@@ -62,6 +62,7 @@ public class KnowledgeController {
 
                                                     schema = @Schema(implementation = Knowledge.class)))
                         })})
+                                                    schema = @Schema(implementation = Knowledge.class)))
                         })
             })
     @GetMapping
@@ -70,6 +71,5 @@ public class KnowledgeController {
         return knowledges.isEmpty()
                 ? ResponseEntity.noContent().build()
                 : ResponseEntity.ok(knowledges);
-        return knowledges.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(knowledges);
     }
 }

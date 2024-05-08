@@ -165,10 +165,9 @@ const createKnowledge = async () => {
   justify-content: center;
   align-items: center;
   gap: 20px;
-
-  .el-input,
-  h4 {
-    text-align: center;
-  }
+}
+.dialog-footer {
+  text-align: right;
+  margin-top: 10px;
 }
 </style>
