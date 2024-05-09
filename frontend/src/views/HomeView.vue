@@ -2,6 +2,7 @@
 import { ElButton, ElInput, ElMessage, ElDialog} from 'element-plus'
 import { ref } from 'vue'
 import { patch } from '@/services/http';
+import { editRoleAction } from '@/stores/roles/actions';
 
 
 const dialogFormVisible = ref(false)
@@ -18,11 +19,11 @@ const onClickCancel = () => {
 
 const saveForm = async (roleId: number) => {
   try {
-    const response: { message?: string } = await patch(`/api/roles/${roleId}`, editRole.value);
+      const message = await editRoleAction(roleId, editRole.value);
 
-    if (response && response.message) {
+    if (message && message !=='') {
       ElMessage({
-        message: response.message,
+        message: message,
         type: 'success'
       });
     } else {
@@ -45,7 +46,7 @@ const saveForm = async (roleId: number) => {
 </script>
 
 <template>
-  <ElButton link class="custom-button" @click="onClickEditRole">
+  <ElButton link @click="onClickEditRole">
     Edit
   </ElButton>
   <ElDialog v-model="dialogFormVisible" title="Edit Role" width="500">
