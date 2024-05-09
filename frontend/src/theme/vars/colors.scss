@@ -17,8 +17,6 @@ $color-green: #28bb49;
 $color-warning: #d9b043;
 $color-danger: #d03333;
 
-
-
 :root {
   --el-color-primary: #{$color-primary};
   --el-color-primary-light-3: #{lighten($color-primary, 10%)};
@@ -92,5 +90,4 @@ $color-danger: #d03333;
   --el-fill-color-dark: #{$color-white};
   --el-fill-color-darker: #{$color-white};
   --el-fill-color-blank: #{$color-white};
-
 }
