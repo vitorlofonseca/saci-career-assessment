@@ -17,8 +17,9 @@ const closeDialog = () => {
 
 const saveForm = async (roleId: number) => {
   try {
-    const message = await rolesStore.editRoleAction(roleId, editRole.value)
+    await rolesStore.editRoleAction(roleId, editRole.value)
     ElMessage({
+      message: 'Role updated successfully',
       type: 'success'
     })
     closeDialog()

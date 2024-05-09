@@ -24,7 +24,6 @@ function setRoles(newRoles: Role[]): void {
 }
 
 const editRoleAction = async (roleId: number, editedRole: any) => {
-  const response: Response = await patch(`/api/roles/${roleId}`, editedRole)
-  return response
+  return await patch(`/api/roles/${roleId}`, editedRole)
 }
 export { fetchRoles, addRole, editRoleAction }
