@@ -7,7 +7,7 @@ const dialogFormVisible = ref(false)
 const editRole = ref({ name: '' })
 const rolesStore = useRolesStore()
 
-const onClickEditRole = () => {
+const openDialog = () => {
   dialogFormVisible.value = true
 }
 
@@ -33,7 +33,7 @@ const saveForm = async (roleId: number) => {
 const roleId = ref(0)
 </script>
 <template>
-  <ElButton link @click="onClickEditRole"> Edit </ElButton>
+  <ElButton link @click="openDialog"> Edit </ElButton>
   <ElDialog v-model="dialogFormVisible" title="Edit Role" width="500">
     <ElInput v-model="editRole.name" autocomplete="on" />
     <template #footer>
