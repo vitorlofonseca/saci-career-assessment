@@ -4,6 +4,8 @@ import PadawanView from '@/views/PadawanView.vue'
 import HomeView from '@/views/HomeView.vue'
 import CreateRoleView from '@/views/CreateRoleView.vue'
 import RoleView from '@/views/RoleView.vue'
+import DeleteViewTemp from '@/views/DeleteViewTemp.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,7 +26,9 @@ const router = createRouter({
       path: '/knowledge-view',
       component: RoleView
     },
-
+      path: '/delete',
+      component: DeleteViewTemp
+    },
     {
       path: '/padawan',
       name: 'padawan',
@@ -36,7 +40,6 @@ const router = createRouter({
         },
         {
           path: 'demo',
-
           component: () => import('../views/DemoSection.vue')
         }
       ]

@@ -1,6 +1,6 @@
 import { get, post, put, deleteRequest } from '@/services/http'
 import { getRoles } from './getters'
-import { roles } from './state'
+import { setRoles, roles } from './state'
 import type { Role } from '@/domain/Role'
 
 async function fetchRoles(): Promise<void> {
@@ -13,13 +13,10 @@ async function fetchRoles(): Promise<void> {
   setRoles(fetchedRoles)
 }
 
-async function addRole(role: Role) {
-  roles.value.push(role)
+async function addRole(role: Role): Promise<void> {
   await post<Role[]>('/roles', role)
-}
-
-function setRoles(newRoles: Role[]): void {
-  roles.value = newRoles
+  const updatedRoles = [...roles.value, role]
+  setRoles(updatedRoles)
 }
 
 async function editRole(role: Role): Promise<void> {
@@ -39,7 +36,7 @@ async function removeRole(roleId: string) {
 
 export { fetchRoles, addRole, editRole, removeRole }
 
-export const saveKnowledge = async (newKnowledge: string) => {
+export const saveKnowledge = async (newKnowledge: string): Promise<boolean> => {
   try {
     const response = await fetch('/api/knowledges', {
       method: 'POST',

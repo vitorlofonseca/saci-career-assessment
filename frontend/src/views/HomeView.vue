@@ -1,3 +1,4 @@
+
 <script setup lang="ts">
 import { useRolesStore } from '@/stores/roles/index'
 import type { Role } from '@/domain/Role'
@@ -221,3 +222,4 @@ export default {
   margin-top: 10px;
 }
 </style>
+
