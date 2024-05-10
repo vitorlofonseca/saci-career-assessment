@@ -1,7 +1,7 @@
 package saci.domain.service;
 
 import java.util.List;
-import java.util.Optional; // Import Optional if it's not already imported
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import saci.domain.model.Knowledge;
 import saci.infrastructure.KnowledgeRepository;
