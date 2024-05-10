@@ -1,6 +1,6 @@
 import { get, post, put } from '@/services/http'
 import { getRoles } from './getters'
-import { roles } from './state'
+import { setRoles, roles } from './state'
 import type { Role } from '@/domain/Role'
 import { deleteRequest } from '@/services/http'
 
