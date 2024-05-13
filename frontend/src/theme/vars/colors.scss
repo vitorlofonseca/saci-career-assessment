@@ -17,6 +17,8 @@ $color-green: #28bb49;
 $color-warning: #d9b043;
 $color-danger: #d03333;
 
+$color-link: #29517a;
+
 :root {
   --el-color-primary: #{$color-primary};
   --el-color-primary-light-3: #{lighten($color-primary, 10%)};
@@ -78,7 +80,7 @@ $color-danger: #d03333;
 
   --el-border-color: #{$color-grey-7};
   --el-border-color-light: #{$color-white};
-  --el-border-color-lighter: #{$color-white};
+  --el-border-color-lighter: #{$color-grey-7};
   --el-border-color-extra-light: #{$color-white};
   --el-border-color-dark: #{$color-grey-7};
   --el-border-color-darker: #{$color-grey-7};

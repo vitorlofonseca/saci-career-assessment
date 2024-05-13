@@ -6,26 +6,30 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import java.util.List;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import saci.domain.model.Role;
 import saci.domain.service.RoleService;
+import saci.domain.service.exceptions.AlreadyExistsException;
 
 @RestController
 @RequestMapping("/api/roles")
 @RequiredArgsConstructor
+@Validated
 public class RoleController {
 
     private final RoleService roleService;
@@ -42,10 +46,14 @@ public class RoleController {
                                     schema = @Schema(implementation = Role.class))
                         })
             })
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Role createRole(@RequestBody Role role) {
-        return roleService.createRole(role);
+    public ResponseEntity<Role> createRole(@Valid @RequestBody Role role) {
+        try {
+            roleService.createRole(role);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (AlreadyExistsException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
     }
 
     @Operation(summary = "Get all of the roles")
@@ -83,9 +91,16 @@ public class RoleController {
         return ResponseEntity.ok(editedRole);
     }
 
-
-
-
-
+    @Operation(summary = "Delete role by ID", description = "Deletes a role based on its ID")
+    @ApiResponses(
+            value = {
+                @ApiResponse(responseCode = "200", description = "Role deleted successfully"),
+                @ApiResponse(responseCode = "404", description = "Role not found")
+            })
+    @DeleteMapping("/{roleId}")
+    public ResponseEntity<Void> deleteRole(@PathVariable long roleId) {
+        roleService.deleteRoleById(roleId);
+        return ResponseEntity.ok().build();
+    }
 
 }

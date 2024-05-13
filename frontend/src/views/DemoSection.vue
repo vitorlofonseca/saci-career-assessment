@@ -28,7 +28,7 @@ const onSaveRole = async () => {
     <h2>Already created roles</h2>
 
     <ul>
-      <li v-for="role in rolesStore.getRoles">{{ role.name }}</li>
+      <li v-for="role in rolesStore.getRoles" :key="role.id">{{ role.name }}</li>
     </ul>
 
     <Divider />
