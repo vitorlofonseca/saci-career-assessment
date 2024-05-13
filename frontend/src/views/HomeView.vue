@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { useRolesStore } from '@/stores/roles/index'
 import type { Role } from '@/domain/Role'
@@ -121,35 +120,64 @@ const createKnowledge = async () => {
       </div>
     </template>
   </ElDialog>
-  <div class="PageWrapper">
-    <div class="TableContainer">
-      <h2>Roles</h2>
-      <ElTable :data="rolesStore.getRoles" style="width: 100%">
-        <ElTableColumn prop="name" label="Names" />
-        <ElTableColumn fixed="right" label="Actions" width="150">
-          <template #default="{ row }">
-            <ElButton @click="openDeleteDialog(row)" type="text" size="small">Delete</ElButton>
-            <ElButton @click="openUpdateDialog(row)" type="text" size="small">Edit</ElButton>
-          </template>
-        </ElTableColumn>
-      </ElTable>
+
+  <template>
+    <div class="PageWrapper">
+      <div class="TableContainer">
+        <h2>Roles</h2>
+        <ElTable :data="rolesStore.getRoles" style="width: 100%">
+          <ElTableColumn prop="name" label="Names" />
+          <ElTableColumn fixed="right" label="Actions" width="150">
+            <template #default="{ row }">
+              <ElButton @click="openDeleteDialog(row)" type="text" size="small">Delete</ElButton>
+              <ElButton @click="openUpdateDialog(row)" type="text" size="small">Edit</ElButton>
+
+              <ElButton @click="handleDetail(row)" type="text" size="small">Detail</ElButton>
+              <ElButton @click="handleEdit(row)" type="text" size="small">Edit</ElButton>
+            </template>
+          </ElTableColumn>
+        </ElTable>
+      </div>
     </div>
-  </div>
 
-  <div class="demo">
-    <ElButton plain @click="dialogFormVisible = true">Add new Knowledge</ElButton>
-    <ElDialog v-model="dialogFormVisible" title="New Knowledge" width="500">
-      <ElInput v-model="newKnowledgeName" placeholder="Knowledge name" :clearable="false" />
+    <div class="demo">
+      <ElButton plain @click="dialogFormVisible = true">Add new Knowledge</ElButton>
+      <ElDialog v-model="dialogFormVisible" title="New Knowledge" width="500">
+        <ElInput v-model="newKnowledgeName" placeholder="Knowledge name" :clearable="false" />
 
-      <template #footer>
-        <div class="dialog-footer">
-          <ElButton @click="dialogFormVisible = false">Cancel</ElButton>
-          <ElButton type="primary" @click="createKnowledge" :required="true">Confirm</ElButton>
-        </div>
-      </template>
-    </ElDialog>
-  </div>
+        <template #footer>
+          <div class="dialog-footer">
+            <ElButton @click="dialogFormVisible = false">Cancel</ElButton>
+            <ElButton type="primary" @click="createKnowledge" :required="true">Confirm</ElButton>
+          </div>
+        </template>
+      </ElDialog>
+    </div>
+  </template>
+
+  =======
 </template>
+
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { ElTable, ElTableColumn, ElButton } from 'element-plus'
+import { useRolesStore } from '@/stores/roles/index'
+import type { Role } from '@/domain/Role'
+
+const rolesStore = useRolesStore()
+
+onMounted(async () => {
+  await rolesStore.fetchRoles()
+})
+
+const handleDetail = (row: Role) => {
+  console.log('Detail clicked for:', row)
+}
+
+const handleEdit = (row: Role) => {
+  console.log('Edit clicked for:', row)
+}
+</script>
 
 <style scoped lang="scss">
 .PageWrapper {
@@ -165,6 +193,7 @@ const createKnowledge = async () => {
   margin: auto;
   text-align: center;
 }
+
 .demo {
   min-height: 100vh;
   display: flex;
@@ -222,4 +251,3 @@ export default {
   margin-top: 10px;
 }
 </style>
-
