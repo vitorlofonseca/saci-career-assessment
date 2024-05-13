@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,10 +68,29 @@ public class RoleController {
                                                     schema = @Schema(implementation = Role.class)))
                         })
             })
+
     @GetMapping
     public ResponseEntity<List<Role>> getRoles() {
+
         List<Role> roles = roleService.getRoles();
         return roles.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(roles);
+    }
+    
+    @Operation(
+            summary = "Edit a role",
+            description = "Edit an existing role with the provided role ID")
+    @ApiResponses(
+            value = {
+                @ApiResponse(responseCode = "200", description = "Role edited successfully"),
+                @ApiResponse(responseCode = "400", description = "Invalid input data"),
+                @ApiResponse(responseCode = "404", description = "Role not found"),
+                @ApiResponse(responseCode = "500", description = "Internal server error")
+            })
+    @PutMapping("/{roleId}")
+    public ResponseEntity<Role> editRole(
+            @PathVariable Long roleId, @Valid @RequestBody Role updatedRole) {
+        Role editedRole = roleService.editRole(roleId, updatedRole);
+        return ResponseEntity.ok(editedRole);
     }
 
     @Operation(summary = "Delete role by ID", description = "Deletes a role based on its ID")

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import saci.domain.model.Role;
 import saci.domain.service.exceptions.AlreadyExistsException;
+import saci.domain.service.exceptions.NotFoundException;
 import saci.infrastructure.RoleRepository;
 
 @Service
@@ -24,6 +25,17 @@ public class RoleService {
 
     public List<Role> getRoles() {
         return roleRepository.findAll();
+    }
+
+    public Role editRole(Long roleId, Role updatedRole) {
+        Role existingRole =
+                roleRepository
+                        .findById(roleId)
+                        .orElseThrow(() -> new NotFoundException("Role not found"));
+
+        existingRole.setName(updatedRole.getName());
+
+        return roleRepository.save(existingRole);
     }
 
     public void deleteRoleById(long roleId) {

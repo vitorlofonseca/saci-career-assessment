@@ -1,4 +1,4 @@
-import { get, post } from '@/services/http'
+import { get, post, put } from '@/services/http'
 import { getRoles } from './getters'
 import { roles } from './state'
 import type { Role } from '@/domain/Role'
@@ -23,10 +23,19 @@ function setRoles(newRoles: Role[]): void {
   roles.value = newRoles
 }
 
+async function editRoleAction(role: Role): Promise<void> {
+  await put<Role[]>(`/roles/${role.id}`, role)
+  roles.value = roles.value.map((item) => {
+    if (item.id === role.id) {
+      return role
+    }
+    return item
+  })
+}
+
 function removeRole(roleId: string) {
   const response = deleteRequest(`/roles/${roleId}`)
   roles.value = roles.value.filter((role) => role.id !== parseInt(roleId))
   return response
 }
-
-export { fetchRoles, addRole, removeRole }
+export { fetchRoles, addRole, editRoleAction, removeRole }
