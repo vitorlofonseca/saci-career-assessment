@@ -5,8 +5,8 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import saci.domain.model.Role;
-import saci.domain.service.exceptions.NotFoundException;
 import saci.domain.service.exceptions.AlreadyExistsException;
+import saci.domain.service.exceptions.NotFoundException;
 import saci.infrastructure.RoleRepository;
 
 @Service
@@ -36,6 +36,7 @@ public class RoleService {
         existingRole.setName(updatedRole.getName());
 
         return roleRepository.save(existingRole);
+    }
 
     public void deleteRoleById(long roleId) {
         roleRepository.deleteById(roleId);

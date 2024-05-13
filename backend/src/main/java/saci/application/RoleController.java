@@ -8,8 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.util.List;
-
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,16 +75,20 @@ public class RoleController {
         List<Role> roles = roleService.getRoles();
         return roles.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(roles);
     }
-    @Operation(summary = "Edit a role", description = "Edit an existing role with the provided role ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Role edited successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid input data"),
-            @ApiResponse(responseCode = "404", description = "Role not found"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-
+    
+    @Operation(
+            summary = "Edit a role",
+            description = "Edit an existing role with the provided role ID")
+    @ApiResponses(
+            value = {
+                @ApiResponse(responseCode = "200", description = "Role edited successfully"),
+                @ApiResponse(responseCode = "400", description = "Invalid input data"),
+                @ApiResponse(responseCode = "404", description = "Role not found"),
+                @ApiResponse(responseCode = "500", description = "Internal server error")
+            })
     @PutMapping("/{roleId}")
-    public ResponseEntity<Role> editRole(@PathVariable Long roleId, @Valid @RequestBody Role updatedRole) {
+    public ResponseEntity<Role> editRole(
+            @PathVariable Long roleId, @Valid @RequestBody Role updatedRole) {
         Role editedRole = roleService.editRole(roleId, updatedRole);
         return ResponseEntity.ok(editedRole);
     }
@@ -102,5 +104,4 @@ public class RoleController {
         roleService.deleteRoleById(roleId);
         return ResponseEntity.ok().build();
     }
-
 }
