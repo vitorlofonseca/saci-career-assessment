@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ReferencesSection from '../views/ReferencesSection.vue'
 import PadawanView from '@/views/PadawanView.vue'
 import HomeView from '@/views/HomeView.vue'
-import DeleteViewTemp from '@/views/DeleteViewTemp.vue'
+import knowledgebutton from '@/views/knowledgebutton.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,9 +16,14 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/delete',
-      component: DeleteViewTemp
+      path: '/',
+      redirect: '/knowledgebutton'
     },
+    {
+      path: '/knowledgebutton',
+      component: knowledgebutton
+    },
+
     {
       path: '/padawan',
       name: 'padawan',
