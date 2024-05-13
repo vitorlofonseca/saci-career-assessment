@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import saci.domain.model.Knowledge;
 import saci.infrastructure.KnowledgeRepository;
 
-
-
 @Service
 public class KnowledgeService {
 
