@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ReferencesSection from '../views/ReferencesSection.vue'
 import PadawanView from '@/views/PadawanView.vue'
 import HomeView from '@/views/HomeView.vue'
-import KnowledgesView from '@/views/KnowledgesView.vue'
+import RoleView from '@/views/RoleView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,7 +17,7 @@ const router = createRouter({
     },
     {
       path: '/knowledgesview',
-      component: KnowledgesView
+      component: RoleView
     },
     {
       path: '/padawan',
