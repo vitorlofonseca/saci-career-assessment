@@ -5,8 +5,3 @@ INSERT INTO knowledge (role_id, level_id, name, weight) VALUES (3, null, 'HTML',
 INSERT INTO knowledge (role_id, level_id, name, weight) VALUES (1, null, 'Spring Framework', 25);
 INSERT INTO knowledge (role_id, level_id, name, weight) VALUES (1, null, 'Database Optimization', 30);
 INSERT INTO knowledge (role_id, level_id, name, weight) VALUES (3, null, 'CSS', 30);
-INSERT INTO knowledge (name, role_id, level_id, weight) values ('SASS', '1', '1','1');
-INSERT INTO knowledge (name, role_id, level_id, weight) values ('React','1', '2','2');
-INSERT INTO knowledge (name, role_id, level_id, weight) values ('JavaScript','1', '3','3');
-INSERT INTO knowledge (name, role_id, level_id, weight) values ('Vue','1', '4','4');
-INSERT INTO knowledge (name, role_id, level_id, weight) values ('Gerson','5', '5','5');

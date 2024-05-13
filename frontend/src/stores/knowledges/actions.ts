@@ -8,13 +8,13 @@ async function fetchKnowledge(): Promise<void> {
     return
   }
 
-  const knowledge = await get<Knowledge[]>('/knowledge')
+  const knowledge = await get<Knowledge[]>('/knowledges')
 
   setKnowledge(knowledge)
 }
 
 async function addKnowledge(knowledge: Knowledge): Promise<void> {
-  await post<Knowledge[]>('/knowledge', knowledge)
+  await post<Knowledge[]>('/knowledges', knowledge)
   knowledges.value.push(knowledge)
 }
 
