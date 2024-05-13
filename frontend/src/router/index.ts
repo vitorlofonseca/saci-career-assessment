@@ -27,10 +27,6 @@ const router = createRouter({
     {
       path: '/knowledge-view',
       component: RoleView
-    },
-
-    {
-      path: '/padawan',
       name: 'padawan',
       component: PadawanView,
       children: [
