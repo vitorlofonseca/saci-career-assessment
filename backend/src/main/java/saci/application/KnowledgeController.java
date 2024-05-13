@@ -55,12 +55,17 @@ public class KnowledgeController {
                                     mediaType = "application/json",
                                     array =
                                             @ArraySchema(
-                                                    schema = @Schema(implementation = Knowledge.class)))
+                                                    schema =
+                                                            @Schema(
+                                                                    implementation =
+                                                                            Knowledge.class)))
                         })
             })
     @GetMapping
     public ResponseEntity<List<Knowledge>> getKnowledges() {
         List<Knowledge> knowledges = knowledgeService.getKnowledges();
-        return knowledges.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(knowledges);
+        return knowledges.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(knowledges);
     }
 }
