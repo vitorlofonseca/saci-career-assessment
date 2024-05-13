@@ -51,5 +51,8 @@ const deleteRequest = async <T>(url: string): Promise<T> => {
 const post = async <T>(url: string, body: object): Promise<T> => {
   return doRequest(url, 'POST', body)
 }
+const put = async <T>(url: string, body: object): Promise<T> => {
+  return doRequest<T>(url, 'PUT', body)
+}
 
-export { fetchWrapper, get, patch, doRequest, deleteRequest, post }
+export { fetchWrapper, get, patch, doRequest, deleteRequest, post, put }

@@ -1,8 +1,7 @@
-import { get, post } from '@/services/http'
+import { get, post, put } from '@/services/http'
 import { getRoles } from './getters'
 import { roles } from './state'
 import type { Role } from '@/domain/Role'
-import { patch } from '@/services/http'
 
 async function fetchRoles(): Promise<void> {
   if (getRoles?.value?.length > 0) {
@@ -23,7 +22,13 @@ function setRoles(newRoles: Role[]): void {
   roles.value = newRoles
 }
 
-const editRoleAction = async (roleId: number, editedRole: any) => {
-  return await patch(`/api/roles/${roleId}`, editedRole)
+async function editRoleAction(role: Role): Promise<void> {
+  await put<Role[]>(`/roles/${role.id}`, role)
+  roles.value = roles.value.map((item) => {
+    if (item.id === role.id) {
+      return role
+    }
+    return item
+  })
 }
 export { fetchRoles, addRole, editRoleAction }
