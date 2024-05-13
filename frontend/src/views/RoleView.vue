@@ -2,7 +2,7 @@
   <div class="PageWrapper">
     <div class="TableContainer">
       <h1>{{ roleName }}</h1>
-      <h3>Attached Knowledges</h3>
+      <h2>Attached Knowledges</h2>
       <br />
       <ElTable :data="knowledges" style="width: 100%">
         <ElTableColumn prop="name" label="Knowledges" />
@@ -26,6 +26,7 @@ import type { Knowledge } from '@/domain/Knowledge'
 import { useKnowledgeStore } from '@/stores/knowledges/index'
 import { useRolesStore } from '@/stores/roles/index'
 
+// Funções para manipular detalhes e edição
 const handleDetail = (row: Knowledge) => {
   console.log('Detail clicked for:', row)
 }
@@ -43,14 +44,10 @@ const knowledges = ref<Knowledge[]>([])
 
 onMounted(async () => {
   try {
-    await Promise.all([knowledgesStore.fetchKnowledges(), roleStore.fetchRoles()])
-
     const role = roleStore.roles.find((role) => role.id === roleId.value)
-
     if (role) {
       roleName.value = role.name
       console.log('Nome da Role:' + roleName.value)
-
       knowledges.value = knowledgesStore.knowledges.filter(
         (knowledge) => parseInt(knowledge.roleId) === roleId.value
       )
