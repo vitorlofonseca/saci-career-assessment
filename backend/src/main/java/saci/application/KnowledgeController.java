@@ -62,6 +62,8 @@ public class KnowledgeController {
 
                                                     schema = @Schema(implementation = Knowledge.class)))
                         })})
+                        })
+            })
     @GetMapping
     public ResponseEntity<List<Knowledge>> getKnowledges() {
         List<Knowledge> knowledges = knowledgeService.getKnowledges();
