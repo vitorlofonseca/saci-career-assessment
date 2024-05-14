@@ -12,7 +12,7 @@ const router = createRouter({
       redirect: '/home'
     },
     {
-      path: '/create',
+      path: '/createrole',
       component: CreateView
     },
     {
