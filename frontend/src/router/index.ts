@@ -3,6 +3,7 @@ import ReferencesSection from '../views/ReferencesSection.vue'
 import PadawanView from '@/views/PadawanView.vue'
 import HomeView from '@/views/HomeView.vue'
 import DeleteViewTemp from '@/views/DeleteViewTemp.vue'
+import CreateView from '@/views/CreateView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,6 +11,10 @@ const router = createRouter({
     {
       path: '/',
       redirect: '/home'
+    },
+    {
+      path: '/create',
+      component: CreateView
     },
     {
       path: '/home',

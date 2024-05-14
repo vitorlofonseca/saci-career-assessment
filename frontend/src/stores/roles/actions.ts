@@ -33,9 +33,8 @@ async function editRoleAction(role: Role): Promise<void> {
   })
 }
 
-function removeRole(roleId: string) {
-  const response = deleteRequest(`/roles/${roleId}`)
+async function removeRole(roleId: string) {
+  await deleteRequest(`/roles/${roleId}`)
   roles.value = roles.value.filter((role) => role.id !== parseInt(roleId))
-  return response
 }
 export { fetchRoles, addRole, editRoleAction, removeRole }

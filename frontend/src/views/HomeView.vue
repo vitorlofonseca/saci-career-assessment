@@ -7,18 +7,41 @@ import { ref, onMounted } from 'vue'
 const dialogFormVisible = ref(false)
 const rolesStore = useRolesStore()
 const selectedRoleToUpdate = ref()
+const selectedRoleToDelete = ref()
+const deleteDialogForm = ref(false)
 
 const openDialog = (row: Role) => {
   dialogFormVisible.value = true
   selectedRoleToUpdate.value = row
 }
 
+const openDeleteDialog = (row: Role) => {
+  deleteDialogForm.value = true
+  selectedRoleToDelete.value = row.id
+}
+
 onMounted(async () => {
   await rolesStore.fetchRoles()
 })
 
-const handleDetail = (row: Role) => {
-  console.log('Detail clicked for:', row)
+async function deleteRole() {
+  try {
+    await rolesStore.removeRole(selectedRoleToDelete.value)
+    ElMessage({
+      message: 'Role removed!',
+      type: 'success'
+    })
+    closeDeleteDialog()
+  } catch (error) {
+    ElMessage({
+      message: 'Failed to delete role',
+      type: 'error'
+    })
+  }
+}
+
+const closeDeleteDialog = () => {
+  deleteDialogForm.value = false
 }
 
 const closeDialog = () => {
@@ -52,6 +75,16 @@ const saveForm = async () => {
       </div>
     </template>
   </ElDialog>
+  <ElDialog v-model="deleteDialogForm" title="Warning" width="500">
+    <span>Role will be permanently removed. Continue?</span>
+
+    <template #footer>
+      <div class="dialog-footer">
+        <ElButton @click="closeDeleteDialog">Cancel</ElButton>
+        <ElButton type="primary" @click="deleteRole()"> Confirm </ElButton>
+      </div>
+    </template>
+  </ElDialog>
   <div class="PageWrapper">
     <div class="TableContainer">
       <h2>Roles</h2>
@@ -59,7 +92,7 @@ const saveForm = async () => {
         <ElTableColumn prop="name" label="Names" />
         <ElTableColumn fixed="right" label="Actions" width="150">
           <template #default="{ row }">
-            <ElButton @click="handleDetail(row)" type="text" size="small">Detail</ElButton>
+            <ElButton @click="openDeleteDialog(row)" type="text" size="small">Delete</ElButton>
             <ElButton @click="openDialog(row)" type="text" size="small">Edit</ElButton>
           </template>
         </ElTableColumn>

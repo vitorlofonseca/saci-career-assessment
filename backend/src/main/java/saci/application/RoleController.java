@@ -68,14 +68,13 @@ public class RoleController {
                                                     schema = @Schema(implementation = Role.class)))
                         })
             })
-
     @GetMapping
     public ResponseEntity<List<Role>> getRoles() {
 
         List<Role> roles = roleService.getRoles();
         return roles.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(roles);
     }
-    
+
     @Operation(
             summary = "Edit a role",
             description = "Edit an existing role with the provided role ID")
