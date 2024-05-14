@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ReferencesSection from '../views/ReferencesSection.vue'
 import PadawanView from '@/views/PadawanView.vue'
 import HomeView from '@/views/HomeView.vue'
-import DeleteViewTemp from '@/views/DeleteViewTemp.vue'
 import CreateView from '@/views/CreateView.vue'
 
 const router = createRouter({
@@ -19,10 +18,6 @@ const router = createRouter({
     {
       path: '/home',
       component: HomeView
-    },
-    {
-      path: '/delete',
-      component: DeleteViewTemp
     },
     {
       path: '/padawan',

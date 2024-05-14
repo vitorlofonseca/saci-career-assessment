@@ -10,7 +10,7 @@ const selectedRoleToUpdate = ref()
 const selectedRoleToDelete = ref()
 const deleteDialogForm = ref(false)
 
-const openDialog = (row: Role) => {
+const openUpdateDialog = (row: Role) => {
   dialogFormVisible.value = true
   selectedRoleToUpdate.value = row
 }
@@ -93,7 +93,7 @@ const saveForm = async () => {
         <ElTableColumn fixed="right" label="Actions" width="150">
           <template #default="{ row }">
             <ElButton @click="openDeleteDialog(row)" type="text" size="small">Delete</ElButton>
-            <ElButton @click="openDialog(row)" type="text" size="small">Edit</ElButton>
+            <ElButton @click="openUpdateDialog(row)" type="text" size="small">Edit</ElButton>
           </template>
         </ElTableColumn>
       </ElTable>
