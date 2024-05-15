@@ -51,7 +51,6 @@ onMounted(async () => {
       roleName.value = role.name
       console.log('Nome da Role:' + roleName.value)
 
-      // Filtrando os conhecimentos com roleId correspondente
       knowledges.value = knowledgesStore.knowledges.filter(
         (knowledge) => parseInt(knowledge.roleId) === roleId.value
       )
