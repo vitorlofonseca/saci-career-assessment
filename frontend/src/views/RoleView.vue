@@ -26,7 +26,6 @@ import type { Knowledge } from '@/domain/Knowledge'
 import { useKnowledgeStore } from '@/stores/knowledges/index'
 import { useRolesStore } from '@/stores/roles/index'
 
-// Funções para manipular detalhes e edição
 const handleDetail = (row: Knowledge) => {
   console.log('Detail clicked for:', row)
 }
