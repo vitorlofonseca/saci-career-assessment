@@ -26,7 +26,6 @@ import type { Knowledge } from '@/domain/Knowledge'
 import { useKnowledgeStore } from '@/stores/knowledges/index'
 import { useRolesStore } from '@/stores/roles/index'
 
-// Funções para manipular detalhes e edição
 const handleDetail = (row: Knowledge) => {
   console.log('Detail clicked for:', row)
 }
@@ -52,7 +51,6 @@ onMounted(async () => {
       roleName.value = role.name
       console.log('Nome da Role:' + roleName.value)
 
-      // Filtrando os conhecimentos com roleId correspondente
       knowledges.value = knowledgesStore.knowledges.filter(
         (knowledge) => parseInt(knowledge.roleId) === roleId.value
       )
