@@ -2,7 +2,7 @@
   <div class="PageWrapper">
     <div class="TableContainer">
       <h1>{{ roleName }}</h1>
-      <h2>Attached Knowledges</h2>
+      <h3>Attached Knowledges</h3>
       <br />
       <ElTable :data="knowledges" style="width: 100%">
         <ElTableColumn prop="name" label="Knowledges" />
