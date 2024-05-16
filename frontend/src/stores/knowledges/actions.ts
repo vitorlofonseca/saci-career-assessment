@@ -1,4 +1,4 @@
-import { get, post } from '@/services/http'
+import { get, post, put } from '@/services/http'
 import { getKnowledge } from './getters'
 import { knowledges } from './state'
 import type { Knowledge } from '@/domain/Knowledge'

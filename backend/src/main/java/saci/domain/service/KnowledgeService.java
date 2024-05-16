@@ -27,4 +27,15 @@ public class KnowledgeService {
     public List<Knowledge> getKnowledges() {
         return knowledgeRepository.findAll();
     }
+
+    public Knowledge editKnowledge(Long knowledgeId, Knowledge updatedKnowledge) {
+        Knowledge existingKnowledge =
+                knowledgeRepository
+                        .findById(knowledgeId)
+                        .orElseThrow(() -> new NotFoundException("Knowledge not found"));
+
+        existingKnowledge.setName(updatedKnowledge.getName());
+
+        return knowledgeRepository.save(existingKnowledge);
+    }
 }
