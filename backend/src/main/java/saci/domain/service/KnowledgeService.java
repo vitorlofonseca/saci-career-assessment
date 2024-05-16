@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import saci.domain.model.Knowledge;
 import saci.domain.service.exceptions.AlreadyExistsException;
+import saci.domain.service.exceptions.NotFoundException;
 import saci.infrastructure.KnowledgeRepository;
 
 @Service

@@ -5,6 +5,7 @@ import HomeView from '@/views/HomeView.vue'
 import CreateRoleView from '@/views/CreateRoleView.vue'
 import RoleView from '@/views/RoleView.vue'
 import DeleteViewTemp from '@/views/DeleteViewTemp.vue'
+import EditKnowledge from '@/views/EditKnowledge.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +17,10 @@ const router = createRouter({
     {
       path: '/create-role',
       component: CreateRoleView
+    },
+    {
+      path: '/editknowledge',
+      component: EditKnowledge
     },
     {
       path: '/home',
