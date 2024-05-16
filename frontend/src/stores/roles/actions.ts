@@ -2,7 +2,6 @@ import { get, post, put, deleteRequest } from '@/services/http'
 import { getRoles } from './getters'
 import { setRoles, roles } from './state'
 import type { Role } from '@/domain/Role'
-import { deleteRequest } from '@/services/http'
 
 async function fetchRoles(): Promise<void> {
   if (getRoles?.value?.length > 0) {
@@ -14,13 +13,12 @@ async function fetchRoles(): Promise<void> {
   setRoles(fetchedRoles)
 }
 
-async function addRole(role: Role): Promise<void> {
+async function addRole(role: Role) {
+  roles.value.push(role)
   await post<Role[]>('/roles', role)
-  const updatedRoles = [...roles.value, role]
-  setRoles(updatedRoles)
 }
 
-async function editRole(role: Role): Promise<void> {
+async function editRoleAction(role: Role): Promise<void> {
   await put<Role[]>(`/roles/${role.id}`, role)
   roles.value = roles.value.map((item) => {
     if (item.id === role.id) {
@@ -34,8 +32,6 @@ async function removeRole(roleId: string) {
   await deleteRequest(`/roles/${roleId}`)
   roles.value = roles.value.filter((role) => role.id !== parseInt(roleId))
 }
-
-export { fetchRoles, addRole, editRole, removeRole }
 
 function setRoles(newRoles: Role[]): void {
   roles.value = newRoles
@@ -60,10 +56,5 @@ export const saveKnowledge = async (newKnowledge: string): Promise<boolean> => {
     return false
   }
 }
-function removeRole(roleId: string) {
-  const response = deleteRequest(`/roles/${roleId}`)
-  roles.value = roles.value.filter((role) => role.id !== parseInt(roleId))
-  return response
-}
 
-export { fetchRoles, addRole, removeRole }
+export { fetchRoles, addRole, editRoleAction, removeRole }

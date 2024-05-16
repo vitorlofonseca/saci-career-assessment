@@ -10,12 +10,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import saci.domain.model.Knowledge;
 import saci.domain.service.KnowledgeService;
 
@@ -67,5 +62,32 @@ public class KnowledgeController {
 
         return knowledges.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(knowledges);
 
+                                    array =
+                                            @ArraySchema(
+                                                    schema =
+                                                            @Schema(
+                                                                    implementation =
+                                                                            Knowledge.class))
+                        }
+    @GetMapping
+    public ResponseEntity<List<Knowledge>> getKnowledges() {
+        List<Knowledge> knowledges = knowledgeService.getKnowledges();
+        return knowledges.isEmpty()
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.ok(knowledges);
+    }
+
+    @Operation(
+            summary = "Delete knowledge by ID",
+            description = "Deletes a knowledge based on its ID")
+    @ApiResponses(
+            value = {
+                @ApiResponse(responseCode = "200", description = "Role deleted successfully"),
+                @ApiResponse(responseCode = "404", description = "Role not found")
+            })
+    @DeleteMapping("/{knowledgeId}")
+    public ResponseEntity<Void> deleteKnowledgeById(@PathVariable long knowledgeId) {
+        knowledgeService.deleteKnowledgeById(knowledgeId);
+        return ResponseEntity.ok().build();
     }
 

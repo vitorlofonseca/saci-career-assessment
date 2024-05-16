@@ -7,6 +7,7 @@ import RoleView from '@/views/RoleView.vue'
 import DeleteViewTemp from '@/views/DeleteViewTemp.vue'
 import knowledgebutton from '@/views/knowledgebutton.vue'
 import DeleteViewTemp from '@/views/DeleteViewTemp.vue'
+import DeleteKnowledgeView from '@/views/DeleteKnowledgeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +24,7 @@ const router = createRouter({
       path: '/home',
       component: HomeView
     },
+
     {
       path: '/knowledge-view',
       component: RoleView
@@ -30,6 +32,10 @@ const router = createRouter({
     {
       path: '/delete',
       component: DeleteViewTemp
+    },
+    {
+      path: '/deleteknowledge',
+      component: DeleteKnowledgeView
     },
     {
       path: '/knowledgebutton',
