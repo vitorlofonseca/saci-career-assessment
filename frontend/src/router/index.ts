@@ -20,6 +20,10 @@ const router = createRouter({
       path: '/home',
       component: HomeView
     },
+    /* {
+      path: '/delete',
+      component: DeleteViewTemp
+    },*/
     {
       path: '/knowledge-view',
       component: RoleView

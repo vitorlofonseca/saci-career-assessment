@@ -43,18 +43,11 @@ const handleEdit = (row: Knowledge) => {
 const showDialog = () => {
   dialogFormVisible.value = true
 }
-
 const hideDialog = () => {
   dialogFormVisible.value = false
 }
 
 const createKnowledge = async () => {
-  if (newKnowledgeName.value == '') {
-    ErrorMessage('You need to fill in this field')
-    showDialog()
-    return
-  }
-
   try {
     await knowledgesStore.saveKnowledge({
       name: newKnowledgeName.value,
