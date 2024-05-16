@@ -9,6 +9,8 @@ const rolesStore = useRolesStore()
 const selectedRoleToUpdate = ref()
 const selectedRoleToDelete = ref()
 const deleteDialogForm = ref(false)
+const createKnowledgedialogFormVisible = ref(false)
+const newKnowledgeName = ref('')
 
 const openUpdateDialog = (row: Role) => {
   dialogFormVisible.value = true
@@ -25,18 +27,20 @@ onMounted(async () => {
 })
 
 async function deleteRole() {
-  try {
-    await rolesStore.removeRole(selectedRoleToDelete.value)
-    ElMessage({
-      message: 'Role removed!',
-      type: 'success'
-    })
-    closeDeleteDialog()
-  } catch (error) {
-    ElMessage({
-      message: 'Failed to delete role',
-      type: 'error'
-    })
+  if (selectedRoleToDelete.value !== null) {
+    try {
+      await rolesStore.removeRole(selectedRoleToDelete.value)
+      ElMessage({
+        message: 'Role removed!',
+        type: 'success'
+      })
+      closeDeleteDialog()
+    } catch (error) {
+      ElMessage({
+        message: 'Failed to delete role',
+        type: 'error'
+      })
+    }
   }
 }
 
@@ -62,11 +66,11 @@ const saveForm = async () => {
       type: 'error'
     })
   }
+}
 
-const dialogFormVisible = ref(false)
-const newKnowledgeName = ref('')
-
-onMounted(async () => {})
+const showDialog = () => {
+  createKnowledgedialogFormVisible.value = true
+}
 
 const createKnowledge = async () => {
   if (newKnowledgeName.value === '') {
@@ -75,7 +79,7 @@ const createKnowledge = async () => {
       type: 'error'
     })
   } else {
-    dialogFormVisible.value = false
+    createKnowledgedialogFormVisible.value = false
     try {
       ElMessage({
         message: 'Congrats, your knowledge is now added',
@@ -116,7 +120,7 @@ const createKnowledge = async () => {
     <template #footer>
       <div class="dialog-footer">
         <ElButton @click="closeDeleteDialog">Cancel</ElButton>
-        <ElButton type="primary" @click="deleteRole()"> Confirm </ElButton>
+        <ElButton type="primary" @click="deleteRole"> Confirm </ElButton>
       </div>
     </template>
   </ElDialog>
@@ -134,68 +138,23 @@ const createKnowledge = async () => {
       </ElTable>
     </div>
     <div class="demo">
-      <ElButton plain @click="dialogFormVisible = true">Add new Knowledge</ElButton>
-      <ElDialog v-model="dialogFormVisible" title="New Knowledge" width="500">
+      <ElButton plain @click="showDialog">Add new Knowledge</ElButton>
+      <ElDialog v-model="createKnowledgedialogFormVisible" title="New Knowledge" width="500">
         <ElInput v-model="newKnowledgeName" placeholder="Knowledge name" :clearable="false" />
-
         <template #footer>
           <div class="dialog-footer">
-            <ElButton @click="dialogFormVisible = false">Cancel</ElButton>
-            <ElButton type="primary" @click="createKnowledge" :required="true">Confirm</ElButton>
+            <ElButton @click="createKnowledgedialogFormVisible = false">Cancel</ElButton>
+            <ElButton type="primary" @click="createKnowledge">Confirm</ElButton>
           </div>
         </template>
       </ElDialog>
-      <template>
-        <div>
-          <el-button @click="showDialog">Add Knowledge</el-button>
-          <el-dialog v-model="dialogVisible" title="Add Knowledge">
-            <el-input v-model="newKnowledge" placeholder="Enter knowledge name"></el-input>
-            <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">Cancel</el-button>
-              <el-button type="primary" @click="saveKnowledgeAction">Save</el-button>
-            </span>
-          </el-dialog>
-        </div>
-      </template>
-
-      <script>
-        import { ref } from 'vue'
-        import { saveKnowledge } from './knowledgeApi'
-
-        export default {
-          setup() {
-            const dialogVisible = ref(false)
-            const newKnowledge = ref('')
-
-            const showDialog = () => {
-              dialogVisible.value = true
-            }
-
-            const saveKnowledgeAction = async () => {
-              try {
-                const success = await saveKnowledge(newKnowledge.value)
-                if (success) {
-                  dialogVisible.value = false
-                  newKnowledge.value = ''
-                } else {
-                  // Handle failure
-                }
-              } catch (error) {
-                // Handle error
-              }
-            }
-
-            return { dialogVisible, newKnowledge, showDialog, saveKnowledgeAction }
-          }
-        }
-      </script>
-
-      <style scoped>
-        .dialog-footer {
-          text-align: right;
-          margin-top: 10px;
-        }
-      </style>
     </div>
   </div>
 </template>
+
+<style scoped>
+.dialog-footer {
+  text-align: right;
+  margin-top: 10px;
+}
+</style>

@@ -13,9 +13,13 @@ const router = createRouter({
       redirect: '/home'
     },
     {
+      path: '/role-view',
+      component: RoleView
+    },
+    /* {
       path: '/create-role',
       component: CreateRoleView
-    },
+    },*/
     {
       path: '/home',
       component: HomeView
