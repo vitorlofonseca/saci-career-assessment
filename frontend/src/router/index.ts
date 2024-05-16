@@ -24,6 +24,10 @@ const router = createRouter({
       path: '/home',
       component: HomeView
     },
+    /* {
+      path: '/delete',
+      component: DeleteViewTemp
+    },*/
     {
       path: '/padawan',
       name: 'padawan',
