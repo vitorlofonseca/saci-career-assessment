@@ -34,7 +34,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { ElTable, ElTableColumn, ElButton, ElMessage, ElDialog, ElInput } from 'element-plus'
+import { ElTable, ElTableColumn, ElButton, ElDialog, ElInput } from 'element-plus'
+import { ErrorMessage, SuccessMessage } from '@/services/messages/messages'
 import type { Knowledge } from '@/domain/Knowledge'
 import { useKnowledgeStore } from '@/stores/knowledges/index'
 import { useRolesStore } from '@/stores/roles/index'
@@ -76,32 +77,28 @@ const showDialog = () => {
   createKnowledgedialogFormVisible.value = true
 }
 
+const hideDialog = () => {
+  createKnowledgedialogFormVisible.value = false
+}
+
 const createKnowledge = async () => {
-  if (newKnowledgeName.value === '') {
-    ElMessage({
-      message: 'You need to fill in this field',
-      type: 'error'
+  if (newKnowledgeName.value == '') {
+    ErrorMessage('You need to fill in this field')
+    showDialog()
+    return
+  }
+
+  try {
+    await knowledgesStore.addKnowledge({
+      name: newKnowledgeName.value,
+      roleId: '1',
+      levelId: '',
+      weight: '1'
     })
-  } else {
-    createKnowledgedialogFormVisible.value = false
-    try {
-      ElMessage({
-        message: 'Congrats, your knowledge is now added',
-        type: 'success'
-      })
-    } catch (error: any) {
-      if (error.status === 409) {
-        ElMessage({
-          message: 'Knowledge name already exists.',
-          type: 'error'
-        })
-      } else {
-        ElMessage({
-          message: 'Unexpected error',
-          type: 'error'
-        })
-      }
-    }
+    SuccessMessage('Your knowledge was created')
+    hideDialog()
+  } catch (error: any) {
+    ErrorMessage('An error occurred while creating the knowledge')
   }
 
   newKnowledgeName.value = ''
