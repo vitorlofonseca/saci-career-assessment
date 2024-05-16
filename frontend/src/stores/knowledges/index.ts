@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 
 import { getKnowledge } from './getters'
-import { fetchKnowledge, addKnowledge } from './actions'
+import { fetchKnowledge, addKnowledge, removeKnowledge } from './actions'
 
 import { knowledges } from './state'
 
@@ -10,6 +10,7 @@ export const useKnowledgeStore = defineStore('knowledges', () => {
     knowledges,
     getKnowledge,
     fetchKnowledge,
-    addKnowledge
+    addKnowledge,
+    removeKnowledge
   }
 })

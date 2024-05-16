@@ -4,6 +4,7 @@ import PadawanView from '@/views/PadawanView.vue'
 import HomeView from '@/views/HomeView.vue'
 import knowledgebutton from '@/views/knowledgebutton.vue'
 import DeleteViewTemp from '@/views/DeleteViewTemp.vue'
+import DeleteKnowledgeView from '@/views/DeleteKnowledgeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,9 +17,14 @@ const router = createRouter({
       path: '/home',
       component: HomeView
     },
+
     {
       path: '/',
       redirect: '/knowledgebutton'
+    },
+    {
+      path: '/deleteknowledge',
+      component: DeleteKnowledgeView
     },
     {
       path: '/knowledgebutton',

@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import saci.domain.model.Knowledge;
 import saci.infrastructure.KnowledgeRepository;
 
-
-
 @Service
 public class KnowledgeService {
 
@@ -27,5 +25,9 @@ public class KnowledgeService {
 
     public List<Knowledge> getKnowledges() {
         return knowledgeRepository.findAll();
+    }
+
+    public void deleteKnowledgeById(long knowledgeId) {
+        knowledgeRepository.deleteById(knowledgeId);
     }
 }

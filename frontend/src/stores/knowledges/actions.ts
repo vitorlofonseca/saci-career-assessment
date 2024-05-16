@@ -2,6 +2,7 @@ import { get, post } from '@/services/http'
 import { getKnowledge } from './getters'
 import { knowledges } from './state'
 import type { Knowledge } from '@/domain/Knowledge'
+import { deleteRequest } from '@/services/http'
 
 async function fetchKnowledge(): Promise<void> {
   if (getKnowledge?.value?.length > 0) {
@@ -22,7 +23,13 @@ function setKnowledge(newKnowledge: Knowledge[]): void {
   knowledges.value = newKnowledge
 }
 
-export { fetchKnowledge, addKnowledge }
+function removeKnowledge(knowledgeId: string) {
+  const response = deleteRequest(`/knowledges/${knowledgeId}`)
+  knowledges.value = knowledges.value.filter((knowledge) => knowledge.id !== parseInt(knowledgeId))
+  return response
+}
+
+export { fetchKnowledge, addKnowledge, removeKnowledge }
 
 export const saveKnowledge = async (newKnowledge: string) => {
   try {
