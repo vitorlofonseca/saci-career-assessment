@@ -15,13 +15,26 @@
           </template>
         </ElTableColumn>
       </ElTable>
+      <div class="demo">
+        <br />
+        <ElButton type="primary" @click="showDialog">Add new Knowledge</ElButton>
+        <ElDialog v-model="createKnowledgedialogFormVisible" title="New Knowledge" width="500">
+          <ElInput v-model="newKnowledgeName" placeholder="Knowledge name" :clearable="false" />
+          <template #footer>
+            <div class="dialog-footer">
+              <ElButton @click="createKnowledgedialogFormVisible = false">Cancel</ElButton>
+              <ElButton type="primary" @click="createKnowledge">Confirm</ElButton>
+            </div>
+          </template>
+        </ElDialog>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { ElTable, ElTableColumn, ElButton } from 'element-plus'
+import { ElTable, ElTableColumn, ElButton, ElMessage, ElDialog, ElInput } from 'element-plus'
 import type { Knowledge } from '@/domain/Knowledge'
 import { useKnowledgeStore } from '@/stores/knowledges/index'
 import { useRolesStore } from '@/stores/roles/index'
@@ -36,7 +49,8 @@ const handleEdit = (row: Knowledge) => {
 
 const knowledgesStore = useKnowledgeStore()
 const roleStore = useRolesStore()
-
+const createKnowledgedialogFormVisible = ref(false)
+const newKnowledgeName = ref('')
 const roleId = ref<number>(1)
 const roleName = ref<string>('')
 const knowledges = ref<Knowledge[]>([])
@@ -57,6 +71,41 @@ onMounted(async () => {
     console.error('Erro ao buscar conhecimentos ou papéis:', error)
   }
 })
+
+const showDialog = () => {
+  createKnowledgedialogFormVisible.value = true
+}
+
+const createKnowledge = async () => {
+  if (newKnowledgeName.value === '') {
+    ElMessage({
+      message: 'You need to fill in this field',
+      type: 'error'
+    })
+  } else {
+    createKnowledgedialogFormVisible.value = false
+    try {
+      ElMessage({
+        message: 'Congrats, your knowledge is now added',
+        type: 'success'
+      })
+    } catch (error: any) {
+      if (error.status === 409) {
+        ElMessage({
+          message: 'Knowledge name already exists.',
+          type: 'error'
+        })
+      } else {
+        ElMessage({
+          message: 'Unexpected error',
+          type: 'error'
+        })
+      }
+    }
+  }
+
+  newKnowledgeName.value = ''
+}
 </script>
 
 <style scoped lang="scss">
