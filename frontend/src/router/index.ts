@@ -16,10 +16,6 @@ const router = createRouter({
       path: '/role-view',
       component: RoleView
     },
-    /* {
-      path: '/create-role',
-      component: CreateRoleView
-    },*/
     {
       path: '/home',
       component: HomeView
@@ -27,16 +23,21 @@ const router = createRouter({
     {
       path: '/knowledge-view',
       component: RoleView
-      name: 'padawan',
+    },
+    {
+      path: '/padawan',
       component: PadawanView,
       children: [
+        {
+          path: '', // Aqui, path vazio corresponde à própria rota /padawan
+          redirect: 'references' // Redirecionamento padrão para /padawan/references
+        },
         {
           path: 'references',
           component: ReferencesSection
         },
         {
           path: 'demo',
-
           component: () => import('../views/DemoSection.vue')
         }
       ]

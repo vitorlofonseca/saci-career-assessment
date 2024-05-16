@@ -59,10 +59,6 @@ public class KnowledgeController {
                                                             @Schema(
                                                                     implementation =
                                                                             Knowledge.class)))
-
-                                                    schema = @Schema(implementation = Knowledge.class)))
-                        })})
-                                                    schema = @Schema(implementation = Knowledge.class)))
                         })
             })
     @GetMapping
