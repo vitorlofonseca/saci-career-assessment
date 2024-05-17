@@ -41,4 +41,10 @@ public class RoleService {
     public void deleteRoleById(long roleId) {
         roleRepository.deleteById(roleId);
     }
+
+    public Role getRoleById(Long roleId) {
+        return roleRepository
+                .findById(roleId)
+                .orElseThrow(() -> new NotFoundException("Role Not Found"));
+    }
 }

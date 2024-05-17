@@ -3,6 +3,7 @@ import { useRolesStore } from '@/stores/roles/index'
 import type { Role } from '@/domain/Role'
 import { ElButton, ElInput, ElMessage, ElDialog, ElTable, ElTableColumn } from 'element-plus'
 import { ref, onMounted } from 'vue'
+import { ErrorMessage, SuccessMessage } from '@/services/messages/messages'
 
 const dialogFormVisible = ref(false)
 const rolesStore = useRolesStore()
@@ -25,20 +26,12 @@ onMounted(async () => {
 })
 
 async function deleteRole() {
-  if (selectedRoleToDelete.value !== null) {
-    try {
-      await rolesStore.removeRole(selectedRoleToDelete.value)
-      ElMessage({
-        message: 'Role removed!',
-        type: 'success'
-      })
-      closeDeleteDialog()
-    } catch (error) {
-      ElMessage({
-        message: 'Failed to delete role',
-        type: 'error'
-      })
-    }
+  try {
+    await rolesStore.removeRole(selectedRoleToDelete.value)
+    SuccessMessage('Role removed!')
+    closeDeleteDialog()
+  } catch (error) {
+    ErrorMessage('Error deleting the role')
   }
 }
 
@@ -51,20 +44,12 @@ const closeDialog = () => {
 }
 
 const saveForm = async () => {
-  if (selectedRoleToUpdate.value !== null) {
-    try {
-      await rolesStore.editRoleAction(selectedRoleToUpdate.value)
-      ElMessage({
-        message: 'Role updated successfully',
-        type: 'success'
-      })
-      closeDialog()
-    } catch (error) {
-      ElMessage({
-        message: 'Unexpected error updating the role',
-        type: 'error'
-      })
-    }
+  try {
+    await rolesStore.editRole(selectedRoleToUpdate.value)
+    SuccessMessage('Role updated successfully')
+    closeDialog()
+  } catch (error) {
+    ErrorMessage('Unexpected error updating the role')
   }
 }
 </script>
@@ -85,7 +70,7 @@ const saveForm = async () => {
     <template #footer>
       <div class="dialog-footer">
         <ElButton @click="closeDeleteDialog">Cancel</ElButton>
-        <ElButton type="primary" @click="deleteRole"> Confirm </ElButton>
+        <ElButton type="primary" @click="deleteRole()"> Confirm </ElButton>
       </div>
     </template>
   </ElDialog>
@@ -105,41 +90,18 @@ const saveForm = async () => {
   </div>
 </template>
 
-<script>
-import { ref } from 'vue'
-import { saveKnowledge } from '@/services/knowledgeApi'
-
-export default {
-  setup() {
-    const dialogVisible = ref(false)
-    const newKnowledge = ref('')
-
-    const showDialog = () => {
-      dialogVisible.value = true
-    }
-
-    const saveKnowledgeAction = async () => {
-      try {
-        const success = await saveKnowledge(newKnowledge.value)
-        if (success) {
-          dialogVisible.value = false
-          newKnowledge.value = ''
-        } else {
-          // Handle failure
-        }
-      } catch (error) {
-        // Handle error
-      }
-    }
-
-    return { dialogVisible, newKnowledge, showDialog, saveKnowledgeAction }
-  }
+<style scoped lang="scss">
+.PageWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
-</script>
 
-<style scoped>
-.dialog-footer {
-  text-align: right;
-  margin-top: 10px;
+.TableContainer {
+  width: 800px;
+  height: auto;
+  margin: auto;
+  text-align: center;
 }
 </style>

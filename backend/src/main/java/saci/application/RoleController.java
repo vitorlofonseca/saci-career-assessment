@@ -103,4 +103,22 @@ public class RoleController {
         roleService.deleteRoleById(roleId);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "Get a role by ID", description = "Retrieve a role by its ID")
+    @ApiResponses(
+            value = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "Role found",
+                        content =
+                                @Content(
+                                        mediaType = "application/json",
+                                        schema = @Schema(implementation = Role.class))),
+                @ApiResponse(responseCode = "404", description = "Role not found")
+            })
+    @GetMapping("/{roleId}")
+    public ResponseEntity<Role> getRoleById(@PathVariable Long roleId) {
+        Role role = roleService.getRoleById(roleId);
+        return ResponseEntity.ok(role);
+    }
 }
