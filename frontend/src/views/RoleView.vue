@@ -76,18 +76,11 @@ onMounted(async () => {
 const showDialog = () => {
   createKnowledgedialogFormVisible.value = true
 }
-
 const hideDialog = () => {
   createKnowledgedialogFormVisible.value = false
 }
 
 const createKnowledge = async () => {
-  if (newKnowledgeName.value == '') {
-    ErrorMessage('You need to fill in this field')
-    showDialog()
-    return
-  }
-
   try {
     await knowledgesStore.addKnowledge({
       name: newKnowledgeName.value,
