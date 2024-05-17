@@ -1,4 +1,90 @@
+<script setup lang="ts">
+import { useRolesStore } from '@/stores/roles/index'
+import type { Role } from '@/domain/Role'
+import { ElButton, ElInput, ElMessage, ElDialog, ElTable, ElTableColumn } from 'element-plus'
+import { ref, onMounted } from 'vue'
+
+const dialogFormVisible = ref(false)
+const rolesStore = useRolesStore()
+const selectedRoleToUpdate = ref()
+const selectedRoleToDelete = ref()
+const deleteDialogForm = ref(false)
+
+const openUpdateDialog = (row: Role) => {
+  dialogFormVisible.value = true
+  selectedRoleToUpdate.value = row
+}
+
+const openDeleteDialog = (row: Role) => {
+  deleteDialogForm.value = true
+  selectedRoleToDelete.value = row.id
+}
+
+onMounted(async () => {
+  await rolesStore.fetchRoles()
+})
+
+async function deleteRole() {
+  try {
+    await rolesStore.removeRole(selectedRoleToDelete.value)
+    ElMessage({
+      message: 'Role removed!',
+      type: 'success'
+    })
+    closeDeleteDialog()
+  } catch (error) {
+    ElMessage({
+      message: 'Failed to delete role',
+      type: 'error'
+    })
+  }
+}
+
+const closeDeleteDialog = () => {
+  deleteDialogForm.value = false
+}
+
+const closeDialog = () => {
+  dialogFormVisible.value = false
+}
+
+const saveForm = async () => {
+  try {
+    await rolesStore.editRole(selectedRoleToUpdate.value)
+    ElMessage({
+      message: 'Role updated successfully',
+      type: 'success'
+    })
+    closeDialog()
+  } catch (error) {
+    ElMessage({
+      message: 'Unexpected error updating the role',
+      type: 'error'
+    })
+  }
+}
+</script>
+
 <template>
+  <ElDialog v-model="dialogFormVisible" title="Edit Role" width="500">
+    <ElInput v-model="selectedRoleToUpdate.name" autocomplete="on" />
+    <template #footer>
+      <div class="dialog-footer">
+        <ElButton @click="closeDialog">Cancel</ElButton>
+        <ElButton type="primary" @click="saveForm">Save</ElButton>
+      </div>
+    </template>
+  </ElDialog>
+  <ElDialog v-model="deleteDialogForm" title="Warning" width="500">
+    <span>Role will be permanently removed. Continue?</span>
+
+    <template #footer>
+      <div class="dialog-footer">
+        <ElButton @click="closeDeleteDialog">Cancel</ElButton>
+        <ElButton type="primary" @click="deleteRole()"> Confirm </ElButton>
+      </div>
+    </template>
+  </ElDialog>
   <div class="PageWrapper">
     <div class="TableContainer">
       <h2>Roles</h2>
@@ -6,35 +92,14 @@
         <ElTableColumn prop="name" label="Names" />
         <ElTableColumn fixed="right" label="Actions" width="150">
           <template #default="{ row }">
-            <ElButton @click="handleDetail(row)" type="text" size="small">Detail</ElButton>
-            <ElButton @click="handleEdit(row)" type="text" size="small">Edit</ElButton>
+            <ElButton @click="openDeleteDialog(row)" type="text" size="small">Delete</ElButton>
+            <ElButton @click="openUpdateDialog(row)" type="text" size="small">Edit</ElButton>
           </template>
         </ElTableColumn>
       </ElTable>
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { onMounted } from 'vue'
-import { ElTable, ElTableColumn, ElButton } from 'element-plus'
-import { useRolesStore } from '@/stores/roles/index'
-import type { Role } from '@/domain/Role'
-
-const rolesStore = useRolesStore()
-
-onMounted(async () => {
-  await rolesStore.fetchRoles()
-})
-
-const handleDetail = (row: Role) => {
-  console.log('Detail clicked for:', row)
-}
-
-const handleEdit = (row: Role) => {
-  console.log('Edit clicked for:', row)
-}
-</script>
 
 <style scoped lang="scss">
 .PageWrapper {

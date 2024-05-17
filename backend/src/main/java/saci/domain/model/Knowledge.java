@@ -20,12 +20,11 @@ public class Knowledge {
     private String name;
 
     @Column(name = "role_id")
-    private long roleId;
+    private Long roleId;
 
     @Column(name = "level_id")
-    private long levelId;
+    private Long levelId;
 
     @Column(name = "weight")
     private int weight;
-
 }
