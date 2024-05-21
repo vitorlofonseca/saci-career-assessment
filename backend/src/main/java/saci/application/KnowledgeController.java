@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import saci.domain.model.Knowledge;
 import saci.domain.service.KnowledgeService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/knowledges")
 @RequiredArgsConstructor
