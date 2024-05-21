@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import saci.domain.model.Knowledge;
 import saci.domain.service.exceptions.AlreadyExistsException;
+import saci.domain.service.exceptions.NotFoundException;
 import saci.infrastructure.KnowledgeRepository;
 
 @Service
@@ -26,5 +27,16 @@ public class KnowledgeService {
 
     public List<Knowledge> getKnowledges() {
         return knowledgeRepository.findAll();
+    }
+
+    public Knowledge editKnowledge(Long knowledgeId, Knowledge updatedKnowledge) {
+        Knowledge existingKnowledge =
+                knowledgeRepository
+                        .findById(knowledgeId)
+                        .orElseThrow(() -> new NotFoundException("Knowledge not found"));
+
+        existingKnowledge.setName(updatedKnowledge.getName());
+
+        return knowledgeRepository.save(existingKnowledge);
     }
 }

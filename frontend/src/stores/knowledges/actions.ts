@@ -1,4 +1,4 @@
-import { get, post } from '@/services/http'
+import { get, post, put } from '@/services/http'
 import { getKnowledge } from './getters'
 import { knowledges } from './state'
 import type { Knowledge } from '@/domain/Knowledge'
@@ -8,8 +8,9 @@ async function fetchKnowledges(): Promise<void> {
     return
   }
 
-  const knowledgeArray = await get<Knowledge[]>('/knowledges')
-  setKnowledges(knowledgeArray)
+  const knowledge = await get<Knowledge[]>('/knowledges')
+
+  setKnowledges(knowledge)
 }
 
 async function saveKnowledge(knowledge: Knowledge): Promise<void> {
@@ -21,4 +22,16 @@ function setKnowledges(newKnowledges: Knowledge[]): void {
   knowledges.value = newKnowledges
 }
 
-export { fetchKnowledges, saveKnowledge, setKnowledges }
+async function editKnowledge(knowledge: Knowledge): Promise<void> {
+  await put<Knowledge[]>(`/knowledges/${knowledge.id}`, knowledge)
+  knowledges.value = knowledges.value.map((item) => {
+    if (item.id === knowledge.id) {
+      if (item !== knowledge) {
+        return knowledge
+      }
+    }
+    return item
+  })
+}
+
+export { fetchKnowledges, saveKnowledge, editKnowledge }
