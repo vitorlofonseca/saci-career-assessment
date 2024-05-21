@@ -1,6 +1,6 @@
+import { get, post, put, deleteRequest } from '@/services/http'
 import { knowledges } from './state'
 import type { Knowledge } from '@/domain/Knowledge'
-import { deleteRequest, get, post } from '@/services/http'
 
 async function fetchKnowledges(): Promise<void> {
   if (knowledges?.value?.length > 0) {
@@ -26,4 +26,14 @@ async function saveKnowledge(knowledge: Knowledge): Promise<void> {
   knowledges.value.push(knowledge)
 }
 
-export { fetchKnowledges, setKnowledges, removeKnowledge, saveKnowledge }
+async function editKnowledge(knowledge: Knowledge): Promise<void> {
+  await put<Knowledge[]>(`/knowledges/${knowledge.id}`, knowledge)
+  knowledges.value = knowledges.value.map((item) => {
+    if (item.id === knowledge.id) {
+      return knowledge
+    }
+    return item
+  })
+}
+
+export { fetchKnowledges, saveKnowledge, editKnowledge, setKnowledges, removeKnowledge }
