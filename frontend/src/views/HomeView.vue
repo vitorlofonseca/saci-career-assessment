@@ -50,7 +50,7 @@ const closeDialog = () => {
 
 const saveForm = async () => {
   try {
-    await rolesStore.editRole(selectedRoleToUpdate.value)
+    await rolesStore.editRoleAction(selectedRoleToUpdate.value)
     ElMessage({
       message: 'Role updated successfully',
       type: 'success'
@@ -65,8 +65,6 @@ const saveForm = async () => {
 }
 
 const newKnowledgeName = ref('')
-
-onMounted(async () => {})
 
 const createKnowledge = async () => {
   if (newKnowledgeName.value === '') {
@@ -98,77 +96,6 @@ const createKnowledge = async () => {
 
   newKnowledgeName.value = ''
 }
-</script>
-
-<template>
-  <ElDialog v-model="dialogFormVisible" title="Edit Role" width="500">
-    <ElInput v-model="selectedRoleToUpdate.name" autocomplete="on" />
-    <template #footer>
-      <div class="dialog-footer">
-        <ElButton @click="closeDialog">Cancel</ElButton>
-        <ElButton type="primary" @click="saveForm">Save</ElButton>
-      </div>
-    </template>
-  </ElDialog>
-  <ElDialog v-model="deleteDialogForm" title="Warning" width="500">
-    <span>Role will be permanently removed. Continue?</span>
-
-    <template #footer>
-      <div class="dialog-footer">
-        <ElButton @click="closeDeleteDialog">Cancel</ElButton>
-        <ElButton type="primary" @click="deleteRole()"> Confirm </ElButton>
-      </div>
-    </template>
-  </ElDialog>
-
-  <template>
-    <div class="PageWrapper">
-      <div class="TableContainer">
-        <h2>Roles</h2>
-        <ElTable :data="rolesStore.getRoles" style="width: 100%">
-          <ElTableColumn prop="name" label="Names" />
-          <ElTableColumn fixed="right" label="Actions" width="150">
-            <template #default="{ row }">
-              <ElButton @click="openDeleteDialog(row)" type="text" size="small">Delete</ElButton>
-              <ElButton @click="openUpdateDialog(row)" type="text" size="small">Edit</ElButton>
-
-              <ElButton @click="handleDetail(row)" type="text" size="small">Detail</ElButton>
-              <ElButton @click="handleEdit(row)" type="text" size="small">Edit</ElButton>
-            </template>
-          </ElTableColumn>
-        </ElTable>
-      </div>
-    </div>
-
-    <div class="demo">
-      <ElButton plain @click="dialogFormVisible = true">Add new Knowledge</ElButton>
-      <ElDialog v-model="dialogFormVisible" title="New Knowledge" width="500">
-        <ElInput v-model="newKnowledgeName" placeholder="Knowledge name" :clearable="false" />
-
-        <template #footer>
-          <div class="dialog-footer">
-            <ElButton @click="dialogFormVisible = false">Cancel</ElButton>
-            <ElButton type="primary" @click="createKnowledge" :required="true">Confirm</ElButton>
-          </div>
-        </template>
-      </ElDialog>
-    </div>
-  </template>
-
-  =======
-</template>
-
-<script setup lang="ts">
-import { onMounted } from 'vue'
-import { ElTable, ElTableColumn, ElButton } from 'element-plus'
-import { useRolesStore } from '@/stores/roles/index'
-import type { Role } from '@/domain/Role'
-
-const rolesStore = useRolesStore()
-
-onMounted(async () => {
-  await rolesStore.fetchRoles()
-})
 
 const handleDetail = (row: Role) => {
   console.log('Detail clicked for:', row)
@@ -205,49 +132,55 @@ const handleEdit = (row: Role) => {
 </style>
 
 <template>
-  <div>
-    <el-button @click="showDialog">Add Knowledge</el-button>
-    <el-dialog v-model="dialogVisible" title="Add Knowledge">
-      <el-input v-model="newKnowledge" placeholder="Enter knowledge name"></el-input>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="saveKnowledgeAction">Save</el-button>
-      </span>
-    </el-dialog>
+  <div class="PageWrapper">
+    <div class="TableContainer">
+      <h2>Roles</h2>
+      <ElTable :data="rolesStore.getRoles" style="width: 100%">
+        <ElTableColumn prop="name" label="Names" />
+        <ElTableColumn fixed="right" label="Actions" width="150">
+          <template #default="{ row }">
+            <ElButton @click="openDeleteDialog(row)" type="text" size="small">Delete</ElButton>
+            <ElButton @click="openUpdateDialog(row)" type="text" size="small">Edit</ElButton>
+
+            <ElButton @click="handleDetail(row)" type="text" size="small">Detail</ElButton>
+            <ElButton @click="handleEdit(row)" type="text" size="small">Edit</ElButton>
+          </template>
+        </ElTableColumn>
+      </ElTable>
+    </div>
   </div>
+
+  <div class="demo">
+    <ElButton plain @click="dialogFormVisible = true">Add new Knowledge</ElButton>
+    <ElDialog v-model="dialogFormVisible" title="New Knowledge" width="500">
+      <ElInput v-model="newKnowledgeName" placeholder="Knowledge name" :clearable="false" />
+
+      <template #footer>
+        <div class="dialog-footer">
+          <ElButton @click="dialogFormVisible = false">Cancel</ElButton>
+          <ElButton type="primary" @click="createKnowledge" :required="true">Confirm</ElButton>
+        </div>
+      </template>
+    </ElDialog>
+  </div>
+
+  <ElDialog v-model="dialogFormVisible" title="Edit Role" width="500">
+    <ElInput v-model="selectedRoleToUpdate.name" autocomplete="on" />
+    <template #footer>
+      <div class="dialog-footer">
+        <ElButton @click="closeDialog">Cancel</ElButton>
+        <ElButton type="primary" @click="saveForm">Save</ElButton>
+      </div>
+    </template>
+  </ElDialog>
+  <ElDialog v-model="deleteDialogForm" title="Warning" width="500">
+    <span>Role will be permanently removed. Continue?</span>
+
+    <template #footer>
+      <div class="dialog-footer">
+        <ElButton @click="closeDeleteDialog">Cancel</ElButton>
+        <ElButton type="primary" @click="deleteRole()"> Confirm </ElButton>
+      </div>
+    </template>
+  </ElDialog>
 </template>
-
-<script>
-import { saveKnowledge } from './knowledgeApi'
-
-export default {
-  setup() {
-    const dialogVisible = ref(false)
-    const newKnowledge = ref('')
-
-    const showDialog = () => {
-      dialogVisible.value = true
-    }
-
-    const saveKnowledgeAction = async () => {
-      try {
-        const success = await saveKnowledge(newKnowledge.value)
-        if (success) {
-          dialogVisible.value = false
-          newKnowledge.value = ''
-        } else {
-        }
-      } catch (error) {}
-    }
-
-    return { dialogVisible, newKnowledge, showDialog, saveKnowledgeAction }
-  }
-}
-</script>
-
-<style scoped>
-.dialog-footer {
-  text-align: right;
-  margin-top: 10px;
-}
-</style>

@@ -7,24 +7,17 @@ import { deleteRequest } from '@/services/http'
 export { fetchKnowledges, setKnowledge, addKnowledge, removeKnowledge }
 
 async function fetchKnowledges(): Promise<void> {
-  async function fetchKnowledge(): Promise<void> {
-    if (getKnowledge?.value?.length > 0) {
-      return
-    }
-
-    const knowledgeArray = await get<Knowledge[]>('/knowledges')
-    setKnowledge(knowledgeArray)
+  if (getKnowledge?.value?.length > 0) {
+    return
   }
 
-  async function saveKnowledge(knowledge: Knowledge): Promise<void> {
-    await post<Knowledge[]>('/knowledges', knowledge)
-    knowledges.value.push(knowledge)
-  }
-
-  const knowledge = await get<Knowledge[]>('/knowledge')
-
-  setKnowledge(knowledge)
+  const knowledgeArray = await get<Knowledge[]>('/knowledges')
+  setKnowledge(knowledgeArray)
 }
+
+const knowledge = await get<Knowledge[]>('/knowledge')
+
+setKnowledge(knowledge)
 
 async function addKnowledge(knowledge: Knowledge): Promise<void> {
   await post<Knowledge[]>('/knowledge', knowledge)
@@ -36,7 +29,7 @@ function setKnowledge(newKnowledge: Knowledge[]): void {
 }
 
 function removeKnowledge(knowledgeId: string) {
-  const response = deleteRequest(`/knowledges/${knowledgeId}`)
+  const response = deleteRequest(`/knowledge/${knowledgeId}`)
   knowledges.value = knowledges.value.filter((knowledge) => knowledge.id !== parseInt(knowledgeId))
   return response
 }

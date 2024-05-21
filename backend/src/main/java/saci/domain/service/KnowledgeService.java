@@ -7,8 +7,6 @@ import saci.domain.model.Knowledge;
 import saci.domain.service.exceptions.AlreadyExistsException;
 import saci.infrastructure.KnowledgeRepository;
 
-
-
 @Service
 public class KnowledgeService {
 
@@ -32,5 +30,9 @@ public class KnowledgeService {
 
     public void deleteKnowledgeById(long knowledgeId) {
         knowledgeRepository.deleteById(knowledgeId);
+    }
+
+    public Optional<Knowledge> findById(long knowledgeId) {
+        return knowledgeRepository.findById(knowledgeId);
     }
 }

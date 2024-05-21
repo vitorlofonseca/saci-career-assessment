@@ -34,10 +34,7 @@ const onClickCancel = () => {
 
 async function deleteRole() {
   try {
-    const response = (await rolesStore.removeRole(roleId.value)) as Response
-    if (!response.ok) {
-      throw new Error('Error on deleting role')
-    }
+    await rolesStore.removeRole(roleId.value)
     ElMessage({
       message: 'Role removed!',
       type: 'success'

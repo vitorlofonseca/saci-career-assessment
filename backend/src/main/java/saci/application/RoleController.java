@@ -99,7 +99,7 @@ public class RoleController {
                 @ApiResponse(responseCode = "404", description = "Role not found")
             })
     @DeleteMapping("/{roleId}")
-    public ResponseEntity<Void> deleteKnowledge(@PathVariable long roleId) {
+    public ResponseEntity<Void> deleteRole(@PathVariable long roleId) {
         roleService.deleteRoleById(roleId);
         return ResponseEntity.ok().build();
     }

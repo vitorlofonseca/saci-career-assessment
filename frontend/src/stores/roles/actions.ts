@@ -1,7 +1,7 @@
 import { get, post, put, deleteRequest } from '@/services/http'
 import { getRoles } from './getters'
-import { setRoles, roles } from './state'
 import type { Role } from '@/domain/Role'
+import { setRoles, roles } from './state'
 
 async function fetchRoles(): Promise<void> {
   if (getRoles?.value?.length > 0) {
@@ -31,10 +31,6 @@ async function editRoleAction(role: Role): Promise<void> {
 async function removeRole(roleId: string) {
   await deleteRequest(`/roles/${roleId}`)
   roles.value = roles.value.filter((role) => role.id !== parseInt(roleId))
-}
-
-function setRoles(newRoles: Role[]): void {
-  roles.value = newRoles
 }
 
 export const saveKnowledge = async (newKnowledge: string): Promise<boolean> => {

@@ -25,12 +25,12 @@ const createKnowledge = async () => {
   }
 
   try {
-    await knowledgesStore.saveKnowledge({
+    /*await knowledgesStore.saveKnowledge(
       name: newKnowledgeName.value,
       roleId: '1',
-      levelId: '',
+      levelId: '1',
       weight: '1'
-    })
+    )*/
     SuccessMessage('Your knowledge was created')
     hideDialog()
   } catch (error: any) {
