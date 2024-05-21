@@ -43,4 +43,23 @@ public class KnowledgeService {
     public List<Knowledge> getKnowledgesByRoleId(Long roleId) {
         return knowledgeRepository.findByRoleId(roleId);
     }
+
+    public Knowledge editKnowledge(Long knowledgeId, Knowledge updatedKnowledge) {
+        Knowledge existingKnowledge =
+                knowledgeRepository
+                        .findById(knowledgeId)
+                        .orElseThrow(() -> new NotFoundException("Knowledge not found"));
+
+        Optional<Knowledge> knowledgeWithSameName =
+                knowledgeRepository.findByName(updatedKnowledge.getName());
+        if (knowledgeWithSameName.isPresent()
+                && !knowledgeWithSameName.get().getId().equals(knowledgeId)) {
+            throw new AlreadyExistsException("Another knowledge with the same name already exists");
+        }
+
+        existingKnowledge.setName(updatedKnowledge.getName());
+        existingKnowledge.setWeight(updatedKnowledge.getWeight());
+
+        return knowledgeRepository.save(existingKnowledge);
+    }
 }
