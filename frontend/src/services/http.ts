@@ -64,5 +64,4 @@ const post = async <T>(url: string, body: object): Promise<T> => {
 const put = async <T>(url: string, body: object): Promise<T> => {
   return doRequest<T>(url, 'PUT', body)
 }
-
 export { fetchWrapper, get, patch, doRequest, deleteRequest, post, put, HttpServerError }

@@ -20,6 +20,7 @@ public class Knowledge {
     private String name;
 
     @Column(name = "role_id")
+
     private Long roleId;
 
     @Column(name = "level_id")

@@ -1,7 +1,8 @@
-import { get, post, put, deleteRequest } from '@/services/http'
+import { get, post, put } from '@/services/http'
 import { getRoles } from './getters'
-import type { Role } from '@/domain/Role'
 import { setRoles, roles } from './state'
+import type { Role } from '@/domain/Role'
+import { deleteRequest } from '@/services/http'
 
 async function fetchRoles(): Promise<void> {
   if (getRoles?.value?.length > 0) {

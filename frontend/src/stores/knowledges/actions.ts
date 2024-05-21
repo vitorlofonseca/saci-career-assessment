@@ -11,13 +11,10 @@ async function fetchKnowledges(): Promise<void> {
     return
   }
 
-  const knowledgeArray = await get<Knowledge[]>('/knowledges')
-  setKnowledge(knowledgeArray)
+  const knowledge = await get<Knowledge[]>('/knowledge')
+
+  setKnowledge(knowledge)
 }
-
-const knowledge = await get<Knowledge[]>('/knowledge')
-
-setKnowledge(knowledge)
 
 async function addKnowledge(knowledge: Knowledge): Promise<void> {
   await post<Knowledge[]>('/knowledge', knowledge)
@@ -29,7 +26,7 @@ function setKnowledge(newKnowledge: Knowledge[]): void {
 }
 
 function removeKnowledge(knowledgeId: string) {
-  const response = deleteRequest(`/knowledge/${knowledgeId}`)
+  const response = deleteRequest(`/knowledges/${knowledgeId}`)
   knowledges.value = knowledges.value.filter((knowledge) => knowledge.id !== parseInt(knowledgeId))
   return response
 }

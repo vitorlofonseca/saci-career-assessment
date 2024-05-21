@@ -28,7 +28,7 @@ const createRole = async () => {
     await rolesStore.addRole({ name: newRoleName.value })
     SuccessMessage('Your role was created')
     hideDialog()
-  } catch (error: any) {
+  } catch (error: Error) {
     if (error.status === HttpServerError.HTTP_STATUS_CODE_CONFLICT) {
       ErrorMessage('This name already exists')
     }

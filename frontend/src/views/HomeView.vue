@@ -63,107 +63,9 @@ const saveForm = async () => {
     })
   }
 }
-
-const newKnowledgeName = ref('')
-
-const createKnowledge = async () => {
-  if (newKnowledgeName.value === '') {
-    ElMessage({
-      message: 'You need to fill in this field',
-      type: 'error'
-    })
-  } else {
-    dialogFormVisible.value = false
-    try {
-      ElMessage({
-        message: 'Congrats, your knowledge is now added',
-        type: 'success'
-      })
-    } catch (error: any) {
-      if (error.status === 409) {
-        ElMessage({
-          message: 'Knowledge name already exists.',
-          type: 'error'
-        })
-      } else {
-        ElMessage({
-          message: 'Unexpected error',
-          type: 'error'
-        })
-      }
-    }
-  }
-
-  newKnowledgeName.value = ''
-}
-
-const handleDetail = (row: Role) => {
-  console.log('Detail clicked for:', row)
-}
-
-const handleEdit = (row: Role) => {
-  console.log('Edit clicked for:', row)
-}
 </script>
 
-<style scoped lang="scss">
-.PageWrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.TableContainer {
-  width: 800px;
-  height: auto;
-  margin: auto;
-  text-align: center;
-}
-
-.demo {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-}
-</style>
-
 <template>
-  <div class="PageWrapper">
-    <div class="TableContainer">
-      <h2>Roles</h2>
-      <ElTable :data="rolesStore.getRoles" style="width: 100%">
-        <ElTableColumn prop="name" label="Names" />
-        <ElTableColumn fixed="right" label="Actions" width="150">
-          <template #default="{ row }">
-            <ElButton @click="openDeleteDialog(row)" type="text" size="small">Delete</ElButton>
-            <ElButton @click="openUpdateDialog(row)" type="text" size="small">Edit</ElButton>
-
-            <ElButton @click="handleDetail(row)" type="text" size="small">Detail</ElButton>
-            <ElButton @click="handleEdit(row)" type="text" size="small">Edit</ElButton>
-          </template>
-        </ElTableColumn>
-      </ElTable>
-    </div>
-  </div>
-
-  <div class="demo">
-    <ElButton plain @click="dialogFormVisible = true">Add new Knowledge</ElButton>
-    <ElDialog v-model="dialogFormVisible" title="New Knowledge" width="500">
-      <ElInput v-model="newKnowledgeName" placeholder="Knowledge name" :clearable="false" />
-
-      <template #footer>
-        <div class="dialog-footer">
-          <ElButton @click="dialogFormVisible = false">Cancel</ElButton>
-          <ElButton type="primary" @click="createKnowledge" :required="true">Confirm</ElButton>
-        </div>
-      </template>
-    </ElDialog>
-  </div>
-
   <ElDialog v-model="dialogFormVisible" title="Edit Role" width="500">
     <ElInput v-model="selectedRoleToUpdate.name" autocomplete="on" />
     <template #footer>
@@ -183,4 +85,34 @@ const handleEdit = (row: Role) => {
       </div>
     </template>
   </ElDialog>
+  <div class="PageWrapper">
+    <div class="TableContainer">
+      <h2>Roles</h2>
+      <ElTable :data="rolesStore.getRoles" style="width: 100%">
+        <ElTableColumn prop="name" label="Names" />
+        <ElTableColumn fixed="right" label="Actions" width="150">
+          <template #default="{ row }">
+            <ElButton @click="openDeleteDialog(row)" type="text" size="small">Delete</ElButton>
+            <ElButton @click="openUpdateDialog(row)" type="text" size="small">Edit</ElButton>
+          </template>
+        </ElTableColumn>
+      </ElTable>
+    </div>
+  </div>
 </template>
+
+<style scoped lang="scss">
+.PageWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.TableContainer {
+  width: 800px;
+  height: auto;
+  margin: auto;
+  text-align: center;
+}
+</style>

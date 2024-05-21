@@ -16,7 +16,7 @@ import saci.domain.model.Knowledge;
 import saci.domain.service.KnowledgeService;
 
 @RestController
-@RequestMapping("/api/knowledge")
+@RequestMapping("/api/knowledges")
 @RequiredArgsConstructor
 public class KnowledgeController {
 
@@ -40,7 +40,8 @@ public class KnowledgeController {
         return knowledgeService.createKnowledge(knowledge);
     }
 
-    @Operation(summary = "Get all of the knowledge")
+    @Operation(summary = "Get all of the knowledges")
+
     @ApiResponses(
             value = {
                 @ApiResponse(
@@ -74,12 +75,9 @@ public class KnowledgeController {
                 @ApiResponse(responseCode = "200", description = "Knowledge deleted successfully"),
                 @ApiResponse(responseCode = "404", description = "Knowledge not found")
             })
+
     @DeleteMapping("/{knowledgeId}")
     public ResponseEntity<Void> deleteKnowledgeById(@PathVariable long knowledgeId) {
-        Optional<Knowledge> knowledge = knowledgeService.findById(knowledgeId);
-        if (knowledge.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
         knowledgeService.deleteKnowledgeById(knowledgeId);
         return ResponseEntity.ok().build();
     }
