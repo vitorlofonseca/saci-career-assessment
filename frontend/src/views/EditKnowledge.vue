@@ -1,8 +1,9 @@
 <template>
   <div>
-    <ElButton @click="showDialog(row)" type="text" size="small">Edit</ElButton>
+    <ElButton @click="showDialog" type="text" size="small">Edit</ElButton>
     <ElDialog v-model="dialogFormVisible" title="Edit Knowledge" width="500">
-      <ElInput v-model="selectedKnowledgeToUpdate.name" autocomplete="on" />
+      <ElInput v-model="knowledgeToUpdate.id" placeholder="Enter ID" autocomplete="on" />
+      <ElInput v-model="knowledgeToUpdate.name" placeholder="Enter Name" autocomplete="on" />
       <template #footer>
         <div class="dialog-footer">
           <ElButton @click="hideDialog">Cancel</ElButton>
@@ -22,11 +23,16 @@ import type { Knowledge } from '@/domain/Knowledge'
 
 const dialogFormVisible = ref(false)
 const knowledgeStore = useKnowledgeStore()
-const selectedKnowledgeToUpdate = ref()
+const knowledgeToUpdate = ref<Knowledge>({
+  id: 0,
+  name: '',
+  roleId: 0,
+  levelId: 0,
+  weight: 0
+})
 
-const showDialog = (row: Knowledge) => {
+const showDialog = () => {
   dialogFormVisible.value = true
-  selectedKnowledgeToUpdate.value = row
 }
 
 const hideDialog = () => {
@@ -35,14 +41,7 @@ const hideDialog = () => {
 
 const saveForm = async () => {
   try {
-    const knowledge: Knowledge = {
-      id: 1,
-      name: 'p',
-      roleId: 1,
-      levelId: 1,
-      weight: 1
-    }
-    await knowledgeStore.editKnowledge(knowledge)
+    await knowledgeStore.editKnowledge(knowledgeToUpdate.value)
     SuccessMessage('Knowledge updated successfully')
     hideDialog()
   } catch (error) {
