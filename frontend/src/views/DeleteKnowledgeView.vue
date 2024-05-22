@@ -18,10 +18,11 @@
 import { ElButton, ElDialog, ElMessage } from 'element-plus'
 import { ref } from 'vue'
 import { useKnowledgeStore } from '@/stores/knowledges'
+import { ErrorMessage, SuccessMessage } from '@/services/messages/messages'
 const dialogVisible = ref(false)
 const knowledgeStore = useKnowledgeStore()
-const knowledgeToDelete = ref('1')
-const onClickDelete = (id: string) => {
+const knowledgeToDelete = ref(7)
+const onClickDelete = (id: number) => {
   knowledgeToDelete.value = id
   dialogVisible.value = true
 }
@@ -31,16 +32,10 @@ const closeDeleteDialog = () => {
 async function deleteKnowledge() {
   try {
     await knowledgeStore.removeKnowledge(knowledgeToDelete.value)
-    ElMessage({
-      message: 'Knowledge removed!',
-      type: 'success'
-    })
+    SuccessMessage('Knowledge removed!')
     closeDeleteDialog()
   } catch (error) {
-    ElMessage({
-      message: 'Failed to delete knowledge',
-      type: 'error'
-    })
+    ErrorMessage('Failed to delete knowledge')
   }
 }
 </script>

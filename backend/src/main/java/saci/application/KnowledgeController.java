@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import saci.domain.model.Knowledge;
 import saci.domain.service.KnowledgeService;
+import saci.domain.service.exceptions.NotFoundException;
 
 @RestController
 @RequestMapping("/api/knowledges")
@@ -84,11 +85,11 @@ public class KnowledgeController {
             })
     @DeleteMapping("/{knowledgeId}")
     public ResponseEntity<Void> deleteKnowledgeById(@PathVariable long knowledgeId) {
-        Optional<Knowledge> knowledge = knowledgeService.findById(knowledgeId);
-        if (knowledge.isEmpty()) {
+        try {
+            knowledgeService.deleteKnowledgeById(knowledgeId);
+            return ResponseEntity.ok().build();
+        } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-        knowledgeService.deleteKnowledgeById(knowledgeId);
-        return ResponseEntity.ok().build();
     }
 }

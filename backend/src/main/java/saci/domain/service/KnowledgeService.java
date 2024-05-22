@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import saci.domain.model.Knowledge;
 import saci.domain.service.exceptions.AlreadyExistsException;
-
+import saci.domain.service.exceptions.NotFoundException;
 import saci.infrastructure.KnowledgeRepository;
 
 @Service
@@ -30,7 +30,12 @@ public class KnowledgeService {
     }
 
     public void deleteKnowledgeById(long knowledgeId) {
-        knowledgeRepository.deleteById(knowledgeId);
+        Optional<Knowledge> knowledge = knowledgeRepository.findById(knowledgeId);
+        if (knowledge.isPresent()) {
+            knowledgeRepository.deleteById(knowledgeId);
+        } else {
+            throw new NotFoundException("Knowledge not found with ID: " + knowledgeId);
+        }
     }
 
     public Optional<Knowledge> findById(long knowledgeId) {
