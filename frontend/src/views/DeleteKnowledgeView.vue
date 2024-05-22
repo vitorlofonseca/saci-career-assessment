@@ -16,22 +16,18 @@
 
 <script setup lang="ts">
 import { ElButton, ElDialog, ElMessage } from 'element-plus'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useKnowledgeStore } from '@/stores/knowledges'
-
 const dialogVisible = ref(false)
 const knowledgeStore = useKnowledgeStore()
-const knowledgeToDelete = ref('3')
-
+const knowledgeToDelete = ref('1')
 const onClickDelete = (id: string) => {
   knowledgeToDelete.value = id
   dialogVisible.value = true
 }
-
 const closeDeleteDialog = () => {
   dialogVisible.value = false
 }
-
 async function deleteKnowledge() {
   try {
     await knowledgeStore.removeKnowledge(knowledgeToDelete.value)

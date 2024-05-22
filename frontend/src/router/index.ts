@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ReferencesSection from '@/views/ReferencesSection.vue'
 import PadawanView from '@/views/PadawanView.vue'
 import HomeView from '@/views/HomeView.vue'
-import knowledgebutton from '@/views/knowledgebutton.vue'
+import RoleView from '@/views/RoleView.vue'
 import DeleteKnowledgeView from '@/views/DeleteKnowledgeView.vue'
 
 const router = createRouter({
@@ -16,6 +16,14 @@ const router = createRouter({
       path: '/home',
       component: HomeView
     },
+    {
+      path: '/deleteknowledge',
+      component: DeleteKnowledgeView
+    },
+    {
+      path: '/knowledge-view',
+      component: RoleView
+    },
 
     {
       path: '/',
@@ -24,10 +32,6 @@ const router = createRouter({
     {
       path: '/deleteknowledge',
       component: DeleteKnowledgeView
-    },
-    {
-      path: '/knowledgebutton',
-      component: knowledgebutton
     },
     {
       path: '/padawan',
