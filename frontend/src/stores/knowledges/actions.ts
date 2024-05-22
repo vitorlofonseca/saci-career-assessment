@@ -21,9 +21,9 @@ async function saveKnowledge(knowledge: Knowledge): Promise<void> {
 function setKnowledges(newKnowledges: Knowledge[]): void {
   knowledges.value = newKnowledges
 }
-function removeKnowledge(knowledgeId: string) {
+function removeKnowledge(knowledgeId: number) {
   const response = deleteRequest(`/knowledges/${knowledgeId}`)
-  knowledges.value = knowledges.value.filter((knowledge) => knowledge.id !== parseInt(knowledgeId))
+  knowledges.value = knowledges.value.filter((knowledge) => knowledge.id !== knowledgeId)
   return response
 }
 
