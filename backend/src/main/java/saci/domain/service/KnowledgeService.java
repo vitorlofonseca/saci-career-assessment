@@ -27,4 +27,12 @@ public class KnowledgeService {
     public List<Knowledge> getKnowledges() {
         return knowledgeRepository.findAll();
     }
+
+    public void deleteKnowledgeById(long knowledgeId) {
+        knowledgeRepository.deleteById(knowledgeId);
+    }
+
+    public Optional<Knowledge> findById(long knowledgeId) {
+        return knowledgeRepository.findById(knowledgeId);
+    }
 }
