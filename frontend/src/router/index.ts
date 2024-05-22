@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import ReferencesSection from '../views/ReferencesSection.vue'
 import PadawanView from '@/views/PadawanView.vue'
 import HomeView from '@/views/HomeView.vue'
-import CreateRoleView from '@/views/CreateRoleView.vue'
 import RoleView from '@/views/RoleView.vue'
 
 const router = createRouter({
@@ -13,30 +12,27 @@ const router = createRouter({
       redirect: '/home'
     },
     {
-      path: '/create-role',
-      component: CreateRoleView
-    },
-    {
       path: '/home',
       component: HomeView
     },
     {
-      path: '/knowledge-view',
+      path: '/role-view',
       component: RoleView
     },
-
     {
       path: '/padawan',
-      name: 'padawan',
       component: PadawanView,
       children: [
+        {
+          path: '',
+          redirect: 'references'
+        },
         {
           path: 'references',
           component: ReferencesSection
         },
         {
           path: 'demo',
-
           component: () => import('../views/DemoSection.vue')
         }
       ]

@@ -2,19 +2,17 @@ package saci.domain.service;
 
 import java.util.List;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import saci.domain.model.Knowledge;
 import saci.domain.service.exceptions.AlreadyExistsException;
 import saci.infrastructure.KnowledgeRepository;
 
 @Service
+@RequiredArgsConstructor
 public class KnowledgeService {
 
     private final KnowledgeRepository knowledgeRepository;
-
-    public KnowledgeService(KnowledgeRepository knowledgeRepository) {
-        this.knowledgeRepository = knowledgeRepository;
-    }
 
     public Knowledge createKnowledge(Knowledge knowledge) {
         Optional<Knowledge> optionalKnowledge = knowledgeRepository.findByName(knowledge.getName());
@@ -26,5 +24,9 @@ public class KnowledgeService {
 
     public List<Knowledge> getKnowledges() {
         return knowledgeRepository.findAll();
+    }
+
+    public List<Knowledge> getKnowledgesByRoleId(Long roleId) {
+        return knowledgeRepository.findByRoleId(roleId);
     }
 }
