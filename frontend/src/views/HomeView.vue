@@ -3,6 +3,7 @@ import { useRolesStore } from '@/stores/roles/index'
 import type { Role } from '@/domain/Role'
 import { ElButton, ElInput, ElMessage, ElDialog, ElTable, ElTableColumn } from 'element-plus'
 import { ref, onMounted } from 'vue'
+import { ErrorMessage, SuccessMessage } from '@/services/messages/messages'
 
 const dialogFormVisible = ref(false)
 const rolesStore = useRolesStore()
@@ -27,16 +28,10 @@ onMounted(async () => {
 async function deleteRole() {
   try {
     await rolesStore.removeRole(selectedRoleToDelete.value)
-    ElMessage({
-      message: 'Role removed!',
-      type: 'success'
-    })
+    SuccessMessage('Role removed!')
     closeDeleteDialog()
   } catch (error) {
-    ElMessage({
-      message: 'Failed to delete role',
-      type: 'error'
-    })
+    ErrorMessage('Error deleting the role')
   }
 }
 
@@ -51,16 +46,10 @@ const closeDialog = () => {
 const saveForm = async () => {
   try {
     await rolesStore.editRoleAction(selectedRoleToUpdate.value)
-    ElMessage({
-      message: 'Role updated successfully',
-      type: 'success'
-    })
+    SuccessMessage('Role updated successfully')
     closeDialog()
   } catch (error) {
-    ElMessage({
-      message: 'Unexpected error updating the role',
-      type: 'error'
-    })
+    ErrorMessage('Unexpected error updating the role')
   }
 }
 </script>

@@ -1,5 +1,4 @@
-import { get, post } from '@/services/http'
-import { getKnowledge } from './getters'
+import { post } from '@/services/http'
 import { knowledges } from './state'
 import type { Knowledge } from '@/domain/Knowledge'
 import { deleteRequest } from '@/services/http'
@@ -44,3 +43,4 @@ export const saveKnowledge = async (newKnowledge: string) => {
     return false
   }
 }
+export { setKnowledges }

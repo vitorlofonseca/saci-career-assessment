@@ -17,14 +17,9 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/deleteknowledge',
-      component: DeleteKnowledgeView
-    },
-    {
-      path: '/knowledge-view',
+      path: '/role-view',
       component: RoleView
     },
-
     {
       path: '/',
       redirect: '/knowledgebutton'
@@ -35,9 +30,12 @@ const router = createRouter({
     },
     {
       path: '/padawan',
-      name: 'padawan',
       component: PadawanView,
       children: [
+        {
+          path: '',
+          redirect: 'references'
+        },
         {
           path: 'references',
           component: ReferencesSection
