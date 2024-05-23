@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { getRoles } from './getters'
-import { fetchRoles, addRole, removeRole, editRole } from './actions'
+import { fetchRoles, addRole, editRoleAction, removeRole } from './actions'
 import { roles } from './state'
 import { getRoleById } from './getters'
 
@@ -10,8 +10,8 @@ export const useRolesStore = defineStore('roles', () => {
     getRoles,
     fetchRoles,
     addRole,
-    removeRole,
-    editRole,
+    editRoleAction,
+    removeRole
     getRoleById
   }
 })

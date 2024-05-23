@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import saci.domain.model.Knowledge;
 import saci.domain.service.exceptions.AlreadyExistsException;
+import saci.domain.service.exceptions.NotFoundException;
 import saci.infrastructure.KnowledgeRepository;
 
 @Service
@@ -24,6 +25,19 @@ public class KnowledgeService {
 
     public List<Knowledge> getKnowledges() {
         return knowledgeRepository.findAll();
+    }
+
+    public void deleteKnowledgeById(long knowledgeId) {
+        Optional<Knowledge> knowledge = knowledgeRepository.findById(knowledgeId);
+        if (knowledge.isPresent()) {
+            knowledgeRepository.deleteById(knowledgeId);
+        } else {
+            throw new NotFoundException("Knowledge not found with ID: " + knowledgeId);
+        }
+    }
+
+    public Optional<Knowledge> findById(long knowledgeId) {
+        return knowledgeRepository.findById(knowledgeId);
     }
 
     public List<Knowledge> getKnowledgesByRoleId(Long roleId) {

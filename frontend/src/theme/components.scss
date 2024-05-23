@@ -14,6 +14,10 @@ input {
   font-family: 'Noto Sans';
 }
 
+.dialog-footer {
+  text-align: right;
+  margin-top: 10px;
+}
 .el-table-v2__header-cell-text {
   font-weight: 600;
 }
@@ -34,8 +38,4 @@ h2 {
 .el-input,
 h4 {
   text-align: center;
-  .dialog-footer {
-    text-align: right;
-    margin-top: 10px;
-  }
 }
