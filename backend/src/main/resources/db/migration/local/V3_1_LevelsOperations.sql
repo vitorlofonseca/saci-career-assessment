@@ -1,0 +1,15 @@
+INSERT INTO levels (role_id, name, minCoeficient, maxCoeficient, link) VALUES (1, 'Beginner', 0, 20, "https://roadmap.sh/");
+INSERT INTO levels (role_id, name, minCoeficient, maxCoeficient, link) VALUES (1, 'Advanced Beginner', 21, 60,"https://roadmap.sh/");
+INSERT INTO levels (role_id, name, minCoeficient, maxCoeficient, link) VALUES (1, 'Intermediate', 61, 99, "https://roadmap.sh/");
+INSERT INTO levels (role_id, name, minCoeficient, maxCoeficient, link) VALUES (2, 'Junior', 0, 30, "https://roadmap.sh/");
+INSERT INTO levels (role_id, name, minCoeficient, maxCoeficient, link) VALUES (2, 'Advanced Beginner', 31, 70, "https://roadmap.sh/");
+INSERT INTO levels (role_id, name, minCoeficient, maxCoeficient, link) VALUES (2, 'Intermediate', 71, 99, "https://roadmap.sh/");
+INSERT INTO levels (role_id, name, minCoeficient, maxCoeficient, link) VALUES (3, 'Beginner', 0, 25, "https://roadmap.sh/");
+INSERT INTO levels (role_id, name, minCoeficient, maxCoeficient, link) VALUES (3, 'Advanced Beginner', 26, 45, "https://roadmap.sh/");
+INSERT INTO levels (role_id, name, minCoeficient, maxCoeficient, link) VALUES (3, 'Professional', 46, 99, "https://roadmap.sh/");
+INSERT INTO levels (role_id, name, minCoeficient, maxCoeficient, link) VALUES (4, 'Beginner', 0, 40, "https://roadmap.sh/");
+INSERT INTO levels (role_id, name, minCoeficient, maxCoeficient, link) VALUES (4, 'Mid Level', 41, 80, "https://roadmap.sh/");
+INSERT INTO levels (role_id, name, minCoeficient, maxCoeficient, link) VALUES (4, 'Intermediate', 81, 99, "https://roadmap.sh/");
+INSERT INTO levels (role_id, name, minCoeficient, maxCoeficient, link) VALUES (5, 'Beginner', 0, 10, "https://roadmap.sh/");
+INSERT INTO levels (role_id, name, minCoeficient, maxCoeficient, link) VALUES (5, 'Advanced Beginner', 11, 50, "https://roadmap.sh/");
+INSERT INTO levels (role_id, name, minCoeficient, maxCoeficient, link) VALUES (5, 'Intermediate', 51, 99, "https://roadmap.sh/");
