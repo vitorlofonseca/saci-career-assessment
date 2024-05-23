@@ -1,4 +1,4 @@
-import { ErrorMessage } from './messages/messages'
+import { ErrorMessage } from './messages'
 
 enum HttpServerError {
   HTTP_SERVER_ERROR = 500,

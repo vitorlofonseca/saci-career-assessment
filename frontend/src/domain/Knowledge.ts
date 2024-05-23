@@ -1,7 +1,7 @@
 export interface Knowledge {
   id?: number
   name: string
-  roleId: string
+  roleId: number
   levelId: string
   weight: string
 }

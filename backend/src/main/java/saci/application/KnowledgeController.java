@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,25 +46,24 @@ public class KnowledgeController {
     public Knowledge createKnowledge(@RequestBody Knowledge knowledge) {
         return knowledgeService.createKnowledge(knowledge);
     }
-    @Operation(summary = "Get all of the knowledges")
 
+    @Operation(summary = "Get all of the knowledges")
     @ApiResponses(
             value = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "List of all knowledges",
-                            content = {
-                                    @Content(
-                                            mediaType = "application/json",
-                                            array =
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "List of all knowledges",
+                        content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    array =
                                             @ArraySchema(
                                                     schema =
-                                                    @Schema(
-                                                            implementation =
-                                                                    Knowledge.class)))
-                            })
+                                                            @Schema(
+                                                                    implementation =
+                                                                            Knowledge.class)))
+                        })
             })
-
     @GetMapping
     public ResponseEntity<List<Knowledge>> getKnowledges() {
         List<Knowledge> knowledges = knowledgeService.getKnowledges();

@@ -11,7 +11,7 @@ export const useRolesStore = defineStore('roles', () => {
     fetchRoles,
     addRole,
     editRoleAction,
-    removeRole
+    removeRole,
     getRoleById
   }
 })

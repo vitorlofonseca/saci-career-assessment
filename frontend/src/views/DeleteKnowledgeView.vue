@@ -15,10 +15,10 @@
 </template>
 
 <script setup lang="ts">
-import { ElButton, ElDialog, ElMessage } from 'element-plus'
+import { ElButton, ElDialog } from 'element-plus'
 import { ref } from 'vue'
 import { useKnowledgeStore } from '@/stores/knowledges'
-import { ErrorMessage, SuccessMessage } from '@/services/messages/messages'
+import { ErrorMessage, SuccessMessage } from '@/services/messages'
 const dialogVisible = ref(false)
 const knowledgeStore = useKnowledgeStore()
 const knowledgeToDelete = ref(7)
@@ -39,3 +39,4 @@ async function deleteKnowledge() {
   }
 }
 </script>
+@/services/messages
