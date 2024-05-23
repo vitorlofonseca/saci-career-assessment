@@ -4,12 +4,15 @@ import type { Role } from '@/domain/Role'
 import { ElButton, ElInput, ElDialog, ElTable, ElTableColumn } from 'element-plus'
 import { ref, onMounted } from 'vue'
 import { ErrorMessage, SuccessMessage } from '@/services/messages'
+import { HttpServerError } from '@/services/http'
 
 const dialogFormVisible = ref(false)
 const rolesStore = useRolesStore()
 const selectedRoleToUpdate = ref()
 const selectedRoleToDelete = ref()
 const deleteDialogForm = ref(false)
+const createRoleDialogFormVisible = ref(false)
+const newRoleName = ref('')
 
 const openUpdateDialog = (row: Role) => {
   dialogFormVisible.value = true
@@ -52,6 +55,34 @@ const saveForm = async () => {
     ErrorMessage('Unexpected error updating the role')
   }
 }
+
+const showCreateRoleDialog = () => {
+  createRoleDialogFormVisible.value = true
+}
+
+const hideCreateRoleDialog = () => {
+  createRoleDialogFormVisible.value = false
+}
+
+const createRole = async () => {
+  if (newRoleName.value == '') {
+    ErrorMessage('You need to fill in this field')
+    showCreateRoleDialog()
+    return
+  }
+
+  try {
+    await rolesStore.addRole({ name: newRoleName.value })
+    SuccessMessage('Your role was created')
+    hideCreateRoleDialog()
+  } catch (error: any) {
+    if (error.status === HttpServerError.HTTP_STATUS_CODE_CONFLICT) {
+      ErrorMessage('This name already exists')
+    }
+  }
+
+  newRoleName.value = ''
+}
 </script>
 
 <template>
@@ -75,7 +106,8 @@ const saveForm = async () => {
     </template>
   </ElDialog>
   <div class="PageWrapper">
-    <div class="TableContainer">
+    <div class="Container">
+      <img src="@/assets/images/logo-and-lettering.svg" alt="Saci Logo" />
       <h2>Roles</h2>
       <ElTable :data="rolesStore.getRoles" style="width: 100%">
         <ElTableColumn prop="name" label="Names" />
@@ -86,6 +118,24 @@ const saveForm = async () => {
           </template>
         </ElTableColumn>
       </ElTable>
+      <div class="NewRole">
+        <ElButton type="primary" @click="showCreateRoleDialog"> Create Role </ElButton>
+        <ElDialog
+          v-model="createRoleDialogFormVisible"
+          title="New Role"
+          width="500"
+          style="text-align: left"
+        >
+          <ElInput v-model="newRoleName" placeholder="Role name" />
+
+          <template #footer>
+            <div class="dialog-footer">
+              <ElButton @click="hideCreateRoleDialog">Cancel</ElButton>
+              <ElButton type="primary" @click="createRole"> Confirm </ElButton>
+            </div>
+          </template>
+        </ElDialog>
+      </div>
     </div>
   </div>
 </template>
@@ -98,10 +148,23 @@ const saveForm = async () => {
   height: 100vh;
 }
 
-.TableContainer {
+.NewRole {
+  padding-top: 40px;
+  text-align: right;
+  padding-right: 10px;
+}
+
+.NewRole button {
+  font-size: 13px;
+}
+
+.Container {
   width: 800px;
   height: auto;
   margin: auto;
   text-align: center;
+  img {
+    width: 100px;
+  }
 }
 </style>
