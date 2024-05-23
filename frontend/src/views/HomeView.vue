@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useRolesStore } from '@/stores/roles/index'
 import type { Role } from '@/domain/Role'
-import { ElButton, ElInput, ElMessage, ElDialog, ElTable, ElTableColumn } from 'element-plus'
+import { ElButton, ElInput, ElDialog, ElTable, ElTableColumn } from 'element-plus'
 import { ref, onMounted } from 'vue'
-import { ErrorMessage, SuccessMessage } from '@/services/messages/messages'
+import { ErrorMessage, SuccessMessage } from '@/services/messages'
 
 const dialogFormVisible = ref(false)
 const rolesStore = useRolesStore()

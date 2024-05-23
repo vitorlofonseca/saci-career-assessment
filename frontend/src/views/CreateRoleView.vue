@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { ElButton, ElDialog, ElInput } from 'element-plus'
 import { useRolesStore } from '@/stores/roles/index'
-import { ErrorMessage, SuccessMessage } from '@/services/messages/messages'
+import { ErrorMessage, SuccessMessage } from '@/services/messages'
 import { HttpServerError } from '@/services/http'
 
 const dialogFormVisible = ref(false)
@@ -63,3 +63,4 @@ const createRole = async () => {
   gap: 20px;
 }
 </style>
+@/services/messages

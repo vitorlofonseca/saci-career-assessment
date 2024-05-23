@@ -35,9 +35,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { ElTable, ElTableColumn, ElButton, ElDialog, ElInput } from 'element-plus'
-import { ErrorMessage, SuccessMessage } from '@/services/messages/messages'
+import { ErrorMessage, SuccessMessage } from '@/services/messages'
 import type { Knowledge } from '@/domain/Knowledge'
-import { useKnowledgeStore } from '@/stores/knowledges/index'
 import { useRolesStore } from '@/stores/roles/index'
 import type { Role } from '@/domain/Role'
 
@@ -49,13 +48,11 @@ const onEditRow = (row: Knowledge) => {
   console.log('Edit clicked for:', row)
 }
 
-const knowledgesStore = useKnowledgeStore()
 const roleStore = useRolesStore()
 const createKnowledgeDialogFormVisible = ref(false)
 const newKnowledgeName = ref('')
 const roleId = ref<string>('1')
 const role = ref<Role>()
-const knowledges = ref<Knowledge[]>([])
 
 onMounted(async () => {
   role.value = await roleStore.getRoleById(roleId.value)

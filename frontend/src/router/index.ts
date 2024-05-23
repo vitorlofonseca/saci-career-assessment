@@ -21,10 +21,6 @@ const router = createRouter({
       component: RoleView
     },
     {
-      path: '/',
-      redirect: '/knowledgebutton'
-    },
-    {
       path: '/deleteknowledge',
       component: DeleteKnowledgeView
     },

@@ -1,21 +1,18 @@
-import { post } from '@/services/http'
 import { knowledges } from './state'
 import type { Knowledge } from '@/domain/Knowledge'
-import { deleteRequest } from '@/services/http'
-
-export { fetchKnowledges, setKnowledge, removeKnowledge }
+import { deleteRequest, get, post } from '@/services/http'
 
 async function fetchKnowledges(): Promise<void> {
-  if (getKnowledge?.value?.length > 0) {
+  if (knowledges?.value?.length > 0) {
     return
   }
 
   const knowledge = await get<Knowledge[]>('/knowledge')
 
-  setKnowledge(knowledge)
+  setKnowledges(knowledge)
 }
 
-function setKnowledge(newKnowledge: Knowledge[]): void {
+function setKnowledges(newKnowledge: Knowledge[]): void {
   knowledges.value = newKnowledge
 }
 function removeKnowledge(knowledgeId: number) {
@@ -24,23 +21,9 @@ function removeKnowledge(knowledgeId: number) {
   return response
 }
 
-export const saveKnowledge = async (newKnowledge: string) => {
-  try {
-    const response = await fetch('/api/knowledges', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name: newKnowledge })
-    })
-    if (!response.ok) {
-      throw new Error('Failed to save knowledge')
-    }
-
-    return true
-  } catch (error) {
-    console.error('Error:', error)
-    return false
-  }
+async function saveKnowledge(knowledge: Knowledge): Promise<void> {
+  await post<Knowledge[]>('/knowledges', knowledge)
+  knowledges.value.push(knowledge)
 }
-export { setKnowledges }
+
+export { fetchKnowledges, setKnowledges, removeKnowledge, saveKnowledge }
