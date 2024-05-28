@@ -19,7 +19,11 @@
         <br />
         <ElButton type="primary" @click="showDialogAddNewKnowledge">Add new Knowledge</ElButton>
         <ElDialog v-model="createKnowledgeDialogFormVisible" title="New Knowledge" width="500">
-          <ElInput v-model="newKnowledgeName" placeholder="Knowledge name" :clearable="false" />
+          <ElInput v-model="knowledge.name" placeholder="Knowledge name" :clearable="false" />
+          <div class="Slider">
+            <span class="KnowledgeWeight">Weight</span>
+            <ElSlider v-model="knowledge.weight" :step="20" show-stops />
+          </div>
           <template #footer>
             <div class="dialog-footer">
               <ElButton @click="hideDialog()">Cancel</ElButton>
@@ -37,12 +41,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { ElTable, ElTableColumn, ElButton, ElDialog, ElInput } from 'element-plus'
+import { ElTable, ElTableColumn, ElButton, ElDialog, ElInput, ElSlider } from 'element-plus'
 import { ErrorMessage, SuccessMessage } from '@/services/messages'
 import type { Knowledge } from '@/domain/Knowledge'
 import { useRolesStore } from '@/stores/roles/index'
-import type { Role } from '@/domain/Role'
 import { useKnowledgeStore } from '@/stores/knowledges'
+import type { Role } from '@/domain/Role'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -60,14 +64,13 @@ const onEditRow = (row: Knowledge) => {
 }
 
 const roleStore = useRolesStore()
-const createKnowledgeDialogFormVisible = ref(false)
-const newKnowledgeName = ref('')
-const roleId = ref<string>('1')
-const role = ref<Role>()
 const knowledgesStore = useKnowledgeStore()
+const createKnowledgeDialogFormVisible = ref(false)
+const role = ref<Role>()
+const knowledge = ref<Knowledge>({ weight: 0, name: '', roleId: 1 })
 
 onMounted(async () => {
-  role.value = await roleStore.getRoleById(roleId.value)
+  role.value = await roleStore.getRoleById('1')
 })
 
 const showDialogAddNewKnowledge = () => {
@@ -78,22 +81,19 @@ const hideDialog = () => {
 }
 
 const createKnowledge = async () => {
-  if (newKnowledgeName.value == '') {
+  if (knowledge.value.name == '') {
     ErrorMessage('You need to fill in this field')
     return
   }
   try {
-    await knowledgesStore.saveKnowledge({
-      name: newKnowledgeName.value,
-      weight: 1
-    })
+    await knowledgesStore.saveKnowledge(knowledge.value)
     SuccessMessage('Your knowledge was created')
     hideDialog()
   } catch (error: any) {
     ErrorMessage('An error occurred while creating the knowledge')
   }
 
-  newKnowledgeName.value = ''
+  knowledge.value.name = ''
 }
 </script>
 
@@ -115,5 +115,26 @@ const createKnowledge = async () => {
   height: auto;
   margin: auto;
   text-align: left;
+}
+
+.Slider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.KnowledgeWeight {
+  padding-right: 120px;
+}
+
+.Slider .KnowledgeWeight {
+  font-size: 14px;
+  color: var(--el-text-color-secondary);
+  line-height: 60px;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 0;
 }
 </style>
