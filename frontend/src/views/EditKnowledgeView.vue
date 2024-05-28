@@ -25,6 +25,7 @@ const knowledgeStore = useKnowledgeStore()
 const knowledgeToUpdate = ref<Knowledge>({
   id: 1,
   name: '',
+  roleId: 1,
   weight: 0
 })
 const showDialog = () => {

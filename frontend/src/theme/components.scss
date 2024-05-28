@@ -57,3 +57,11 @@ h4 {
 :root {
   --el-border-radius-base: #{$spacing-s};
 }
+
+.Slider .ElSlider {
+  margin-top: 0;
+  margin-left: 12px;
+}
+.Slider .KnowledgeWeight + .ElSlider {
+  flex: 0 0 70%;
+}
