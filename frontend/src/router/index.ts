@@ -3,6 +3,7 @@ import ReferencesSection from '@/views/ReferencesSection.vue'
 import PadawanView from '@/views/PadawanView.vue'
 import HomeView from '@/views/HomeView.vue'
 import RoleView from '@/views/RoleView.vue'
+import LevelView from '@/views/LevelView.vue'
 import DeleteKnowledgeView from '@/views/DeleteKnowledgeView.vue'
 import EditKnowledge from '@/views/EditKnowledgeView.vue'
 
@@ -24,6 +25,10 @@ const router = createRouter({
     {
       path: '/role-view',
       component: RoleView
+    },
+    {
+      path: '/level-view',
+      component: LevelView
     },
     {
       path: '/deleteknowledge',

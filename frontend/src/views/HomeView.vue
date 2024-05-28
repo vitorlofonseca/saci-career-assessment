@@ -72,7 +72,9 @@ const createRole = async () => {
   }
 
   try {
-    await rolesStore.addRole({ name: newRoleName.value })
+    await rolesStore.addRole({
+      name: newRoleName.value
+    })
     SuccessMessage('Your role was created')
     hideCreateRoleDialog()
   } catch (error: any) {

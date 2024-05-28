@@ -19,9 +19,11 @@ import { ElButton, ElDialog } from 'element-plus'
 import { ref } from 'vue'
 import { useKnowledgeStore } from '@/stores/knowledges'
 import { ErrorMessage, SuccessMessage } from '@/services/messages'
+
 const dialogVisible = ref(false)
 const knowledgeStore = useKnowledgeStore()
 const knowledgeToDelete = ref(7)
+
 const onClickDelete = (id: number) => {
   knowledgeToDelete.value = id
   dialogVisible.value = true
@@ -39,4 +41,3 @@ async function deleteKnowledge() {
   }
 }
 </script>
-@/services/messages

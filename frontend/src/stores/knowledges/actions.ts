@@ -15,6 +15,7 @@ async function fetchKnowledges(): Promise<void> {
 function setKnowledges(newKnowledge: Knowledge[]): void {
   knowledges.value = newKnowledge
 }
+
 function removeKnowledge(knowledgeId: number) {
   const response = deleteRequest(`/knowledges/${knowledgeId}`)
   knowledges.value = knowledges.value.filter((knowledge) => knowledge.id !== knowledgeId)

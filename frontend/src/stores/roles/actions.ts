@@ -3,6 +3,7 @@ import { getRoles } from './getters'
 import type { Role } from '@/domain/Role'
 import { deleteRequest } from '@/services/http'
 import { roles } from './state'
+import type { Level } from '@/domain/Level'
 
 function setRoles(newRoles: Role[]): void {
   roles.value = newRoles
@@ -38,4 +39,9 @@ async function removeRole(roleId: string) {
   roles.value = roles.value.filter((role) => role.id !== parseInt(roleId))
 }
 
-export { fetchRoles, addRole, editRoleAction, removeRole }
+async function addLevel(level: Level, role: Role): Promise<void> {
+  await post<Level[]>('/rolelevel', level)
+  role.levels?.push(level)
+}
+
+export { fetchRoles, addRole, editRoleAction, removeRole, addLevel }
