@@ -9,3 +9,5 @@ spring:
   flyway:
     enabled: true
     repair: true
+
+

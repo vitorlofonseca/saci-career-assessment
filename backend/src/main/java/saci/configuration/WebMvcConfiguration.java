@@ -9,15 +9,26 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfiguration {
 
-    @Value("${CORS_URL:http://localhost:5173}")
-    private String corsUrl;
+    @Value("${CORS_URL_CLIENT:http://localhost:8081}")
+    private String corsUrlClient;
+
+    @Value("${CORS_URL_ADMIN:http://localhost:8082}")
+    private String corsUrlAdmin;
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedMethods("*").allowedOrigins(corsUrl);
+                // Client CORS configuration: Allow only GET requests
+                registry.addMapping("/**")
+                        .allowedMethods("GET")
+                        .allowedOrigins(corsUrlClient);
+
+                // Admin CORS configuration: Allow all methods
+                registry.addMapping("/admin/**")
+                        .allowedMethods("*")
+                        .allowedOrigins(corsUrlAdmin);
             }
         };
     }
