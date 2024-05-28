@@ -21,4 +21,7 @@ public class Knowledge {
 
     @Column(name = "role_id")
     private Long roleId;
+
+    @Column(name = "weight")
+    private Long weight;
 }
