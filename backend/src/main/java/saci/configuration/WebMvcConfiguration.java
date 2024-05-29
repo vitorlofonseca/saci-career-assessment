@@ -20,15 +20,13 @@ public class WebMvcConfiguration {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                // Client CORS configuration: Allow only GET requests
+                // Client CORS configuration: Allow GET and POST requests
                 registry.addMapping("/**")
-                        .allowedMethods("GET")
+                        .allowedMethods("GET", "POST")
                         .allowedOrigins(corsUrlClient);
 
                 // Admin CORS configuration: Allow all methods
-                registry.addMapping("/admin/**")
-                        .allowedMethods("*")
-                        .allowedOrigins(corsUrlAdmin);
+                registry.addMapping("/admin/**").allowedMethods("*").allowedOrigins(corsUrlAdmin);
             }
         };
     }
