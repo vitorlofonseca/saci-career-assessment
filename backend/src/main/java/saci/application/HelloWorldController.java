@@ -18,7 +18,7 @@ public class HelloWorldController {
 
     @PostMapping
     public ResponseEntity<String> helloPost(@RequestBody String requestBody) {
-        // Process the POST request
+
         return ResponseEntity.ok("Received POST request with body: " + requestBody);
     }
 }
