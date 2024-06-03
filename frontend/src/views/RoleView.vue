@@ -28,6 +28,9 @@
           </template>
         </ElDialog>
       </div>
+      <div class="NewLevel">
+        <ElButton type="primary" @click="redirectToLevelView()"> Create Level </ElButton>
+      </div>
     </div>
   </div>
 </template>
@@ -39,6 +42,14 @@ import { ErrorMessage, SuccessMessage } from '@/services/messages'
 import type { Knowledge } from '@/domain/Knowledge'
 import { useRolesStore } from '@/stores/roles/index'
 import type { Role } from '@/domain/Role'
+import { useKnowledgeStore } from '@/stores/knowledges'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const redirectToLevelView = () => {
+  router.push('/level-view')
+}
 
 const onDeleteRow = (row: Knowledge) => {
   console.log('Detail clicked for:', row)
@@ -53,6 +64,7 @@ const createKnowledgeDialogFormVisible = ref(false)
 const newKnowledgeName = ref('')
 const roleId = ref<string>('1')
 const role = ref<Role>()
+const knowledgesStore = useKnowledgeStore()
 
 onMounted(async () => {
   role.value = await roleStore.getRoleById(roleId.value)
@@ -71,12 +83,10 @@ const createKnowledge = async () => {
     return
   }
   try {
-    /*await knowledgesStore.saveKnowledge(
+    await knowledgesStore.saveKnowledge({
       name: newKnowledgeName.value,
-      roleId: '1',
-      levelId: '1',
-      weight: '1'
-    )*/
+      weight: 1
+    })
     SuccessMessage('Your knowledge was created')
     hideDialog()
   } catch (error: any) {
@@ -94,6 +104,10 @@ const createKnowledge = async () => {
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+.NewLevel {
+  padding-top: 20px;
 }
 
 .TableContainer {

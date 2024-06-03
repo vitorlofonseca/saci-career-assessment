@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { useKnowledgeStore } from '@/stores/knowledges'
 import { ElButton, ElInput, ElDialog } from 'element-plus'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { SuccessMessage, ErrorMessage } from '@/services/messages'
 import type { Knowledge } from '@/domain/Knowledge'
 import { HttpServerError } from '@/services/http'
@@ -25,8 +25,6 @@ const knowledgeStore = useKnowledgeStore()
 const knowledgeToUpdate = ref<Knowledge>({
   id: 1,
   name: '',
-  roleId: 0,
-  levelId: 0,
   weight: 0
 })
 const showDialog = () => {
@@ -48,8 +46,4 @@ const saveForm = async () => {
     }
   }
 }
-
-onMounted(async () => {
-  await knowledgeStore.fetchKnowledges()
-})
 </script>

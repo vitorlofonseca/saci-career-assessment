@@ -24,10 +24,9 @@ input {
 }
 
 h2 {
-  font-size: 30px;
+  font-size: 25px;
   margin-bottom: 20px;
   text-align: left;
-  margin-left: -894px;
 }
 
 .el-table-v2__header-cell-text {
@@ -53,4 +52,8 @@ h4 {
 
 .el-button--primary {
   box-shadow: 2px 3px 7px 0px $color-grey-7;
+}
+
+:root {
+  --el-border-radius-base: #{$spacing-s};
 }
