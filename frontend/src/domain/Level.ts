@@ -1,7 +1,7 @@
 export interface Level {
   id?: number
   name: string
-  minCoeficient: number
-  maxCoeficient: number
+  minCoefficient: number
+  maxCoefficient: number
   link: string
 }

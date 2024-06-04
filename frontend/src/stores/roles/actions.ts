@@ -43,4 +43,10 @@ async function removeLevel(levelId: number) {
   return response
 }
 
-export { fetchRoles, addRole, editRoleAction, removeRole, removeLevel }
+async function addLevel(level: Level, role: Role): Promise<void> {
+  const levelWithRoleId = { ...level, roleId: role.id }
+  await post<Level[]>('/levels', levelWithRoleId)
+  role.levels?.push(level)
+}
+
+export { fetchRoles, addRole, editRoleAction, removeRole, removeLevel, addLevel }

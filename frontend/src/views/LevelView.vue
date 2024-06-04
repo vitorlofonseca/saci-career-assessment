@@ -11,11 +11,11 @@
       <div class="CoeficientsContainer">
         <h5>Coeficient Range</h5>
         <span>
-          <ElInputNumber v-model="newLevel.minCoeficient" :min="0" :max="100" />
+          <ElInputNumber v-model="newLevel.minCoefficient" :min="0" :max="100" />
           <h4>to</h4>
           <ElInputNumber
-            v-model="newLevel.maxCoeficient"
-            :min="newLevel.minCoeficient"
+            v-model="newLevel.maxCoefficient"
+            :min="newLevel.minCoefficient"
             :max="100"
           />
         </span>
@@ -43,7 +43,12 @@ import { HttpServerError } from '@/services/http'
 
 const roleStore = useRolesStore()
 const role = ref<Role>()
-const newLevel = ref<Level>({ name: '', minCoeficient: 0, maxCoeficient: 0, link: '' })
+const newLevel = ref<Level>({
+  name: '',
+  minCoefficient: 0,
+  maxCoefficient: 0,
+  link: ''
+})
 const router = useRouter()
 const newLevelTitle = computed(() => {
   return `${role.value?.name || ''} - ${newLevel.value.name || 'New Level'}`
@@ -64,19 +69,22 @@ const createLevel = async () => {
       ErrorMessage('You need to fill all the fields')
       return
     }
-    if (newLevel.value.maxCoeficient == 0) {
-      ErrorMessage('MaxRange should be bigger than 0')
+    if (newLevel.value.maxCoefficient == 0 && newLevel.value.maxCoefficient > 100) {
+      ErrorMessage('MaxRange should be bigger than 0 and smaller than 100')
       return
     }
-    if (newLevel.value.maxCoeficient <= newLevel.value.minCoeficient) {
+    if (newLevel.value.maxCoefficient <= newLevel.value.minCoefficient) {
       ErrorMessage('MaxRange should be bigger than MinRange')
       return
     }
+    await roleStore.addLevel(newLevel.value, role.value!)
     redirectToRoleView()
-    await roleStore.addLevel(newLevel.value, role.value)
   } catch (error: any) {
     if (error.status === HttpServerError.HTTP_STATUS_CODE_CONFLICT) {
       ErrorMessage('This level name already exists')
+    }
+    if (error.status === HttpServerError.HTTP_SERVER_ERROR) {
+      ErrorMessage('Maximum and Minimum range overlap')
     }
   }
 }
