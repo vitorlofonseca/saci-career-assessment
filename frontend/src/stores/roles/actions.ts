@@ -40,7 +40,8 @@ async function removeRole(roleId: string) {
 }
 
 async function addLevel(level: Level, role: Role): Promise<void> {
-  await post<Level[]>('/rolelevel', level)
+  const levelWithRoleId = { ...level, roleId: role.id }
+  await post<Level[]>('/levels', levelWithRoleId)
   role.levels?.push(level)
 }
 
