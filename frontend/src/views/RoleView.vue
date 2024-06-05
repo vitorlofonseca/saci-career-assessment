@@ -6,6 +6,7 @@
       <br />
       <ElTable :data="role?.knowledges" style="width: 100%">
         <ElTableColumn prop="name" label="Knowledges" />
+        <ElTableColumn prop="weight" label="Weight" width="450" />
         <ElTableColumn fixed="right" label="Actions" width="150">
           <template #default="{ row }">
             <div>
@@ -17,12 +18,12 @@
       </ElTable>
       <div class="demo">
         <br />
-        <ElButton type="primary" @click="showDialogAddNewKnowledge">Add new Knowledge</ElButton>
+        <ElButton type="primary" @click="showDialogAddNewKnowledge">Create Knowledge</ElButton>
         <ElDialog v-model="createKnowledgeDialogFormVisible" title="New Knowledge" width="500">
           <ElInput v-model="knowledge.name" placeholder="Knowledge name" :clearable="false" />
           <div class="Slider">
             <span class="KnowledgeWeight">Weight</span>
-            <ElSlider v-model="knowledge.weight" :step="20" show-stops />
+            <ElSlider v-model="knowledge.weight" :max="5" :step="1" show-stops />
           </div>
           <template #footer>
             <div class="dialog-footer">
