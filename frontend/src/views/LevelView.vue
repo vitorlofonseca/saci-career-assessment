@@ -9,7 +9,7 @@
     </div>
     <div class="LinkAndCoeficientsContainer">
       <div class="CoeficientsContainer">
-        <h5>Coeficient Range</h5>
+        <h5>Coefficient Range</h5>
         <span>
           <ElInputNumber v-model="newLevel.minCoefficient" :min="0" :max="100" />
           <h4>to</h4>
@@ -65,26 +65,32 @@ const redirectToRoleView = () => {
 
 const createLevel = async () => {
   try {
-    if (newLevel.value.name == '' || newLevel.value.link == '') {
+    if (newLevel.value.name === '' || newLevel.value.link === '') {
       ErrorMessage('You need to fill all the fields')
       return
     }
-    if (newLevel.value.maxCoefficient == 0 || newLevel.value.maxCoefficient > 100) {
-      ErrorMessage('MaxRange should be bigger than 0 and smaller than 100')
+    if (newLevel.value.maxCoefficient === 0) {
+      ErrorMessage('MaxRange should be bigger than 0')
       return
     }
     if (newLevel.value.maxCoefficient <= newLevel.value.minCoefficient) {
       ErrorMessage('MaxRange should be bigger than MinRange')
       return
     }
-    await roleStore.addLevel(newLevel.value, role.value!)
-    redirectToRoleView()
+
+    if (role.value) {
+      await roleStore.addLevel(newLevel.value, role.value)
+      redirectToRoleView()
+    } else {
+      console.error('Role is undefined')
+    }
   } catch (error: any) {
     if (error.status === HttpServerError.HTTP_STATUS_CODE_CONFLICT) {
       ErrorMessage('This level name already exists')
-    }
-    if (error.status === HttpServerError.HTTP_SERVER_ERROR) {
+    } else if (error.status === HttpServerError.HTTP_SERVER_ERROR) {
       ErrorMessage('Maximum and Minimum range overlap')
+    } else {
+      ErrorMessage('An unexpected error occurred')
     }
   }
 }
@@ -127,7 +133,6 @@ const createLevel = async () => {
     display: flex;
     justify-content: space-between;
   }
-
   .CoeficientsContainer {
     span {
       display: flex;
@@ -141,7 +146,6 @@ const createLevel = async () => {
       margin: 0 10px;
     }
   }
-
   .LinkField {
     text-align: left;
     .el-input {
