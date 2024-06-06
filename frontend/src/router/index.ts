@@ -6,6 +6,7 @@ import RoleView from '@/views/RoleView.vue'
 import LevelView from '@/views/LevelView.vue'
 import DeleteKnowledgeView from '@/views/DeleteKnowledgeView.vue'
 import EditKnowledge from '@/views/EditKnowledgeView.vue'
+import Viewlevelstable from '@/views/Viewlevelstable.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +30,13 @@ const router = createRouter({
     {
       path: '/level-view',
       component: LevelView
+    },
+    {
+      path: '/level-table/:roleId',
+      component: Viewlevelstable,
+      props: (route) => ({
+        roleId: Array.isArray(route.params.roleId) ? route.params.roleId[0] : route.params.roleId
+      }) // Check if roleId is an array and access the first element if so
     },
     {
       path: '/deleteknowledge',

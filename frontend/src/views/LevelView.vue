@@ -60,11 +60,11 @@ const redirectToRoleView = () => {
 
 const createLevel = async () => {
   try {
-    if (newLevel.value.name == '' || newLevel.value.link == '') {
+    if (newLevel.value.name === '' || newLevel.value.link === '') {
       ErrorMessage('You need to fill all the fields')
       return
     }
-    if (newLevel.value.maxCoeficient == 0) {
+    if (newLevel.value.maxCoeficient === 0) {
       ErrorMessage('MaxRange should be bigger than 0')
       return
     }
@@ -72,8 +72,13 @@ const createLevel = async () => {
       ErrorMessage('MaxRange should be bigger than MinRange')
       return
     }
-    redirectToRoleView()
-    await roleStore.addLevel(newLevel.value, role.value)
+
+    if (role.value) {
+      redirectToRoleView()
+      await roleStore.addLevel(newLevel.value, role.value)
+    } else {
+      console.error('Role is undefined')
+    }
   } catch (error: any) {
     if (error.status === HttpServerError.HTTP_STATUS_CODE_CONFLICT) {
       ErrorMessage('This level name already exists')
