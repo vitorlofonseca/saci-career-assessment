@@ -1,6 +1,5 @@
 INSERT INTO levels (role_id, name, min_coefficient, max_coefficient, link) VALUES (1, 'Beginner', 0, 20, 'https://roadmap.sh/');
 INSERT INTO levels (role_id, name, min_coefficient, max_coefficient, link) VALUES (1, 'Advanced Beginner', 21, 60,'https://roadmap.sh/');
-INSERT INTO levels (role_id, name, min_coefficient, max_coefficient, link) VALUES (1, 'Intermediate', 61, 99, 'https://roadmap.sh/');
 INSERT INTO levels (role_id, name, min_coefficient, max_coefficient, link) VALUES (2, 'Junior', 0, 30, 'https://roadmap.sh/');
 INSERT INTO levels (role_id, name, min_coefficient, max_coefficient, link) VALUES (2, 'Advanced Beginner', 31, 70, 'https://roadmap.sh/');
 INSERT INTO levels (role_id, name, min_coefficient, max_coefficient, link) VALUES (2, 'Intermediate', 71, 99, 'https://roadmap.sh/');

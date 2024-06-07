@@ -11,6 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import saci.domain.service.LevelService;
 import saci.domain.service.exceptions.NotFoundException;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import saci.domain.model.Level;
 
 @RestController
 @RequestMapping("/api/levels")
@@ -33,5 +40,23 @@ public class LevelController {
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @Operation(summary = "Create a Level")
+    @ApiResponses(
+            value = {
+                @ApiResponse(
+                        responseCode = "201",
+                        description = "The Level was created",
+                        content = {
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Level.class))
+                        })
+            })
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    public Level createLevel(@RequestBody Level level) {
+        return LevelService.createLevel(level);
     }
 }

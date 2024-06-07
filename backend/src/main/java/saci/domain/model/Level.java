@@ -1,6 +1,12 @@
 package saci.domain.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
@@ -12,6 +18,7 @@ public class Level {
     private Long id;
 
     @Column(name = "name")
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
     @Column(name = "role_id")
@@ -24,5 +31,6 @@ public class Level {
     private int maxCoefficient;
 
     @Column(name = "link")
+    @NotBlank(message = "Link is mandatory")
     private String link;
 }
