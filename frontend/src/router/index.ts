@@ -4,10 +4,6 @@ import PadawanView from '@/views/PadawanView.vue'
 import HomeView from '@/views/HomeView.vue'
 import RoleView from '@/views/RoleView.vue'
 import LevelView from '@/views/LevelView.vue'
-import DeleteKnowledgeView from '@/views/DeleteKnowledgeView.vue'
-import EditKnowledge from '@/views/EditKnowledgeView.vue'
-import ViewLevelsTable from '@/views/ViewLevelsTable.vue'
-import DeleteLevelView from '@/views/DeleteLevelView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,10 +11,6 @@ const router = createRouter({
     {
       path: '/',
       redirect: '/home'
-    },
-    {
-      path: '/editknowledge',
-      component: EditKnowledge
     },
     {
       path: '/home',
@@ -30,20 +22,9 @@ const router = createRouter({
       component: RoleView
     },
     {
-      path: '/level-view',
+      path: '/level-view/:id',
+      name: 'LevelView',
       component: LevelView
-    },
-    {
-      path: '/level-table',
-      component: ViewLevelsTable
-    },
-    {
-      path: '/deleteknowledge',
-      component: DeleteKnowledgeView
-    },
-    {
-      path: '/delete-level',
-      component: DeleteLevelView
     },
     {
       path: '/padawan',

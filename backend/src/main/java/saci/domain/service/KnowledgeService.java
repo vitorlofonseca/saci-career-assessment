@@ -5,21 +5,37 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import saci.domain.model.Knowledge;
+import saci.domain.model.Role;
 import saci.domain.service.exceptions.AlreadyExistsException;
 import saci.domain.service.exceptions.NotFoundException;
 import saci.infrastructure.KnowledgeRepository;
+import saci.infrastructure.RoleRepository;
 
 @Service
 @RequiredArgsConstructor
 public class KnowledgeService {
 
     private final KnowledgeRepository knowledgeRepository;
+    private final RoleRepository roleRepository;
 
     public Knowledge createKnowledge(Knowledge knowledge) {
-        Optional<Knowledge> optionalKnowledge = knowledgeRepository.findByName(knowledge.getName());
-        if (optionalKnowledge.isPresent()) {
-            throw new AlreadyExistsException("Knowledge name already exists");
+        Optional<Role> optionalRole = roleRepository.findById((knowledge.getRoleId()));
+        if (!optionalRole.isPresent()) {
+            throw new NotFoundException("Role not Found");
         }
+        Role role = optionalRole.get();
+        List<Knowledge> knowledges = role.getKnowledges();
+        boolean knowledgeWithNameExists =
+                role.getKnowledges().stream()
+                        .anyMatch(
+                                existingKnowledge ->
+                                        existingKnowledge.getName().equals(knowledge.getName()));
+
+        if (knowledgeWithNameExists) {
+            throw new AlreadyExistsException(
+                    "Knowledge with the same name already exists in this role");
+        }
+
         return knowledgeRepository.save(knowledge);
     }
 

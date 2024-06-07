@@ -1,16 +1,16 @@
-import { get } from '@/services/http'
+import { deleteRequest, get, post } from '@/services/http'
 import { roles } from '../roles/state'
 import type { Level } from '@/domain/Level'
 import type { Role } from '@/domain/Role'
 
-async function getLevelsByRoleId(roleId: number): Promise<Level[] | undefined> {
-  const role = roles.value.find((role) => role.id === roleId) || ({} as Role)
-
-  if (!role.levels) {
-    const sortedLevels = await get<Level[]>(`/levels/sorted/${roleId}`)
-    role.levels = sortedLevels
-  }
-  return role.levels
+async function removeLevel(levelId: number) {
+  await deleteRequest(`/levels/${levelId}`)
 }
 
-export { getLevelsByRoleId }
+async function addLevel(level: Level, role: Role): Promise<void> {
+  const levelWithRoleId = { ...level, roleId: role.id }
+  await post<Level[]>('/levels', levelWithRoleId)
+  role.levels?.push(level)
+}
+
+export { removeLevel, addLevel }
