@@ -38,10 +38,9 @@ async function removeRole(roleId: string) {
   await deleteRequest(`/roles/${roleId}`)
   roles.value = roles.value.filter((role) => role.id !== parseInt(roleId))
 }
-
-async function addLevel(level: Level, role: Role): Promise<void> {
-  await post<Level[]>('/rolelevel', level)
-  role.levels?.push(level)
+async function removeLevel(levelId: number) {
+  const response = await deleteRequest(`/levels/${levelId}`)
+  return response
 }
 
-export { fetchRoles, addRole, editRoleAction, removeRole, addLevel }
+export { fetchRoles, addRole, editRoleAction, removeRole, removeLevel }
