@@ -13,34 +13,34 @@ import saci.infrastructure.LevelRepository;
 @RequiredArgsConstructor
 public class LevelService {
 
-    private final LevelRepository LevelRepository;
+    private final LevelRepository levelRepository;
 
-    public Level createLevel(Level Level) {
-        Optional<Level> optionalLevel = LevelRepository.findByName(Level.getName());
+    public Level createLevel(Level level) {
+        Optional<Level> optionalLevel = levelRepository.findByName(level.getName());
         if (optionalLevel.isPresent()) {
             throw new AlreadyExistsException("Level name already exists");
         }
-        return LevelRepository.save(Level);
+        return levelRepository.save(level);
     }
 
     public List<Level> getLevels() {
-        return LevelRepository.findAll();
+        return levelRepository.findAll();
     }
 
-    public void deleteLevelById(long LevelId) {
-        Optional<Level> Level = LevelRepository.findById(LevelId);
-        if (Level.isPresent()) {
-            LevelRepository.deleteById(LevelId);
+    public void deleteLevelById(long levelId) {
+        Optional<Level> level = levelRepository.findById(levelId);
+        if (level.isPresent()) {
+            levelRepository.deleteById(levelId);
         } else {
-            throw new NotFoundException("Level not found with ID: " + LevelId);
+            throw new NotFoundException("Level not found with ID: " + levelId);
         }
     }
 
-    public Optional<Level> findById(long LevelId) {
-        return LevelRepository.findById(LevelId);
+    public Optional<Level> findById(long levelId) {
+        return levelRepository.findById(levelId);
     }
 
     public List<Level> getLevelsByRoleId(Long roleId) {
-        return LevelRepository.findByRoleId(roleId);
+        return levelRepository.findByRoleId(roleId);
     }
 }

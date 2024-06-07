@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import saci.domain.model.Level;
@@ -21,24 +20,6 @@ import saci.domain.service.exceptions.NotFoundException;
 public class LevelController {
 
     private final LevelService levelService;
-
-    @Operation(summary = "Create a Level")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(
-                            responseCode = "201",
-                            description = "The Level was created",
-                            content = {
-                                    @Content(
-                                            mediaType = "application/json",
-                                            schema = @Schema(implementation = Level.class))
-                            })
-            })
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public Level createLevel(@RequestBody Level level) {
-        return levelService.createLevel(level);
-    }
 
     @Operation(summary = "Get all of the Levels")
     @ApiResponses(

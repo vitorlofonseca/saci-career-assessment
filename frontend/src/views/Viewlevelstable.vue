@@ -17,25 +17,19 @@
 import { ref, onMounted, watch } from 'vue'
 import { ElTable, ElTableColumn, ElButton } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
+import { getLevels } from '@/stores/levels/getters'
+import { useLevelsStore } from '@/stores/levels'
 
 const router = useRouter()
 const route = useRoute()
 
-const roleId = ref(route.params.roleId ? String(route.params.roleId) : '')
+const roleId = ref(route.params.roleId || '')
 
-const levels = ref<Array<{ id: number; name: string; role_id: number }>>([])
+const levels = getLevels
 
-const fetchLevelsByRoleId = async () => {
-  try {
-    const response = await fetch(`http://localhost:8080/api/levels?role_id=${roleId.value}`)
-    if (!response.ok) {
-      throw new Error('Failed to fetch levels')
-    }
-    const data = await response.json()
-    levels.value = data
-  } catch (error) {
-    console.error('Failed to fetch levels:', error)
-  }
+const fetchLevelsByRoleId = async (roleId: string) => {
+  const levelsStore = useLevelsStore()
+  await levelsStore.fetchLevelsByRoleId(roleId)
 }
 
 const redirectToLevelView = () => {
@@ -43,14 +37,14 @@ const redirectToLevelView = () => {
 }
 
 onMounted(() => {
-  fetchLevelsByRoleId()
+  fetchLevelsByRoleId(roleId.value)
 })
 
 watch(
   () => route.params.roleId,
   () => {
-    roleId.value = route.params.roleId ? String(route.params.roleId) : ''
-    fetchLevelsByRoleId()
+    roleId.value = route.params.roleId || ''
+    fetchLevelsByRoleId(roleId.value)
   }
 )
 </script>
