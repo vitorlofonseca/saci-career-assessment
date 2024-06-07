@@ -23,13 +23,13 @@ import { useLevelsStore } from '@/stores/levels'
 const router = useRouter()
 const route = useRoute()
 
-const roleId = ref(route.params.roleId || '')
+const roleId = ref(route.params.roleId?.toString() || '')
 
 const levels = getLevels
 
-const fetchLevelsByRoleId = async (roleId: string) => {
+const fetchLevelsByRoleId = async () => {
   const levelsStore = useLevelsStore()
-  await levelsStore.fetchLevelsByRoleId(roleId)
+  await levelsStore.fetchLevelsByRoleId(roleId.value)
 }
 
 const redirectToLevelView = () => {
@@ -37,14 +37,14 @@ const redirectToLevelView = () => {
 }
 
 onMounted(() => {
-  fetchLevelsByRoleId(roleId.value)
+  fetchLevelsByRoleId()
 })
 
 watch(
   () => route.params.roleId,
   () => {
-    roleId.value = route.params.roleId || ''
-    fetchLevelsByRoleId(roleId.value)
+    roleId.value = route.params.roleId?.toString() || ''
+    fetchLevelsByRoleId()
   }
 )
 </script>
