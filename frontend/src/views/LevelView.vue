@@ -69,7 +69,7 @@ const createLevel = async () => {
       ErrorMessage('You need to fill all the fields')
       return
     }
-    if (newLevel.value.maxCoefficient == 0 && newLevel.value.maxCoefficient > 100) {
+    if (newLevel.value.maxCoefficient == 0 || newLevel.value.maxCoefficient > 100) {
       ErrorMessage('MaxRange should be bigger than 0 and smaller than 100')
       return
     }
