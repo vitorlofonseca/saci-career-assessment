@@ -73,12 +73,8 @@ const createLevel = async () => {
       return
     }
 
-    if (role.value) {
-      redirectToRoleView()
-      await roleStore.addLevel(newLevel.value, role.value)
-    } else {
-      console.error('Role is undefined')
-    }
+    redirectToRoleView()
+    await roleStore.addLevel(newLevel.value, role.value!)
   } catch (error: any) {
     if (error.status === HttpServerError.HTTP_STATUS_CODE_CONFLICT) {
       ErrorMessage('This level name already exists')
