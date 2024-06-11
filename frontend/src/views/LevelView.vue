@@ -9,7 +9,7 @@
     </div>
     <div class="LinkAndCoeficientsContainer">
       <div class="CoeficientsContainer">
-        <h5>Coefficient Range</h5>
+        <h5>Coeficient Range</h5>
         <span>
           <ElInputNumber v-model="newLevel.minCoefficient" :min="0" :max="100" />
           <h4>to</h4>
@@ -65,19 +65,19 @@ const redirectToRoleView = () => {
 
 const createLevel = async () => {
   try {
-    if (newLevel.value.name === '' || newLevel.value.link === '') {
+    if (newLevel.value.name == '' || newLevel.value.link == '') {
       ErrorMessage('You need to fill all the fields')
       return
     }
-    if (newLevel.value.maxCoefficient === 0) {
-      ErrorMessage('MaxRange should be bigger than 0')
+    if (newLevel.value.maxCoefficient == 0 || newLevel.value.maxCoefficient > 100) {
+      ErrorMessage('MaxRange should be bigger than 0 and smaller than 100')
       return
     }
     if (newLevel.value.maxCoefficient <= newLevel.value.minCoefficient) {
       ErrorMessage('MaxRange should be bigger than MinRange')
       return
     }
-
+    await roleStore.addLevel(newLevel.value, role.value!)
     redirectToRoleView()
     await roleStore.addLevel(newLevel.value, role.value!)
   } catch (error: any) {
