@@ -45,4 +45,12 @@ public class LevelService {
         }
         return levelRepository.save(level);
     }
+
+    public Optional<Level> findLevelByScore(Long roleId, double score) {
+        return levelRepository.findLevelByRoleIdAndScore(roleId, score);
+    }
+
+    public Optional<Level> findNextLevelBasedOfScore(Long roleId, double score) {
+        return levelRepository.findNextLevelByRoleIdAndScore(roleId, score);
+    }
 }

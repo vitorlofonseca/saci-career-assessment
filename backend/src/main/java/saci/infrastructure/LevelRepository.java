@@ -15,13 +15,20 @@ public interface LevelRepository extends JpaRepository<Level, Long> {
     List<Level> findByRoleId(Long roleId);
 
     @Query(
-            "SELECT COUNT(*) FROM Level l WHERE l.roleId = :roleId AND (l.minCoefficient < :maxCoefficient AND l.maxCoefficient > :minCoefficient)")
+            "SELECT COUNT(l) FROM Level l WHERE l.roleId = :roleId AND "
+                    + "(l.minCoefficient < :maxCoefficient AND l.maxCoefficient > :minCoefficient)")
     int overlappingLevelsCounter(
             @Param("roleId") Long roleId,
             @Param("minCoefficient") Integer minCoefficient,
             @Param("maxCoefficient") Integer maxCoefficient);
 
     @Query(
-            "SELECT l FROM Level l WHERE l.roleId = :roleId ORDER BY l.minCoefficient ASC, l.maxCoefficient ASC")
-    List<Level> findsortedLevelsByRoleId(@Param("roleId") Long roleId);
+            "SELECT l FROM Level l WHERE l.roleId = :roleId AND CAST(:score AS double) BETWEEN l.minCoefficient AND l.maxCoefficient")
+    Optional<Level> findLevelByRoleIdAndScore(
+            @Param("roleId") Long roleId, @Param("score") double score);
+
+    @Query(
+            "SELECT l FROM Level l WHERE l.roleId = :roleId AND l.minCoefficient > CAST(:score AS double) ORDER BY l.minCoefficient ASC")
+    Optional<Level> findNextLevelByRoleIdAndScore(
+            @Param("roleId") Long roleId, @Param("score") double score);
 }
