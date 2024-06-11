@@ -1,7 +1,7 @@
 <template>
   <div class="PageWrapper">
     <div class="TableContainer">
-      <h2>Attached Levels for Role ID: {{ roleId }}</h2>
+      <h2>Levels:</h2>
       <br />
       <ElTable :data="levels" style="width: 100%">
         <ElTableColumn prop="name" label="Levels" />
@@ -14,22 +14,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
-import { ElTable, ElTableColumn, ElButton } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
-import { getLevels } from '@/stores/levels/getters'
+import { ElTable, ElTableColumn, ElButton } from 'element-plus'
 import { useLevelsStore } from '@/stores/levels'
+import { getLevels } from '@/stores/levels/getters'
+import { onMounted, watch } from 'vue'
 
 const router = useRouter()
 const route = useRoute()
+const levelsStore = useLevelsStore()
 
-const roleId = ref(route.params.roleId?.toString() || '')
-
+const roleId = route.params.roleId?.toString() || ''
 const levels = getLevels
 
-const fetchLevelsByRoleId = async () => {
-  const levelsStore = useLevelsStore()
-  await levelsStore.fetchLevelsByRoleId(roleId.value)
+const fetchLevelsByRoleId = async (roleId: string) => {
+  await levelsStore.fetchLevelsByRoleId(roleId)
 }
 
 const redirectToLevelView = () => {
@@ -37,14 +36,13 @@ const redirectToLevelView = () => {
 }
 
 onMounted(() => {
-  fetchLevelsByRoleId()
+  fetchLevelsByRoleId(roleId)
 })
 
 watch(
   () => route.params.roleId,
-  () => {
-    roleId.value = route.params.roleId?.toString() || ''
-    fetchLevelsByRoleId()
+  (newRoleId) => {
+    fetchLevelsByRoleId(newRoleId?.toString() || '')
   }
 )
 </script>

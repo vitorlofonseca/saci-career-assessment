@@ -1,8 +1,4 @@
 import { computed } from 'vue'
-import { levels } from '@/stores/levels/state'
+import { levels } from './state'
 
-const getLevels = computed(() => {
-  return levels.value
-})
-
-export { getLevels }
+export const getLevels = computed(() => levels.value)
