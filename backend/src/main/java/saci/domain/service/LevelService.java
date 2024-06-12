@@ -4,9 +4,9 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import saci.domain.model.Level;
-import saci.domain.service.exceptions.NotFoundException;
 import saci.domain.service.exceptions.AlreadyExistsException;
 import saci.domain.service.exceptions.CoefficientOverlapException;
+import saci.domain.service.exceptions.NotFoundException;
 import saci.domain.service.validators.LevelValidator;
 import saci.infrastructure.LevelRepository;
 

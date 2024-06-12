@@ -4,6 +4,7 @@ import type { Role } from '@/domain/Role'
 import { deleteRequest } from '@/services/http'
 import { roles } from './state'
 import type { Level } from '@/domain/Level'
+import { quizState } from './state'
 
 function setRoles(newRoles: Role[]): void {
   roles.value = newRoles
@@ -49,4 +50,10 @@ async function addLevel(level: Level, role: Role): Promise<void> {
   role.levels?.push(level)
 }
 
-export { fetchRoles, addRole, editRoleAction, removeRole, removeLevel, addLevel }
+const quizActions = {
+  setSelectedRole(role: string) {
+    quizState.quiz.selectedRole = role
+  }
+}
+
+export { fetchRoles, addRole, editRoleAction, removeRole, removeLevel, addLevel, quizActions }

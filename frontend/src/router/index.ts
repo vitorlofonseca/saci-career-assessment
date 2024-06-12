@@ -7,6 +7,7 @@ import LevelView from '@/views/LevelView.vue'
 import DeleteKnowledgeView from '@/views/DeleteKnowledgeView.vue'
 import EditKnowledge from '@/views/EditKnowledgeView.vue'
 import DeleteLevelView from '@/views/DeleteLevelView.vue'
+import FirstAssessmentPage from '@/views/FirstAssessmentPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,10 @@ const router = createRouter({
     {
       path: '/delete-level',
       component: DeleteLevelView
+    },
+    {
+      path: '/assessment-page',
+      component: FirstAssessmentPage
     },
     {
       path: '/padawan',
