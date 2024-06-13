@@ -79,14 +79,12 @@ const createLevel = async () => {
     }
     await roleStore.addLevel(newLevel.value, role.value!)
     redirectToRoleView()
-    await roleStore.addLevel(newLevel.value, role.value!)
   } catch (error: any) {
     if (error.status === HttpServerError.HTTP_STATUS_CODE_CONFLICT) {
       ErrorMessage('This level name already exists')
-    } else if (error.status === HttpServerError.HTTP_SERVER_ERROR) {
+    }
+    if (error.status === HttpServerError.HTTP_SERVER_ERROR) {
       ErrorMessage('Maximum and Minimum range overlap')
-    } else {
-      ErrorMessage('An unexpected error occurred')
     }
   }
 }
@@ -129,6 +127,7 @@ const createLevel = async () => {
     display: flex;
     justify-content: space-between;
   }
+
   .CoeficientsContainer {
     span {
       display: flex;
@@ -142,6 +141,7 @@ const createLevel = async () => {
       margin: 0 10px;
     }
   }
+
   .LinkField {
     text-align: left;
     .el-input {

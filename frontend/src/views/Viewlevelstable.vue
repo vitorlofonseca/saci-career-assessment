@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElTable, ElTableColumn, ElButton } from 'element-plus'
 import { useLevelsStore } from '@/stores/levels'
@@ -23,13 +23,13 @@ import { getLevels } from '@/stores/levels/getters'
 const router = useRouter()
 const route = useRoute()
 const levelsStore = useLevelsStore()
-const levels = ref([]) // use ref to track levels data
+const levels = ref([])
 
 const roleId = route.params.roleId?.toString() || ''
 
 const fetchLevelsByRoleId = async () => {
   await levelsStore.fetchLevelsByRoleId(roleId)
-  levels.value = getLevels() // assign the fetched levels to the local ref
+  levels.value = getLevels()
 }
 
 const redirectToLevelView = () => {
@@ -39,13 +39,6 @@ const redirectToLevelView = () => {
 onMounted(() => {
   fetchLevelsByRoleId()
 })
-
-watch(
-  () => route.params.roleId,
-  () => {
-    fetchLevelsByRoleId()
-  }
-)
 </script>
 
 <style scoped lang="scss">
