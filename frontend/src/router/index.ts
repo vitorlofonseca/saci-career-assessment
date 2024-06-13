@@ -8,6 +8,7 @@ import DeleteKnowledgeView from '@/views/DeleteKnowledgeView.vue'
 import EditKnowledge from '@/views/EditKnowledgeView.vue'
 import ViewLevelsTable from '@/views/ViewLevelsTable.vue'
 import DeleteLevelView from '@/views/DeleteLevelView.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -34,9 +35,7 @@ const router = createRouter({
     {
       path: '/level-table/:roleId',
       component: ViewLevelsTable,
-      props: (route) => ({
-        roleId: Array.isArray(route.params.roleId) ? route.params.roleId[0] : route.params.roleId
-      })
+      props: true // Enable passing route params as props directly
     },
     {
       path: '/deleteknowledge',
