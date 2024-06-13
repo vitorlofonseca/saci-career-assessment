@@ -31,5 +31,6 @@ public class Level {
     private int maxCoefficient;
 
     @Column(name = "link")
+    @NotBlank(message = "Link is mandatory")
     private String link;
 }
