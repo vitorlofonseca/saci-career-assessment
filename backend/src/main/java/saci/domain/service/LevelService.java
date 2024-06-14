@@ -17,7 +17,6 @@ public class LevelService {
 
     private final LevelRepository levelRepository;
 
-    // Method to create a Level with validations
     public Level createLevel(Level level) {
         int overlappingLevels =
                 levelRepository.overlappingLevelsCounter(
@@ -36,12 +35,10 @@ public class LevelService {
         return levelRepository.save(level);
     }
 
-    // Method to get all levels
     public List<Level> getLevels() {
         return levelRepository.findAll();
     }
 
-    // Method to delete a level by ID
     public void deleteLevelById(long levelId) {
         Optional<Level> level = levelRepository.findById(levelId);
         if (level.isPresent()) {
@@ -51,12 +48,10 @@ public class LevelService {
         }
     }
 
-    // Method to find a level by ID
     public Optional<Level> findById(long levelId) {
         return levelRepository.findById(levelId);
     }
 
-    // Method to get levels by role ID
     public List<Level> getLevelsByRoleId(Long roleId) {
         return levelRepository.findByRoleId(roleId);
     }
