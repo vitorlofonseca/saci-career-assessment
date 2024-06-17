@@ -18,6 +18,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElTable, ElTableColumn, ElButton } from 'element-plus'
 import { useLevelsStore } from '@/stores/levels'
+import { fetchLevelsByRoleId } from '@/stores/levels/actions'
 import { getLevels } from '@/stores/levels/getters'
 
 const router = useRouter()
@@ -27,9 +28,18 @@ const levels = ref([])
 
 const roleId = route.params.roleId?.toString() || ''
 
-const fetchLevelsByRoleId = async () => {
-  await levelsStore.fetchLevelsByRoleId(roleId)
-  levels.value = getLevels()
+const fetchLevels = async () => {
+  try {
+    await fetchLevelsByRoleId(roleId)
+    const fetchedLevels = getLevels()
+    if (Array.isArray(fetchedLevels)) {
+      levels.value = fetchedLevels
+    } else {
+      console.error('Failed to fetch levels: Response is not an array:', fetchedLevels)
+    }
+  } catch (error) {
+    console.error('Failed to fetch levels:', error)
+  }
 }
 
 const redirectToLevelView = () => {
@@ -37,7 +47,7 @@ const redirectToLevelView = () => {
 }
 
 onMounted(() => {
-  fetchLevelsByRoleId()
+  fetchLevels()
 })
 </script>
 
