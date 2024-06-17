@@ -5,6 +5,7 @@ import { ElButton, ElInput, ElDialog, ElTable, ElTableColumn } from 'element-plu
 import { ref, onMounted } from 'vue'
 import { ErrorMessage, SuccessMessage } from '@/services/messages'
 import { HttpServerError } from '@/services/http'
+import { useRouter } from 'vue-router'
 
 const dialogFormVisible = ref(false)
 const rolesStore = useRolesStore()
@@ -13,6 +14,11 @@ const selectedRoleToDelete = ref()
 const deleteDialogForm = ref(false)
 const createRoleDialogFormVisible = ref(false)
 const newRoleName = ref('')
+const router = useRouter()
+
+const navigateToRoleDetails = (row: Role) => {
+  router.push({ name: 'RoleView', params: { id: row.id } })
+}
 
 const openUpdateDialog = (row: Role) => {
   dialogFormVisible.value = true
@@ -112,7 +118,11 @@ const createRole = async () => {
       <img src="@/assets/images/logo-and-lettering.svg" alt="Saci Logo" />
       <h2>Roles</h2>
       <ElTable :data="rolesStore.getRoles" style="width: 100%">
-        <ElTableColumn prop="name" label="Names" />
+        <ElTableColumn prop="name" label="Names">
+          <template #default="{ row }">
+            <span class="RoleName" @click="navigateToRoleDetails(row)">{{ row.name }}</span>
+          </template>
+        </ElTableColumn>
         <ElTableColumn fixed="right" label="Actions" width="150">
           <template #default="{ row }">
             <ElButton @click="openDeleteDialog(row)" type="text" size="small">Delete</ElButton>
@@ -143,6 +153,10 @@ const createRole = async () => {
 </template>
 
 <style scoped lang="scss">
+.RoleName {
+  cursor: pointer;
+}
+
 .PageWrapper {
   display: flex;
   justify-content: center;

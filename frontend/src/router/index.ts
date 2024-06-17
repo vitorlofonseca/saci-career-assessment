@@ -24,7 +24,8 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/role-view',
+      path: '/role/:id',
+      name: 'RoleView',
       component: RoleView
     },
     {
