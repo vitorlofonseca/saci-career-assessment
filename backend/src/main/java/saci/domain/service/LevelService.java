@@ -17,6 +17,15 @@ public class LevelService {
 
     private final LevelRepository levelRepository;
 
+    public void deleteLevelById(long levelId) {
+        Optional<Level> level = levelRepository.findById(levelId);
+        if (level.isPresent()) {
+            levelRepository.deleteById(levelId);
+        } else {
+            throw new NotFoundException("Level not found with ID: " + levelId);
+        }
+    }
+
     public Level createLevel(Level level) {
         int overlappingLevels =
                 levelRepository.overlappingLevelsCounter(
@@ -33,23 +42,6 @@ public class LevelService {
         }
 
         return levelRepository.save(level);
-    }
-
-    public List<Level> getLevels() {
-        return levelRepository.findAll();
-    }
-
-    public void deleteLevelById(long levelId) {
-        Optional<Level> level = levelRepository.findById(levelId);
-        if (level.isPresent()) {
-            levelRepository.deleteById(levelId);
-        } else {
-            throw new NotFoundException("Level not found with ID: " + levelId);
-        }
-    }
-
-    public Optional<Level> findById(long levelId) {
-        return levelRepository.findById(levelId);
     }
 
     public List<Level> getLevelsByRoleId(Long roleId) {

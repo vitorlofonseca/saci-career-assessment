@@ -1,17 +1,31 @@
 import { levels } from './state'
 import { get } from '@/services/http'
 
-export async function fetchLevelsByRoleId(roleId: string) {
-  const data: any[] | string = await get(`/levels?role_id=${roleId}`)
-  if (Array.isArray(data)) {
-    levels.value = data.map((level: any) => ({
+export interface Level {
+  id: number
+  name: string
+  minCoefficient: number
+  maxCoefficient: number
+  link: string
+}
+
+export async function fetchLevelsByRoleId(roleId: string): Promise<Level[]> {
+  try {
+    const data: Level[] = await get(`/levels?role_id=${roleId}`)
+
+    const levelsData: Level[] = data.map((level) => ({
       id: level.id,
       name: level.name,
       minCoefficient: 0,
       maxCoefficient: 0,
       link: ''
     }))
-  } else {
-    throw new Error('Failed to fetch levels: Response is not an array.')
+
+    levels.value = levelsData
+
+    return levelsData
+  } catch (error) {
+    console.error('Error fetching levels:', error)
+    throw new Error('Failed to fetch levels')
   }
 }

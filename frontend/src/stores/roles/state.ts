@@ -1,6 +1,11 @@
+import { ref, type Ref } from 'vue'
 import type { Role } from '@/domain/Role'
-import { type Ref, ref } from 'vue'
+import type { Level } from '@/domain/Level'
 
-const roles: Ref<Role[]> = ref([])
+export interface RoleWithLevels extends Role {
+  levels: Level[]
+}
+
+const roles: Ref<RoleWithLevels[]> = ref([])
 
 export { roles }

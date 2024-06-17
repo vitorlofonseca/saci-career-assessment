@@ -19,11 +19,7 @@ const fetchWrapper = async (url: string, init: RequestInit): Promise<Response> =
   })
 }
 
-const doRequest = async <T>(
-  url: string,
-  method: string,
-  body?: object | string
-): Promise<T | string> => {
+const doRequest = async <T>(url: string, method: string, body?: object | string): Promise<T> => {
   if (typeof body !== 'string') {
     body = JSON.stringify(body)
   }
@@ -36,35 +32,36 @@ const doRequest = async <T>(
     if (response.status === HttpServerError.HTTP_SERVER_ERROR) {
       ErrorMessage('Technical error')
     }
-    throw new Error(`Request failed with status ${response.status}`)
+    throw response
   }
 
-  const contentType = response.headers.get('Content-Type')
-  if (contentType && contentType.includes('application/json')) {
-    return response.json()
+  let result
+
+  if (response?.headers?.get('Content-Type')?.includes('application/json')) {
+    result = await response.json()
   } else {
-    return response.text()
+    result = await response.text()
   }
+
+  return Promise.resolve(result)
 }
 
-const patch = async <T>(url: string, body: object): Promise<T | string> => {
+const patch = async <T>(url: string, body: object): Promise<T> => {
   return doRequest<T>(url, 'PATCH', body)
 }
 
-const get = async <T>(url: string): Promise<T | string> => {
-  return doRequest<T>(url, 'GET')
+const get = async <T>(url: string): Promise<T> => {
+  return doRequest(url, 'GET')
 }
 
-const deleteRequest = async <T>(url: string): Promise<T | string> => {
+const deleteRequest = async <T>(url: string): Promise<T> => {
   return doRequest<T>(url, 'DELETE')
 }
 
-const post = async <T>(url: string, body: object): Promise<T | string> => {
-  return doRequest<T>(url, 'POST', body)
+const post = async <T>(url: string, body: object): Promise<T> => {
+  return doRequest(url, 'POST', body)
 }
-
-const put = async <T>(url: string, body: object): Promise<T | string> => {
+const put = async <T>(url: string, body: object): Promise<T> => {
   return doRequest<T>(url, 'PUT', body)
 }
-
 export { fetchWrapper, get, patch, doRequest, deleteRequest, post, put, HttpServerError }
