@@ -33,9 +33,8 @@ const router = createRouter({
       component: LevelView
     },
     {
-      path: '/level-table/:roleId',
-      component: ViewLevelsTable,
-      props: true // Enable passing route params as props directly
+      path: '/level-table',
+      component: ViewLevelsTable
     },
     {
       path: '/deleteknowledge',

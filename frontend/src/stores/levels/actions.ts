@@ -1,34 +1,47 @@
+import { get, post, put, deleteRequest } from '@/services/http'
 import { levels } from './state'
-import { get } from '@/services/http'
+import type { Level } from '@/domain/Level'
 
-export interface Level {
-  id: number
-  name: string
-  minCoefficient: number
-  maxCoefficient: number
-  link: string
+// Function to sort levels based on minCoefficient and maxCoefficient
+function sortLevels(levels: Level[]): Level[] {
+  return levels.slice().sort((a, b) => {
+    return a.minCoefficient - b.minCoefficient || a.maxCoefficient - b.maxCoefficient
+  })
 }
 
-export async function fetchLevelsByRoleId(roleId: string): Promise<Level[]> {
-  const data: Level[] = await get(`/levels?role_id=${roleId}`)
+async function fetchLevels(): Promise<void> {
+  if (levels.value.length > 0) {
+    return
+  }
 
-  const levelsData: Level[] = data.map((level) => ({
-    id: level.id,
-    name: level.name,
-    minCoefficient: 0,
-    maxCoefficient: 0,
-    link: ''
-  }))
-
-  levels.value = levelsData
-
-  return levelsData
+  const fetchedLevels = await get<Level[]>('/level')
+  setLevels(fetchedLevels)
 }
 
-fetchLevelsByRoleId('someRoleId')
-  .then((levelsData) => {
-    console.log('Levels fetched successfully:', levelsData)
+function setLevels(newLevels: Level[]): void {
+  // Sort fetched levels before setting them
+  levels.value = sortLevels(newLevels)
+}
+
+function removeLevel(levelId: number) {
+  const response = deleteRequest(`/levels/${levelId}`)
+  levels.value = levels.value.filter((level) => level.id !== levelId)
+  return response
+}
+
+async function saveLevel(level: Level): Promise<void> {
+  await post<Level[]>('/levels', level)
+  levels.value.push(level)
+}
+
+async function editLevel(level: Level): Promise<void> {
+  await put<Level[]>(`/levels/${level.id}`, level)
+  levels.value = levels.value.map((item) => {
+    if (item.id === level.id) {
+      return level
+    }
+    return item
   })
-  .catch((error) => {
-    console.error('Error fetching levels:', error)
-  })
+}
+
+export { fetchLevels, saveLevel, editLevel, setLevels, removeLevel, sortLevels }
