@@ -71,7 +71,8 @@ const role = ref<Role>()
 const knowledge = ref<Knowledge>({ weight: 0, name: '', roleId: 1 })
 
 onMounted(async () => {
-  role.value = await roleStore.getRoleById('1')
+  const roleId = router.currentRoute.value.params.id
+  role.value = await roleStore.getRoleById(roleId.toString())
 })
 
 const showDialogAddNewKnowledge = () => {
