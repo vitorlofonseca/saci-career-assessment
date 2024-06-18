@@ -5,7 +5,6 @@
       <br />
       <ElTable :data="levels" style="width: 100%">
         <ElTableColumn prop="name" label="Level Name" />
-        <!-- Add more columns as needed for other level properties -->
       </ElTable>
       <div class="NewLevel">
         <ElButton type="primary" @click="redirectToLevelView">Create Level</ElButton>
@@ -18,7 +17,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElTable, ElTableColumn, ElButton } from 'element-plus'
-import { useLevelsStore } from '@/stores/levels' // Adjust the import path as needed
+import { useLevelsStore } from '@/stores/levels'
 
 const router = useRouter()
 const route = useRoute()
