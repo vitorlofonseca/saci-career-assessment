@@ -34,4 +34,8 @@ public class Role {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private List<Knowledge> knowledges;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    private List<Level> levels;
 }

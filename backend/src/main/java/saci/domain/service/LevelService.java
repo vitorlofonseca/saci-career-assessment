@@ -44,6 +44,14 @@ public class LevelService {
         return levelRepository.save(level);
     }
 
+    public List<Level> getLevels() {
+        return levelRepository.findAll();
+    }
+
+    public Optional<Level> findById(long levelId) {
+        return levelRepository.findById(levelId);
+    }
+
     public List<Level> getLevelsByRoleId(Long roleId) {
         return levelRepository.findByRoleId(roleId);
     }

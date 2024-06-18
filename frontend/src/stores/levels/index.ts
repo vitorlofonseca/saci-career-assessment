@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia'
+import { removeLevel, saveLevel, editLevel, fetchLevels, sortLevels } from './actions'
 import { levels } from './state'
-import { getLevels } from './getters'
-import { fetchLevelsByRoleId } from './actions'
 
-export const useLevelsStore = defineStore('levels', () => {
+export const useLevelStore = defineStore('levels', () => {
   return {
     levels,
-    getLevels,
-    fetchLevelsByRoleId
+    removeLevel,
+    saveLevel,
+    fetchLevels,
+    editLevel,
+    sortLevels
   }
 })

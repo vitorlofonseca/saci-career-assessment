@@ -1,13 +1,23 @@
 <template>
   <div class="PageWrapper">
     <div class="TableContainer">
-      <h2>Levels:</h2>
+      <h1>{{ role?.name }}</h1>
+      <h2>Attached Levels</h2>
       <br />
-      <ElTable :data="levels" style="width: 100%">
-        <ElTableColumn prop="name" label="Level Name" />
+      <ElTable :data="sortedLevels" style="width: 100%">
+        <ElTableColumn prop="name" label="Levels" />
+        <ElTableColumn fixed="right" label="Actions" width="150">
+          <template #default="{ row }">
+            <div>
+              <ElButton @click="onDeleteRow(row)" type="text" size="small">Delete</ElButton>
+              <ElButton @click="onEditRow(row)" type="text" size="small">Edit</ElButton>
+            </div>
+          </template>
+        </ElTableColumn>
       </ElTable>
+
       <div class="NewLevel">
-        <ElButton type="primary" @click="redirectToLevelView">Create Level</ElButton>
+        <ElButton type="primary" @click="redirectToLevelView()"> Create Level </ElButton>
       </div>
     </div>
   </div>
@@ -15,33 +25,46 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
 import { ElTable, ElTableColumn, ElButton } from 'element-plus'
-import { useLevelsStore } from '@/stores/levels'
+import type { Level } from '@/domain/Level'
+import { useRolesStore } from '@/stores/roles/index'
+import { useLevelStore } from '@/stores/levels'
+import type { Role } from '@/domain/Role'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const route = useRoute()
-const levelsStore = useLevelsStore()
-
-const levels = ref([])
-
-const roleId = route.params.roleId?.toString() || ''
-
-const fetchLevels = async () => {
-  try {
-    await levelsStore.fetchLevelsByRoleId(roleId)
-    levels.value = levelsStore.getLevels()
-  } catch (error) {
-    console.error('Failed to fetch levels:', error)
-  }
-}
 
 const redirectToLevelView = () => {
-  router.push('/Level-view')
+  router.push('/level-view')
 }
 
+const onDeleteRow = (row: Level) => {
+  console.log('Delete clicked for:', row)
+}
+
+const onEditRow = (row: Level) => {
+  console.log('Edit clicked for:', row)
+}
+
+const roleStore = useRolesStore()
+const role = ref<Role>()
+const levels = ref<Level[]>([])
+const levelsStore = useLevelStore()
+
+const sortLevels = (levels: Level[]): Level[] => {
+  return levels.slice().sort((a, b) => {
+    return a.minCoefficient - b.minCoefficient || a.maxCoefficient - b.maxCoefficient
+  })
+}
+
+const sortedLevels = ref<Level[]>([])
+
 onMounted(async () => {
-  await fetchLevels()
+  role.value = await roleStore.getRoleById('1')
+  if (role.value) {
+    levels.value = role.value.levels
+    sortedLevels.value = sortLevels(levels.value)
+  }
 })
 </script>
 
@@ -63,5 +86,26 @@ onMounted(async () => {
   height: auto;
   margin: auto;
   text-align: left;
+}
+
+.Slider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.KnowledgeWeight {
+  padding-right: 120px;
+}
+
+.Slider .KnowledgeWeight {
+  font-size: 14px;
+  color: var(--el-text-color-secondary);
+  line-height: 60px;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 0;
 }
 </style>
