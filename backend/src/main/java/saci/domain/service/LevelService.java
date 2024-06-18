@@ -1,13 +1,12 @@
 package saci.domain.service;
 
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import saci.domain.model.Level;
+import saci.domain.service.exceptions.NotFoundException;
 import saci.domain.service.exceptions.AlreadyExistsException;
 import saci.domain.service.exceptions.CoefficientOverlapException;
-import saci.domain.service.exceptions.NotFoundException;
 import saci.domain.service.validators.LevelValidator;
 import saci.infrastructure.LevelRepository;
 
@@ -35,24 +34,10 @@ public class LevelService {
             throw new CoefficientOverlapException(
                     "Error Creating the Level: Overlapping Coefficients or Invalid Coefficients");
         }
-
         Optional<Level> optionalLevel = levelRepository.findByName(level.getName());
         if (optionalLevel.isPresent()) {
             throw new AlreadyExistsException("Level name already exists");
         }
-
         return levelRepository.save(level);
-    }
-
-    public List<Level> getLevels() {
-        return levelRepository.findAll();
-    }
-
-    public Optional<Level> findById(long levelId) {
-        return levelRepository.findById(levelId);
-    }
-
-    public List<Level> getLevelsByRoleId(Long roleId) {
-        return levelRepository.findByRoleId(roleId);
     }
 }

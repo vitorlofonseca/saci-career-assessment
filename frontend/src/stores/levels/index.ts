@@ -12,3 +12,4 @@ export const useLevelStore = defineStore('levels', () => {
     sortLevels
   }
 })
+export { removeLevel }
