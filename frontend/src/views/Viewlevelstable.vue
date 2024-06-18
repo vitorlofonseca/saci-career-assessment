@@ -18,19 +18,20 @@
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElTable, ElTableColumn, ElButton } from 'element-plus'
-import { fetchLevelsByRoleId } from '@/stores/levels/actions'
-import { getLevels } from '@/stores/levels/getters'
+import { useLevelsStore } from '@/stores/levels' // Adjust the import path as needed
 
 const router = useRouter()
 const route = useRoute()
+const levelsStore = useLevelsStore()
+
 const levels = ref([])
 
 const roleId = route.params.roleId?.toString() || ''
 
 const fetchLevels = async () => {
   try {
-    await fetchLevelsByRoleId(roleId)
-    levels.value = getLevels()
+    await levelsStore.fetchLevelsByRoleId(roleId)
+    levels.value = levelsStore.getLevels()
   } catch (error) {
     console.error('Failed to fetch levels:', error)
   }
