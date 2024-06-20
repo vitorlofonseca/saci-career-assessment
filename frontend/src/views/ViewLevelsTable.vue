@@ -18,7 +18,6 @@ import { useLevelStore } from '@/stores/levels'
 import type { Role } from '@/domain/Role'
 import { type Level } from '@/domain/Level'
 
-const roleStore = useRolesStore()
 const levelsStore = useLevelStore()
 const roleId = ref('1')
 const levels = ref<Level[]>()
