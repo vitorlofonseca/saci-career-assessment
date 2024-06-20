@@ -10,7 +10,7 @@ async function fetchLevelsByRoleId(roleId: number): Promise<Level[] | undefined>
     role.levels = sortedLevels
   }
 
-  return role?.levels
+  return role.levels
 }
 
 export { fetchLevelsByRoleId }
