@@ -3,7 +3,7 @@
     <div class="TableContainer">
       <h2>Attached Levels</h2>
       <br />
-      <ElTable :data="levels" class="Full-Width-Table">
+      <ElTable :data="levels" class="FullWidthTable">
         <ElTableColumn prop="name" label="Levels" />
       </ElTable>
     </div>
@@ -41,7 +41,7 @@ onMounted(async () => {
   padding-top: 20px;
 }
 
-.Full-Width-Table {
+.FullWidthTable {
   width: 100%;
 }
 
