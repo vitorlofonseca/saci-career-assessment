@@ -2,7 +2,7 @@ import { get } from '@/services/http'
 import { roles } from '../roles/state'
 import type { Level } from '@/domain/Level'
 
-async function fetchLevelsByRoleId(roleId: number): Promise<Level[] | undefined> {
+async function getLevelsByRoleId(roleId: number): Promise<Level[] | undefined> {
   const role = roles.value.find((role) => role.id === roleId)
 
   if (role && !role.levels) {
@@ -13,4 +13,4 @@ async function fetchLevelsByRoleId(roleId: number): Promise<Level[] | undefined>
   return role.levels
 }
 
-export { fetchLevelsByRoleId }
+export { getLevelsByRoleId }
