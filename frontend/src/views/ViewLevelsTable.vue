@@ -15,6 +15,7 @@
 import { ref, onMounted } from 'vue'
 import { ElTable, ElTableColumn } from 'element-plus'
 import { useRolesStore } from '@/stores/roles/index'
+import { getLevelsByRoleId } from '@/stores/levels/actions'
 import type { Role } from '@/domain/Role'
 
 const roleStore = useRolesStore()
@@ -23,6 +24,12 @@ const roleId = ref('1')
 
 onMounted(async () => {
   role.value = await roleStore.getRoleById(roleId.value)
+
+  const sortedLevels = await getLevelsByRoleId(parseInt(roleId.value))
+
+  if (role.value) {
+    role.value.levels = sortedLevels
+  }
 })
 </script>
 
@@ -35,35 +42,10 @@ onMounted(async () => {
   height: 100vh;
 }
 
-.NewLevel {
-  padding-top: 20px;
-}
-
 .TableContainer {
   width: 800px;
   height: auto;
   margin: auto;
   text-align: left;
-}
-
-.Slider {
-  width: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.KnowledgeWeight {
-  padding-right: 120px;
-}
-
-.Slider .KnowledgeWeight {
-  font-size: 14px;
-  color: var(--el-text-color-secondary);
-  line-height: 60px;
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  margin-bottom: 0;
 }
 </style>
