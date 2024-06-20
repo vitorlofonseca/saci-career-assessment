@@ -16,7 +16,6 @@ import { ElTable, ElTableColumn } from 'element-plus'
 import { useRolesStore } from '@/stores/roles/index'
 import { useLevelStore } from '@/stores/levels'
 import type { Role } from '@/domain/Role'
-import { getLevelsByRoleId } from '@/stores/levels/actions'
 import { type Level } from '@/domain/Level'
 
 const roleStore = useRolesStore()
@@ -25,7 +24,7 @@ const roleId = ref('1')
 const levels = ref<Level[]>()
 
 onMounted(async () => {
-  const sortedlevels = await getLevelsByRoleId(parseInt(roleId.value))
+  const sortedlevels = await levelsStore.getLevelsByRoleId(parseInt(roleId.value))
   levels.value = sortedlevels
 })
 </script>
