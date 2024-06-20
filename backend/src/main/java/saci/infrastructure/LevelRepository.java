@@ -23,5 +23,5 @@ public interface LevelRepository extends JpaRepository<Level, Long> {
 
     @Query(
             "SELECT l FROM Level l WHERE l.roleId = :roleId ORDER BY l.minCoefficient ASC, l.maxCoefficient ASC")
-    List<Level> findByRoleIdOrderByMinCoefficientAscMaxCoefficientAsc(@Param("roleId") Long roleId);
+    List<Level> findsortedLevelsByRoleId(@Param("roleId") Long roleId);
 }
