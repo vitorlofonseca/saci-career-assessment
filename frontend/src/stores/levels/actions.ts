@@ -5,12 +5,13 @@ import type { Level } from '@/domain/Level'
 async function getLevelsByRoleId(roleId: number): Promise<Level[] | undefined> {
   const role = roles.value.find((role) => role.id === roleId)
 
-  if (role && !role.levels) {
-    const sortedLevels = await get<Level[]>(`/levels/sorted/${roleId}`)
-    role.levels = sortedLevels
+  if (role) {
+    if (!role.levels) {
+      const sortedLevels = await get<Level[]>(`/levels/sorted/${roleId}`)
+      role.levels = sortedLevels
+    }
+    return role.levels
   }
-
-  return role.levels
 }
 
 export { getLevelsByRoleId }
