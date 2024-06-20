@@ -20,4 +20,8 @@ public interface LevelRepository extends JpaRepository<Level, Long> {
             @Param("roleId") Long roleId,
             @Param("minCoefficient") Integer minCoefficient,
             @Param("maxCoefficient") Integer maxCoefficient);
+
+    @Query(
+            "SELECT l FROM Level l WHERE l.roleId = :roleId ORDER BY l.minCoefficient ASC, l.maxCoefficient ASC")
+    List<Level> findByRoleIdOrderByMinCoefficientAscMaxCoefficientAsc(@Param("roleId") Long roleId);
 }

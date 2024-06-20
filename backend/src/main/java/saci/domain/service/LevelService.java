@@ -1,12 +1,13 @@
 package saci.domain.service;
 
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import saci.domain.model.Level;
-import saci.domain.service.exceptions.NotFoundException;
 import saci.domain.service.exceptions.AlreadyExistsException;
 import saci.domain.service.exceptions.CoefficientOverlapException;
+import saci.domain.service.exceptions.NotFoundException;
 import saci.domain.service.validators.LevelValidator;
 import saci.infrastructure.LevelRepository;
 
@@ -23,6 +24,10 @@ public class LevelService {
         } else {
             throw new NotFoundException("Level not found with ID: " + levelId);
         }
+    }
+
+    public List<Level> getSortedLevelsByRoleIdAsc(Long roleId) {
+        return levelRepository.findByRoleIdOrderByMinCoefficientAscMaxCoefficientAsc(roleId);
     }
 
     public Level createLevel(Level level) {

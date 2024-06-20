@@ -120,6 +120,7 @@ public class RoleController {
     @GetMapping("/{roleId}")
     public ResponseEntity<Role> getRoleById(@PathVariable Long roleId) {
         Role role = roleService.getRoleById(roleId);
+
         return ResponseEntity.ok(role);
     }
 }
