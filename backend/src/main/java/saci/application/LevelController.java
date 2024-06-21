@@ -66,16 +66,22 @@ public class LevelController {
     @ApiResponses(
             value = {
                 @ApiResponse(
-                        responseCode = "201",
-                        description = "Levels Sorted!",
+                        responseCode = "200",
+                        description = "Levels sorted",
                         content = {
                             @Content(
                                     mediaType = "application/json",
                                     schema = @Schema(implementation = Level.class))
-                        })
+                        }),
+                @ApiResponse(responseCode = "404", description = "Level not found")
             })
     @GetMapping("/sorted/{roleId}")
-    public List<Level> getSortedLevels(@PathVariable Long roleId) {
-        return LevelService.getSortedLevelsByRoleIdAsc(roleId);
+    public ResponseEntity<List<Level>> getSortedLevels(@PathVariable Long roleId) {
+        try {
+            List<Level> levels = LevelService.getSortedLevelsByRoleIdAsc(roleId);
+            return ResponseEntity.ok(levels);
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }
