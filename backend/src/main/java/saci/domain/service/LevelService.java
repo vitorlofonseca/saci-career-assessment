@@ -27,7 +27,11 @@ public class LevelService {
     }
 
     public List<Level> getSortedLevelsByRoleIdAsc(Long roleId) {
-        return levelRepository.findSortedLevelsByRoleId(roleId);
+        List<Level> levels = levelRepository.findsortedLevelsByRoleId(roleId);
+        if (levels.isEmpty()) {
+            throw new NotFoundException("No levels found for role ID: " + roleId);
+        }
+        return levels;
     }
 
     public Level createLevel(Level level) {
@@ -44,13 +48,5 @@ public class LevelService {
             throw new AlreadyExistsException("Level name already exists");
         }
         return levelRepository.save(level);
-    }
-
-    public Optional<Level> findLevelByScore(Long roleId, double score) {
-        return levelRepository.findLevelByRoleIdAndScore(roleId, score);
-    }
-
-    public Optional<Level> findNextLevelBasedOfScore(Long roleId, double score) {
-        return levelRepository.findNextLevelByRoleIdAndScore(roleId, score);
     }
 }
