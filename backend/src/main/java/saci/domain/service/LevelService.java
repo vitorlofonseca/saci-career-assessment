@@ -27,7 +27,7 @@ public class LevelService {
     }
 
     public List<Level> getSortedLevelsByRoleIdAsc(Long roleId) {
-        return levelRepository.findsortedLevelsByRoleId(roleId);
+        return levelRepository.findSortedLevelsByRoleId(roleId);
     }
 
     public Level createLevel(Level level) {
