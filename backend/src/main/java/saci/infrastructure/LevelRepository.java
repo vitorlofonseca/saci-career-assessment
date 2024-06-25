@@ -23,12 +23,15 @@ public interface LevelRepository extends JpaRepository<Level, Long> {
             @Param("maxCoefficient") Integer maxCoefficient);
 
     @Query(
-            "SELECT l FROM Level l WHERE l.roleId = :roleId AND CAST(:score AS double) BETWEEN l.minCoefficient AND l.maxCoefficient")
+            "SELECT l FROM Level l WHERE l.roleId = :roleId AND :score BETWEEN CAST(l.minCoefficient AS double) AND CAST(l.maxCoefficient AS double)")
     Optional<Level> findLevelByRoleIdAndScore(
             @Param("roleId") Long roleId, @Param("score") double score);
 
     @Query(
-            "SELECT l FROM Level l WHERE l.roleId = :roleId AND l.minCoefficient > CAST(:score AS double) ORDER BY l.minCoefficient ASC")
+            "SELECT l FROM Level l WHERE l.roleId = :roleId AND CAST(l.minCoefficient AS double) > :score ORDER BY l.minCoefficient ASC")
     Optional<Level> findNextLevelByRoleIdAndScore(
             @Param("roleId") Long roleId, @Param("score") double score);
+
+    @Query("SELECT l FROM Level l WHERE l.roleId = :roleId ORDER BY l.minCoefficient ASC")
+    List<Level> findSortedLevelsByRoleId(@Param("roleId") Long roleId);
 }
