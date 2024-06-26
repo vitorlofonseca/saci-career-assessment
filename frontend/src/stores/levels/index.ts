@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia'
-import { getLevelsByRoleId } from './actions'
+import { getLevelsByRoleId, getScoreResponse } from './actions'
 
-export const useLevelStore = defineStore('levels', () => {
-  return {
-    getLevelsByRoleId
-  }
-})
+export const useLevelStore = defineStore('levels', () => ({
+  getLevelsByRoleId,
+  getScoreResponse
+}))

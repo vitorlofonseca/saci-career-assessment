@@ -8,6 +8,7 @@ import DeleteKnowledgeView from '@/views/DeleteKnowledgeView.vue'
 import EditKnowledge from '@/views/EditKnowledgeView.vue'
 import ViewLevelsTable from '@/views/ViewLevelsTable.vue'
 import DeleteLevelView from '@/views/DeleteLevelView.vue'
+import ResultScreenView from '@/views/ResultScreenView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +24,10 @@ const router = createRouter({
     {
       path: '/home',
       component: HomeView
+    },
+    {
+      path: '/result',
+      component: ResultScreenView
     },
     {
       path: '/role/:id',
