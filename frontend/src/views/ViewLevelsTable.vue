@@ -19,7 +19,7 @@ import type { Role } from '@/domain/Role'
 import { type Level } from '@/domain/Level'
 
 const levelsStore = useLevelStore()
-const roleId = ref('1')
+const roleId = ref('500')
 const levels = ref<Level[]>()
 
 onMounted(async () => {
