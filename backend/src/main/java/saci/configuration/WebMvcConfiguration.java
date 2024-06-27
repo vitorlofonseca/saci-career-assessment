@@ -22,10 +22,8 @@ public class WebMvcConfiguration {
             public void addCorsMappings(CorsRegistry registry) {
 
                 registry.addMapping("/**")
-                        .allowedMethods("GET", "POST")
-                        .allowedOrigins(corsUrlClient);
-
-                registry.addMapping("/**").allowedMethods("*").allowedOrigins(corsUrlAdmin);
+                        .allowedMethods("*")
+                        .allowedOrigins(corsUrlClient, corsUrlAdmin);
             }
         };
     }

@@ -6,5 +6,3 @@
 /backend/*.lock.db
 /backend/*.trace.db
 /backend/bytebase-data/
-
-/frontend/public
