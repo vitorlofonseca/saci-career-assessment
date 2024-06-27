@@ -27,6 +27,7 @@
           </div>
           <template #footer>
             <div class="dialog-footer">
+              R
               <ElButton @click="hideDialog()">Cancel</ElButton>
               <ElButton type="primary" @click="createKnowledge">Confirm</ElButton>
             </div>
