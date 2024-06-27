@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,11 +14,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import saci.domain.model.Level;
+import saci.domain.model.Role;
 import saci.domain.service.LevelService;
 import saci.domain.service.exceptions.NotFoundException;
 
@@ -26,7 +29,23 @@ import saci.domain.service.exceptions.NotFoundException;
 @RequiredArgsConstructor
 public class LevelController {
 
-    private final LevelService LevelService;
+    @Operation(summary = "Get all Levels", description = "Retrieve all levels")
+    @ApiResponses(
+            value = {
+                @ApiResponse(responseCode = "200", description = "Levels retrieved successfully")
+            })
+    @GetMapping
+    public ResponseEntity<List<Level>> getAllLevels() {
+        List<Level> levels = levelService.getAllLevels();
+        return ResponseEntity.ok(levels);
+    }
+    @GetMapping("/{levelId}")
+    public ResponseEntity<Level> getLevelById(@PathVariable Long levelId) {
+        Level level = levelService.getLevelById(levelId);
+        return ResponseEntity.ok(level);
+    }
+
+    private final LevelService levelService;
 
     @Operation(summary = "Delete Level by ID", description = "Deletes a Level based on its ID")
     @ApiResponses(
@@ -37,7 +56,7 @@ public class LevelController {
     @DeleteMapping("/{levelId}")
     public ResponseEntity<Void> deleteLevelById(@PathVariable long levelId) {
         try {
-            LevelService.deleteLevelById(levelId);
+            levelService.deleteLevelById(levelId);
             return ResponseEntity.ok().build();
         } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -59,7 +78,24 @@ public class LevelController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Level createLevel(@RequestBody Level level) {
-        return LevelService.createLevel(level);
+        return levelService.createLevel(level);
+    }
+
+    @Operation(
+            summary = "Edit a level",
+            description = "Edit an existing level with the provided level ID")
+    @ApiResponses(
+            value = {
+                @ApiResponse(responseCode = "200", description = "Level edited successfully"),
+                @ApiResponse(responseCode = "400", description = "Invalid input data"),
+                @ApiResponse(responseCode = "404", description = "Level not found"),
+                @ApiResponse(responseCode = "500", description = "Internal server error")
+            })
+    @PutMapping("/{levelId}")
+    public ResponseEntity<Level> editLevel(
+            @PathVariable Long levelId, @Valid @RequestBody Level updatedLevel) {
+        Level editedLevel = levelService.editLevel(levelId, updatedLevel);
+        return ResponseEntity.ok(editedLevel);
     }
 
     @Operation(summary = "Get the sorted Levels")
