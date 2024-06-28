@@ -40,6 +40,7 @@ import { ElInput, ElButton, ElInputNumber } from 'element-plus'
 import { ErrorMessage, SuccessMessage } from '@/services/messages'
 import { useRouter } from 'vue-router'
 import { HttpServerError } from '@/services/http'
+import { useLevelStore } from '@/stores/levels'
 
 const roleStore = useRolesStore()
 const role = ref<Role>()
@@ -53,13 +54,15 @@ const router = useRouter()
 const newLevelTitle = computed(() => {
   return `${role.value?.name || ''} - ${newLevel.value.name || 'New Level'}`
 })
+const levelsStore = useLevelStore()
 
 onMounted(async () => {
-  role.value = await roleStore.getRoleById('1')
+  const roleId = router.currentRoute.value.params.id.toString()
+  role.value = await roleStore.loadRoleById(roleId.toString())
 })
 
 const redirectToRoleView = () => {
-  router.push('/role-view')
+  router.push({ name: 'RoleView', params: { id: role.value?.id } })
   SuccessMessage('Your level was created')
 }
 
@@ -77,7 +80,7 @@ const createLevel = async () => {
       ErrorMessage('MaxRange should be bigger than MinRange')
       return
     }
-    await roleStore.addLevel(newLevel.value, role.value!)
+    await levelsStore.addLevel(newLevel.value, role.value!)
     redirectToRoleView()
   } catch (error: any) {
     if (error.status === HttpServerError.HTTP_STATUS_CODE_CONFLICT) {

@@ -3,7 +3,6 @@ import { getRoles } from './getters'
 import type { Role } from '@/domain/Role'
 import { deleteRequest } from '@/services/http'
 import { roles } from './state'
-import type { Level } from '@/domain/Level'
 
 function setRoles(newRoles: Role[]): void {
   roles.value = newRoles
@@ -38,15 +37,16 @@ async function removeRole(roleId: string) {
   await deleteRequest(`/roles/${roleId}`)
   roles.value = roles.value.filter((role) => role.id !== parseInt(roleId))
 }
-async function removeLevel(levelId: number) {
-  const response = await deleteRequest(`/levels/${levelId}`)
-  return response
+
+async function loadRoleById(roleId: string): Promise<Role | undefined> {
+  const role = await get<Role>(`/roles/${roleId}`)
+  let index = roles.value.findIndex((role) => role.id === parseInt(roleId))
+  if (index === -1) {
+    roles.value.push(role)
+    return role
+  } else {
+    return roles.value[index]
+  }
 }
 
-async function addLevel(level: Level, role: Role): Promise<void> {
-  const levelWithRoleId = { ...level, roleId: role.id }
-  await post<Level[]>('/levels', levelWithRoleId)
-  role.levels?.push(level)
-}
-
-export { fetchRoles, addRole, editRoleAction, removeRole, removeLevel, addLevel }
+export { fetchRoles, addRole, editRoleAction, removeRole, loadRoleById }

@@ -6,4 +6,6 @@ const getKnowledge = computed(() => {
   return knowledges?.value
 })
 
-export { getKnowledge }
+const getRoleById = (id: number) => roles.value.find((role) => id === role.id)
+
+export { getKnowledge, getRoleById }
