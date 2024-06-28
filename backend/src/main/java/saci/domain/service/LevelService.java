@@ -27,7 +27,7 @@ public class LevelService {
     }
 
     public List<Level> getSortedLevelsByRoleIdAsc(Long roleId) {
-        List<Level> levels = levelRepository.findsortedLevelsByRoleId(roleId);
+        List<Level> levels = levelRepository.findSortedLevelsByRoleId(roleId);
         if (levels.isEmpty()) {
             throw new NotFoundException("No levels found for role ID: " + roleId);
         }
@@ -49,6 +49,7 @@ public class LevelService {
         }
         return levelRepository.save(level);
     }
+
     public Optional<Level> findLevelByScore(Long roleId, double score) {
         return levelRepository.findLevelByRoleIdAndScore(roleId, score);
     }
