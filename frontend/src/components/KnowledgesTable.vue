@@ -55,7 +55,7 @@ defineProps<{
 onMounted(async () => {
   roleId.value = router.currentRoute.value.params.id as string
   knowledge.value = { roleId: parseInt(roleId.value), name: '', weight: 0 }
-  role.value = await roleStore.loadRoleById(roleId.toString())
+  role.value = await roleStore.loadRoleById(roleId.value.toString())
 })
 
 const openCreateDialog = () => {
