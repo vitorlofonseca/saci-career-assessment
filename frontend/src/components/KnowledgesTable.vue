@@ -7,7 +7,7 @@
       <template #default="{ row }">
         <div>
           <ElButton @click="onClickDelete(row)" type="text" size="small">Delete</ElButton>
-          <ElButton @click="showEditDialog(row)" type="text" size="small">Edit</ElButton>
+          <ElButton @click="openEditDialog(row)" type="text" size="small">Edit</ElButton>
         </div>
       </template>
     </ElTableColumn>
@@ -15,23 +15,14 @@
   <div class="Demo">
     <br />
     <div class="NewKnowledge">
-      <ElButton type="primary" @click="showDialogAddNewKnowledge">Create Knowledge</ElButton>
+      <ElButton type="primary" @click="openCreateDialog">Create Knowledge</ElButton>
     </div>
-    <ElDialog v-model="createKnowledgeDialogFormVisible" title="New Knowledge" width="500">
-      <ElInput v-model="knowledge.name" placeholder="Knowledge name" :clearable="false" />
-      <div class="Slider">
-        <span class="KnowledgeWeight">Weight</span>
-        <ElSlider v-model="knowledge.weight" :max="5" :step="1" show-stops />
-      </div>
-      <template #footer>
-        <div class="dialog-footer">
-          <ElButton @click="hideDialog()">Cancel</ElButton>
-          <ElButton type="primary" @click="createKnowledge">Confirm</ElButton>
-        </div>
-      </template>
-    </ElDialog>
   </div>
-  <KnowledgeInformation v-model:visible="editKnowledgeFormVisible" :knowledge="knowledgeToUpdate" />
+  <KnowledgeInformation
+    v-model:visible="isDialogVisible"
+    :knowledge="selectedKnowledge"
+    :roleId="parseInt(roleId)"
+  />
   <RemoveKnowledgeDialog
     v-model:visible="deleteKnowledgeDialogVisible"
     :knowledgeId="knowledgeToDelete"
@@ -40,66 +31,41 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { ElTable, ElTableColumn, ElButton, ElDialog, ElInput, ElSlider } from 'element-plus'
-import { ErrorMessage, SuccessMessage } from '@/services/messages'
+import { ElTable, ElTableColumn, ElButton } from 'element-plus'
 import type { Knowledge } from '@/domain/Knowledge'
 import { useRolesStore } from '@/stores/roles/index'
-import { useKnowledgeStore } from '@/stores/knowledges'
 import type { Role } from '@/domain/Role'
 import { useRouter } from 'vue-router'
 import RemoveKnowledgeDialog from '@/components/RemoveKnowledgeDialog.vue'
 import KnowledgeInformation from '@/components/KnowledgeInformation.vue'
 
 const roleStore = useRolesStore()
-const knowledgesStore = useKnowledgeStore()
-const createKnowledgeDialogFormVisible = ref(false)
 const role = ref<Role>()
 const knowledge = ref<Knowledge>({} as Knowledge)
 const router = useRouter()
+const roleId = ref('')
+
+const isDialogVisible = ref(false)
+const selectedKnowledge = ref<Knowledge | undefined>()
 
 defineProps<{
   knowledges: Knowledge[]
 }>()
 
 onMounted(async () => {
-  const roleId = router.currentRoute.value.params.id as string
-  knowledge.value = { roleId: parseInt(roleId), name: '', weight: 0 }
+  roleId.value = router.currentRoute.value.params.id as string
+  knowledge.value = { roleId: parseInt(roleId.value), name: '', weight: 0 }
   role.value = await roleStore.loadRoleById(roleId.toString())
 })
 
-const showDialogAddNewKnowledge = () => {
-  createKnowledgeDialogFormVisible.value = true
-}
-const hideDialog = () => {
-  createKnowledgeDialogFormVisible.value = false
+const openCreateDialog = () => {
+  selectedKnowledge.value = undefined
+  isDialogVisible.value = true
 }
 
-const createKnowledge = async () => {
-  if (knowledge.value.name === '') {
-    ErrorMessage('You need to fill in this field')
-    return
-  }
-  try {
-    await knowledgesStore.saveKnowledge(knowledge.value)
-    SuccessMessage('Your knowledge was created')
-    hideDialog()
-  } catch (error: any) {
-    ErrorMessage('An error occurred while creating the knowledge')
-  }
-
-  knowledge.value.name = ''
-}
-
-const editKnowledgeFormVisible = ref(false)
-const knowledgeToUpdate = ref<Knowledge>({
-  id: 1,
-  name: '',
-  roleId: 1,
-  weight: 0
-})
-const showEditDialog = (row: Knowledge) => {
-  knowledgeToUpdate.value = row
-  editKnowledgeFormVisible.value = true
+const openEditDialog = (row: Knowledge) => {
+  selectedKnowledge.value = row
+  isDialogVisible.value = true
 }
 
 const deleteKnowledgeDialogVisible = ref(false)

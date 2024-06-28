@@ -1,21 +1,21 @@
 <template>
-  <ElDialog :model-value="props.visible" title="Edit Knowledge" width="500" @close="hideEditDialog">
+  <ElDialog :model-value="props.visible" :title="dialogTitle" width="500" @close="hideDialog">
     <ElInput v-model="localKnowledge.name" placeholder="Enter Name" autocomplete="on" />
     <div class="Slider">
       <span class="KnowledgeWeight"> Weight </span>
-      <ElSlider v-model="knowledge.weight" :max="5" :step="1" show-stops />
+      <ElSlider v-model="localKnowledge.weight" :max="5" :step="1" show-stops />
     </div>
     <template #footer>
       <div class="dialog-footer">
         <ElButton @click="cancelEdit">Cancel</ElButton>
-        <ElButton type="primary" @click="saveForm">Save</ElButton>
+        <ElButton type="primary" @click="saveForm">{{ dialogButtonLabel }}</ElButton>
       </div>
     </template>
   </ElDialog>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { ElButton, ElDialog, ElInput, ElSlider } from 'element-plus'
 import { useKnowledgeStore } from '@/stores/knowledges'
 import { HttpServerError } from '@/services/http'
@@ -25,35 +25,62 @@ import type { Knowledge } from '@/domain/Knowledge'
 const knowledgeStore = useKnowledgeStore()
 const props = defineProps<{
   visible: boolean
-  knowledge: Knowledge
+  knowledge: Knowledge | undefined
+  roleId: number
 }>()
-const emits = defineEmits(['update:visible', 'confirm-edit'])
+const emits = defineEmits(['update:visible', 'confirm-edit', 'confirm-create'])
+const localKnowledge = ref<Knowledge>({ name: '', weight: 0, roleId: props.roleId })
+const isEditMode = ref(false)
 
-const localKnowledge = ref<Knowledge>({ ...props.knowledge })
 watch(
   () => props.visible,
   (newVal) => {
     if (newVal) {
-      localKnowledge.value = { ...props.knowledge }
+      if (props.knowledge) {
+        localKnowledge.value = { ...props.knowledge }
+        isEditMode.value = true
+      } else {
+        localKnowledge.value = { name: '', weight: 0, roleId: props.roleId }
+        isEditMode.value = false
+      }
     }
   }
 )
 
-const hideEditDialog = () => {
+const dialogTitle = computed(() => (isEditMode.value ? 'Edit Knowledge' : 'Create Knowledge'))
+const dialogButtonLabel = computed(() => (isEditMode.value ? 'Save' : 'Create'))
+
+const hideDialog = () => {
   emits('update:visible', false)
 }
 
 const cancelEdit = () => {
-  localKnowledge.value = { ...props.knowledge }
-  hideEditDialog()
+  if (isEditMode.value) {
+    localKnowledge.value = {
+      name: props.knowledge.name,
+      weight: props.knowledge.weight,
+      roleId: props.roleId
+    }
+    hideDialog()
+  } else {
+    hideDialog()
+  }
 }
 
 const saveForm = async () => {
   try {
-    props.knowledge.name = localKnowledge.value.name
-    await knowledgeStore.editKnowledge(props.knowledge)
-    SuccessMessage('Knowledge updated successfully')
-    hideEditDialog()
+    if (isEditMode.value) {
+      props.knowledge.name = localKnowledge.value.name
+      props.knowledge.weight = localKnowledge.value.weight
+      await knowledgeStore.editKnowledge(props.knowledge)
+      SuccessMessage('Knowledge updated successfully')
+      emits('confirm-edit')
+    } else {
+      await knowledgeStore.saveKnowledge(localKnowledge.value)
+      SuccessMessage('Knowledge created successfully')
+      emits('confirm-create')
+    }
+    hideDialog()
   } catch (error: Error) {
     if (error.status === HttpServerError.HTTP_STATUS_CODE_CONFLICT) {
       ErrorMessage('This name already exists')

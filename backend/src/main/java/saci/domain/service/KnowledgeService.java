@@ -19,12 +19,10 @@ public class KnowledgeService {
     private final RoleRepository roleRepository;
 
     public Knowledge createKnowledge(Knowledge knowledge) {
-        Optional<Role> optionalRole = roleRepository.findById((knowledge.getRoleId()));
-        if (!optionalRole.isPresent()) {
-            throw new NotFoundException("Role not Found");
-        }
-        Role role = optionalRole.get();
-        List<Knowledge> knowledges = role.getKnowledges();
+        Role role =
+                roleRepository
+                        .findById((knowledge.getRoleId()))
+                        .orElseThrow(() -> new NotFoundException("Role Not Found"));
         boolean knowledgeWithNameExists =
                 role.getKnowledges().stream()
                         .anyMatch(

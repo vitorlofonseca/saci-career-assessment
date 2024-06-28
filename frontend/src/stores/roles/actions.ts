@@ -43,6 +43,7 @@ async function loadRoleById(roleId: string): Promise<Role | undefined> {
   let index = roles.value.findIndex((role) => role.id === parseInt(roleId))
   if (index === -1) {
     roles.value.push(role)
+    return role
   } else {
     return roles.value[index]
   }
