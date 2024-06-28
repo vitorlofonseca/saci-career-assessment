@@ -15,6 +15,7 @@ const deleteDialogForm = ref(false)
 const createRoleDialogFormVisible = ref(false)
 const newRoleName = ref('')
 const router = useRouter()
+const originalRoleName = ref('')
 
 const navigateToRoleDetails = (row: Role) => {
   router.push({ name: 'RoleView', params: { id: row.id } })
@@ -23,6 +24,7 @@ const navigateToRoleDetails = (row: Role) => {
 const openUpdateDialog = (row: Role) => {
   dialogFormVisible.value = true
   selectedRoleToUpdate.value = row
+  originalRoleName.value = row.name
 }
 
 const openDeleteDialog = (row: Role) => {
@@ -50,6 +52,7 @@ const closeDeleteDialog = () => {
 
 const closeDialog = () => {
   dialogFormVisible.value = false
+  selectedRoleToUpdate.value.name = originalRoleName.value
 }
 
 const saveForm = async () => {
