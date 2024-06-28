@@ -29,22 +29,22 @@ const props = defineProps<{
   roleId: number
 }>()
 const emits = defineEmits(['update:visible', 'confirm-edit', 'confirm-create'])
+
 const localKnowledge = ref<Knowledge>({ name: '', weight: 0, roleId: props.roleId })
 const isEditMode = ref(false)
 
 watch(
-  () => props.visible,
-  (newVal) => {
-    if (newVal) {
-      if (props.knowledge) {
-        localKnowledge.value = { ...props.knowledge }
-        isEditMode.value = true
-      } else {
-        localKnowledge.value = { name: '', weight: 0, roleId: props.roleId }
-        isEditMode.value = false
-      }
+  () => props.knowledge,
+  (newKnowledge) => {
+    if (newKnowledge) {
+      localKnowledge.value = { ...newKnowledge }
+      isEditMode.value = true
+    } else {
+      localKnowledge.value = { name: '', weight: 0, roleId: props.roleId }
+      isEditMode.value = false
     }
-  }
+  },
+  { immediate: true }
 )
 
 const dialogTitle = computed(() => (isEditMode.value ? 'Edit Knowledge' : 'Create Knowledge'))
@@ -57,8 +57,8 @@ const hideDialog = () => {
 const cancelEdit = () => {
   if (isEditMode.value) {
     localKnowledge.value = {
-      name: props.knowledge.name,
-      weight: props.knowledge.weight,
+      name: props.knowledge!.name,
+      weight: props.knowledge!.weight,
       roleId: props.roleId
     }
     hideDialog()
@@ -70,9 +70,9 @@ const cancelEdit = () => {
 const saveForm = async () => {
   try {
     if (isEditMode.value) {
-      props.knowledge.name = localKnowledge.value.name
-      props.knowledge.weight = localKnowledge.value.weight
-      await knowledgeStore.editKnowledge(props.knowledge)
+      props.knowledge!.name = localKnowledge.value.name
+      props.knowledge!.weight = localKnowledge.value.weight
+      await knowledgeStore.editKnowledge(props.knowledge!)
       SuccessMessage('Knowledge updated successfully')
       emits('confirm-edit')
     } else {
@@ -81,7 +81,7 @@ const saveForm = async () => {
       emits('confirm-create')
     }
     hideDialog()
-  } catch (error: Error) {
+  } catch (error: any) {
     if (error.status === HttpServerError.HTTP_STATUS_CODE_CONFLICT) {
       ErrorMessage('This name already exists')
     } else {

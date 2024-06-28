@@ -18,6 +18,7 @@ import { useRolesStore } from '@/stores/roles/index'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { Role } from '@/domain/Role'
+import { ErrorMessage } from '@/services/messages'
 
 const role = ref<Role>()
 const router = useRouter()
@@ -29,7 +30,7 @@ onMounted(async () => {
   try {
     role.value = await roleStore.loadRoleById(roleId)
   } catch (error) {
-    console.error('Error loading role:', error)
+    ErrorMessage('Error Loading Role')
   }
 })
 </script>

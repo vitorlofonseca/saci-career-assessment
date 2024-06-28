@@ -12,13 +12,11 @@
       </template>
     </ElTableColumn>
   </ElTable>
-  <div class="Demo">
-    <br />
-    <div class="NewKnowledge">
-      <ElButton type="primary" @click="openCreateDialog">Create Knowledge</ElButton>
-    </div>
+  <br />
+  <div class="NewKnowledge">
+    <ElButton type="primary" @click="openCreateDialog">Create Knowledge</ElButton>
   </div>
-  <KnowledgeInformation
+  <KnowledgeInformationDialog
     v-model:visible="isDialogVisible"
     :knowledge="selectedKnowledge"
     :roleId="parseInt(roleId)"
@@ -37,11 +35,10 @@ import { useRolesStore } from '@/stores/roles/index'
 import type { Role } from '@/domain/Role'
 import { useRouter } from 'vue-router'
 import RemoveKnowledgeDialog from '@/components/RemoveKnowledgeDialog.vue'
-import KnowledgeInformation from '@/components/KnowledgeInformation.vue'
+import KnowledgeInformationDialog from '@/components/KnowledgeInformationDialog.vue'
 
 const roleStore = useRolesStore()
 const role = ref<Role>()
-const knowledge = ref<Knowledge>({} as Knowledge)
 const router = useRouter()
 const roleId = ref('')
 
@@ -54,7 +51,6 @@ defineProps<{
 
 onMounted(async () => {
   roleId.value = router.currentRoute.value.params.id as string
-  knowledge.value = { roleId: parseInt(roleId.value), name: '', weight: 0 }
   role.value = await roleStore.loadRoleById(roleId.value.toString())
 })
 
@@ -92,12 +88,6 @@ const onClickDelete = (row: Knowledge) => {
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-bottom: 0;
-}
-
-.Demo {
-  .el-dialog {
-    text-align: left;
-  }
 }
 
 .NewKnowledge {
