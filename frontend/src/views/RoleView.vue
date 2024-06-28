@@ -31,9 +31,6 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
-.ImageContainer {
-  margin-top: 50px;
-}
 
 .PageWrapper {
   display: flex;
@@ -51,6 +48,8 @@ onMounted(async () => {
   height: auto;
   margin: auto;
   .ImageContainer {
+    margin-top: 50px;
+
     img {
       padding-top: 20px;
       width: 100px;
