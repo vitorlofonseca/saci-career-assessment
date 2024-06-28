@@ -1,7 +1,7 @@
 import { get, post, put, deleteRequest } from '@/services/http'
 import { knowledges } from './state'
 import type { Knowledge } from '@/domain/Knowledge'
-import { roles } from '../roles/state'
+import { getRoleById } from './getters'
 
 async function fetchKnowledges(): Promise<void> {
   if (knowledges?.value?.length > 0) {
@@ -25,7 +25,7 @@ function removeKnowledge(knowledgeId: number) {
 
 async function saveKnowledge(knowledge: Knowledge): Promise<void> {
   const response = await post<Knowledge>('/knowledges', knowledge)
-  const role = roles.value.find((role) => knowledge.roleId === role.id)
+  const role = getRoleById(knowledge.roleId)
   role?.knowledges?.push(response)
 }
 
