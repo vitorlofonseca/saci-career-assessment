@@ -1,8 +1,5 @@
 <template>
   <div class="PageWrapper">
-    <div class="ImageContainer">
-      <img src="@/assets/images/logo-and-lettering.svg" alt="Saci Logo" />
-    </div>
     <div class="TableContainer">
       <div class="ImageContainer">
         <img src="@/assets/images/logo-and-lettering.svg" alt="Saci Logo" />
@@ -19,21 +16,17 @@ import KnowledgesTable from '@/components/KnowledgesTable.vue'
 import LevelsTable from '@/components/LevelsTable.vue'
 import { useRolesStore } from '@/stores/roles/index'
 import { onMounted, ref } from 'vue'
-import { useLevelStore } from '@/stores/levels'
 import { useRouter } from 'vue-router'
 import type { Role } from '@/domain/Role'
 
 const role = ref<Role>()
 const router = useRouter()
-const levelsStore = useLevelStore()
 
 const roleStore = useRolesStore()
 
 onMounted(async () => {
   const roleId = router.currentRoute.value.params.id
   role.value = (await roleStore.loadRoleById(roleId.toString())) as Role
-  const sortedlevels = await levelsStore.getLevelsByRoleId(parseInt(roleId.toString()))
-  role.value.levels = sortedlevels
 })
 </script>
 
@@ -44,10 +37,6 @@ onMounted(async () => {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  img {
-    padding-top: 20px;
-    width: 100px;
-  }
   h1 {
     padding-bottom: 40px;
   }
