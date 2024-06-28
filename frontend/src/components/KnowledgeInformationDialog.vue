@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onUpdated, ref } from 'vue'
 import { ElButton, ElDialog, ElInput, ElSlider } from 'element-plus'
 import { useKnowledgeStore } from '@/stores/knowledges'
 import { HttpServerError } from '@/services/http'
@@ -33,20 +33,6 @@ const emits = defineEmits(['update:visible', 'confirm-edit', 'confirm-create'])
 const localKnowledge = ref<Knowledge>({ name: '', weight: 0, roleId: props.roleId })
 const isEditMode = ref(false)
 
-watch(
-  () => props.knowledge,
-  (newKnowledge) => {
-    if (newKnowledge) {
-      localKnowledge.value = { ...newKnowledge }
-      isEditMode.value = true
-    } else {
-      localKnowledge.value = { name: '', weight: 0, roleId: props.roleId }
-      isEditMode.value = false
-    }
-  },
-  { immediate: true }
-)
-
 const dialogTitle = computed(() => (isEditMode.value ? 'Edit Knowledge' : 'Create Knowledge'))
 const dialogButtonLabel = computed(() => (isEditMode.value ? 'Save' : 'Create'))
 
@@ -59,12 +45,12 @@ const cancelEdit = () => {
     localKnowledge.value = {
       name: props.knowledge!.name,
       weight: props.knowledge!.weight,
-      roleId: props.roleId
+      roleId: props.roleId!
     }
-    hideDialog()
   } else {
-    hideDialog()
+    localKnowledge.value = { name: '', weight: 0, roleId: props.roleId }
   }
+  hideDialog()
 }
 
 const saveForm = async () => {
@@ -77,6 +63,7 @@ const saveForm = async () => {
       emits('confirm-edit')
     } else {
       await knowledgeStore.saveKnowledge(localKnowledge.value)
+      localKnowledge.value = { name: '', weight: 0, roleId: props.roleId }
       SuccessMessage('Knowledge created successfully')
       emits('confirm-create')
     }
@@ -89,6 +76,13 @@ const saveForm = async () => {
     }
   }
 }
+
+onUpdated(async () => {
+  localKnowledge.value = props.knowledge
+    ? props.knowledge
+    : { name: '', weight: 0, roleId: props.roleId || 0 }
+  isEditMode.value = !!props.knowledge
+})
 </script>
 
 <style scoped lang="scss">
