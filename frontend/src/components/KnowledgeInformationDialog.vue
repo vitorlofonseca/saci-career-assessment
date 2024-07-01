@@ -23,6 +23,8 @@ import { SuccessMessage, ErrorMessage } from '@/services/messages'
 import type { Knowledge } from '@/domain/Knowledge'
 
 const knowledgeStore = useKnowledgeStore()
+const originalKnowledgeWeight = ref('')
+const originalKnowledgeName = ref('')
 const props = defineProps<{
   visible: boolean
   knowledge: Knowledge | undefined
@@ -42,11 +44,8 @@ const hideDialog = () => {
 
 const cancelEdit = () => {
   if (isEditMode.value) {
-    localKnowledge.value = {
-      name: props.knowledge!.name,
-      weight: props.knowledge!.weight,
-      roleId: props.roleId!
-    }
+    localKnowledge.value.name = originalKnowledgeName.value
+    localKnowledge.value.weight = parseInt(originalKnowledgeWeight.value)
   } else {
     localKnowledge.value = { name: '', weight: 0, roleId: props.roleId }
   }
@@ -82,6 +81,8 @@ onUpdated(async () => {
     ? props.knowledge
     : { name: '', weight: 0, roleId: props.roleId || 0 }
   isEditMode.value = !!props.knowledge
+  originalKnowledgeName.value = localKnowledge.value.name
+  originalKnowledgeWeight.value = String(localKnowledge.value.weight)
 })
 </script>
 
