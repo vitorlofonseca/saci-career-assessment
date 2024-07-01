@@ -16,8 +16,13 @@ async function removeKnowledge(knowledgeId: number): Promise<void> {
 
 async function saveKnowledge(knowledge: Knowledge): Promise<void> {
   const response = await post<Knowledge>('/knowledges', knowledge)
-  const role = await loadRoleById(knowledge.roleId)
-  role?.knowledges?.push(response)
+  roles.value = roles.value.map((role) => {
+    if (role.id !== knowledge.roleId) {
+      return role
+    }
+    role.knowledges?.push(response)
+    return role
+  })
 }
 
 async function editKnowledge(knowledge: Knowledge): Promise<void> {
