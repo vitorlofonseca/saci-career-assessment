@@ -1,42 +1,27 @@
 import { get, post, put, deleteRequest } from '@/services/http'
-import { knowledges } from './state'
 import type { Knowledge } from '@/domain/Knowledge'
-import { getRoleById } from './getters'
+import { roles } from '../roles/state'
+import { loadRoleById } from '../roles/actions'
 
-async function fetchKnowledges(): Promise<void> {
-  if (knowledges?.value?.length > 0) {
-    return
-  }
+async function removeKnowledge(knowledgeId: number): Promise<void> {
+  await deleteRequest(`/knowledges/${knowledgeId}`)
 
-  const knowledge = await get<Knowledge[]>('/knowledge')
-
-  setKnowledges(knowledge)
-}
-
-function setKnowledges(newKnowledge: Knowledge[]): void {
-  knowledges.value = newKnowledge
-}
-
-function removeKnowledge(knowledgeId: number) {
-  const response = deleteRequest(`/knowledges/${knowledgeId}`)
-  knowledges.value = knowledges.value.filter((knowledge) => knowledge.id !== knowledgeId)
-  return response
+  roles.value = roles.value.map((role) => {
+    if (role.knowledges) {
+      role.knowledges = role.knowledges.filter((knowledge) => knowledge.id !== knowledgeId)
+    }
+    return role
+  })
 }
 
 async function saveKnowledge(knowledge: Knowledge): Promise<void> {
   const response = await post<Knowledge>('/knowledges', knowledge)
-  const role = getRoleById(knowledge.roleId)
+  const role = await loadRoleById(knowledge.roleId)
   role?.knowledges?.push(response)
 }
 
 async function editKnowledge(knowledge: Knowledge): Promise<void> {
-  await put<Knowledge[]>(`/knowledges/${knowledge.id}`, knowledge)
-  knowledges.value = knowledges.value.map((item) => {
-    if (item.id === knowledge.id) {
-      return knowledge
-    }
-    return item
-  })
+  await put<Knowledge>(`/knowledges/${knowledge.id}`, knowledge)
 }
 
-export { fetchKnowledges, saveKnowledge, editKnowledge, setKnowledges, removeKnowledge }
+export { saveKnowledge, editKnowledge, removeKnowledge }
