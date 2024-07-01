@@ -4,12 +4,10 @@ import { getRoleById } from '../knowledges/getters'
 import { computed } from 'vue'
 import { levels } from './state'
 
-
-
 async function getLevelsByRoleId(roleId: number): Promise<Level[] | undefined> {
   const role = getRoleById(roleId)
 
-  if(!role) {
+  if (!role) {
     throw "Role doesn't exist with " + roleId
   }
 
@@ -20,7 +18,6 @@ async function getLevelsByRoleId(roleId: number): Promise<Level[] | undefined> {
 
   return role?.levels
 }
-
 const getLevels = computed(() => {
   return levels?.value
 })

@@ -2,6 +2,7 @@ import { deleteRequest, get, post, put } from '@/services/http'
 import { roles } from '../roles/state'
 import type { Level } from '@/domain/Level'
 import type { Role } from '@/domain/Role'
+import { get, post, put } from '@/services/http'
 import { levels } from './state'
 
 async function removeLevel(levelId: number) {
@@ -24,4 +25,4 @@ async function editLevel(level: Level): Promise<void> {
   })
 }
 
-export { editLevel, removeLevel,addLevel }
+export { editLevel, removeLevel, addLevel, getLevelsByRoleId }
