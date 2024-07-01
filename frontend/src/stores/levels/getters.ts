@@ -1,13 +1,11 @@
 import type { Level } from '@/domain/Level'
-import { roles } from '../roles/state'
-import type { Role } from '@/domain/Role'
 import { get } from '@/services/http'
-import { getRoleById } from '../knowledges/getters'
+import { loadRoleById } from '../roles/actions'
 
 async function getLevelsByRoleId(roleId: number): Promise<Level[] | undefined> {
-  const role = getRoleById(roleId)
+  const role = await loadRoleById(roleId)
 
-  if(!role) {
+  if (!role) {
     throw "Role doesn't exist with " + roleId
   }
 

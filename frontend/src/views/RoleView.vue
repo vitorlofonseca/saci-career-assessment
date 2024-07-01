@@ -5,8 +5,8 @@
         <img src="@/assets/images/logo-and-lettering.svg" alt="Saci Logo" />
       </div>
       <h1>{{ role?.name }}</h1>
-      <LevelsTable :levels="role?.levels!" />
-      <KnowledgesTable :knowledges="role?.knowledges!" />
+      <LevelsTable :levels="role?.levels ?? []" />
+      <KnowledgesTable :knowledges="role?.knowledges ?? []" />
     </div>
   </div>
 </template>
@@ -22,13 +22,12 @@ import { ErrorMessage } from '@/services/messages'
 
 const role = ref<Role>()
 const router = useRouter()
-
 const roleStore = useRolesStore()
 
 onMounted(async () => {
   const roleId = router.currentRoute.value.params.id as string
   try {
-    role.value = await roleStore.loadRoleById(roleId)
+    role.value = await roleStore.loadRoleById(parseInt(roleId))
   } catch (error) {
     ErrorMessage('Error Loading Role')
   }
