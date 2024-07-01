@@ -4,12 +4,6 @@ import PadawanView from '@/views/PadawanView.vue'
 import HomeView from '@/views/HomeView.vue'
 import RoleView from '@/views/RoleView.vue'
 import LevelView from '@/views/LevelView.vue'
-import DeleteKnowledgeView from '@/views/DeleteKnowledgeView.vue'
-import EditKnowledge from '@/views/EditKnowledgeView.vue'
-import ViewLevelsTable from '@/views/ViewLevelsTable.vue'
-import DeleteLevelView from '@/views/DeleteLevelView.vue'
-import EditLevelView from '@/views/EditLevelView.vue'
-
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,17 +17,23 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/role/:id',
+      path: '/role/:roleId',
       name: 'RoleView',
-      component: RoleView
+      component: RoleView,
+    },
+
+    {
+      path: '/level-view/create',
+      component: LevelView,
+      name: 'CreateLevel'
     },
     {
       path: '/level-view/:id',
-      name: 'LevelView',
-      component: LevelView
+      component: LevelView,
+      name: 'EditLevel'
     },
-    {
 
+    {
       path: '/padawan',
       component: PadawanView,
       children: [

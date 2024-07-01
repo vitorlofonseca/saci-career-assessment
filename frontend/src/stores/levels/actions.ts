@@ -1,7 +1,7 @@
 import type { Level } from '@/domain/Level'
 import type { Role } from '@/domain/Role'
 import { roles } from '@/stores/roles/state'
-import { post, put, deleteRequest } from '@/services/http'
+import { deleteRequest, get, post, put } from '@/services/http'
 import { levels } from './state'
 
 async function removeLevel(levelId: number) {
