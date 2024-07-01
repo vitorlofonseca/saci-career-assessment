@@ -5,8 +5,8 @@
         <img src="@/assets/images/logo-and-lettering.svg" alt="Saci Logo" />
       </div>
       <h1>{{ role?.name }}</h1>
-      <LevelsTable :levels="role?.levels ?? []" />
-      <KnowledgesTable :knowledges="role?.knowledges ?? []" />
+      <LevelsTable :levels="role?.levels!" />
+      <KnowledgesTable :knowledges="role?.knowledges!" />
     </div>
   </div>
 </template>
@@ -35,7 +35,6 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
-
 .PageWrapper {
   display: flex;
   flex-direction: column;
