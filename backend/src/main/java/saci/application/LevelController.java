@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import saci.domain.model.Level;
-import saci.domain.model.Role;
 import saci.domain.service.LevelService;
 import saci.domain.service.exceptions.NotFoundException;
 
@@ -39,6 +38,7 @@ public class LevelController {
         List<Level> levels = levelService.getAllLevels();
         return ResponseEntity.ok(levels);
     }
+
     @GetMapping("/{levelId}")
     public ResponseEntity<Level> getLevelById(@PathVariable Long levelId) {
         Level level = levelService.getLevelById(levelId);
@@ -114,7 +114,7 @@ public class LevelController {
     @GetMapping("/sorted/{roleId}")
     public ResponseEntity<List<Level>> getSortedLevels(@PathVariable Long roleId) {
         try {
-            List<Level> levels = LevelService.getSortedLevelsByRoleIdAsc(roleId);
+            List<Level> levels = levelService.getSortedLevelsByRoleIdAsc(roleId);
             return ResponseEntity.ok(levels);
         } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

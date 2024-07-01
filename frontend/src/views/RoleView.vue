@@ -26,7 +26,7 @@ const router = useRouter()
 const roleStore = useRolesStore()
 
 onMounted(async () => {
-  const roleId = router.currentRoute.value.params.id as string
+  const roleId = router.currentRoute.value.params.roleId as string
   try {
     role.value = await roleStore.loadRoleById(roleId)
   } catch (error) {
@@ -36,7 +36,6 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
-
 .PageWrapper {
   display: flex;
   flex-direction: column;
