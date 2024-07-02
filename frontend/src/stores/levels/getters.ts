@@ -1,6 +1,5 @@
 import type { Level } from '@/domain/Level'
 import { get } from '@/services/http'
-import { getRoleById } from '../knowledges/getters'
 import { loadRoleById } from '../roles/actions'
 import { computed } from 'vue'
 import { levels } from './state'
@@ -19,10 +18,6 @@ async function getLevelsByRoleId(roleId: number): Promise<Level[] | undefined> {
 
   return role?.levels
 }
-const getLevels = computed(() => {
-  return levels?.value
-})
-
 const getLevels = computed(() => {
   return levels?.value
 })

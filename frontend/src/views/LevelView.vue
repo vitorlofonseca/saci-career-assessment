@@ -1,7 +1,7 @@
 <template>
   <div class="Container">
     <img src="@/assets/images/logo-and-lettering.svg" alt="Saci Logo" />
-    <h1>{{ newLevelTitle }}</h1>
+    <h1>{{ dialogTitle }}</h1>
     <h2>Basic Information</h2>
     <div class="NameContainer">
       <h5>Name</h5>
@@ -9,7 +9,7 @@
     </div>
     <div class="LinkAndCoeficientsContainer">
       <div class="CoeficientsContainer">
-        <h5>Coeficient Range</h5>
+        <h5>Coefficient Range</h5>
         <span>
           <ElInputNumber v-model="localLevel.minCoefficient" :min="0" :max="100" />
           <h4>to</h4>
@@ -26,10 +26,7 @@
       </div>
     </div>
     <div class="SaveButton">
-      <ElButton type="primary" @click="saveForm()"> Save </ElButton>
-      <<<<<<< HEAD
-      {{ JSON.stringify(router.currentRoute) }}
-      ======= >>>>>>> 3215bbd358c95aea101e30b4873fe0a3735319e5
+      <ElButton type="primary" @click="saveForm()"> {{ dialogButtonLabel }} </ElButton>
     </div>
   </div>
 </template>
@@ -43,128 +40,103 @@ import { ErrorMessage, SuccessMessage } from '@/services/messages'
 import { useRouter } from 'vue-router'
 import { HttpServerError } from '@/services/http'
 import { useLevelStore } from '@/stores/levels'
-import { editLevel } from '@/stores/levels/actions'
 import type { Role } from '@/domain/Role'
 
 const roleStore = useRolesStore()
-const newLevel = ref<Level>({
-  name: '',
-  minCoefficient: 0,
-  maxCoefficient: 0,
-  link: ''
-})
-
+const levelsStore = useLevelStore()
+const router = useRouter()
 const level = ref<Level>({} as Level)
+const role = ref<Role>()
+const isEditMode = ref(false)
+const roleId = ref()
 
-const dialogTitle = computed(() => (isEditMode.value ? 'Edit Knowledge' : 'Create Knowledge'))
-const dialogButtonLabel = computed(() => (isEditMode.value ? 'Save' : 'Create'))
-defineProps<{
-  visible: boolean
-  roleId: number
-}>()
-const isEditMode = ref(!!level.value)
 const localLevel = ref<Level>({ name: '', minCoefficient: 0, maxCoefficient: 0, link: '' })
 
-const router = useRouter()
-const newLevelTitle = computed(() => {
-  return `${newLevel.value.name || 'New Level'}`
-})
-const levelsStore = useLevelStore()
-const role = ref<Role>()
+const dialogButtonLabel = computed(() => (isEditMode.value ? 'Save' : 'Create'))
+const dialogTitle = computed(() =>
+  isEditMode.value
+    ? role.value?.name + ' - Edit Level'
+    : role.value?.name +
+      (localLevel.value.name ? ' - ' + localLevel.value.name : ' - ' + ' New Level')
+)
 const emits = defineEmits(['update:visible', 'confirm-edit', 'confirm-create'])
 
 onMounted(async () => {
   const levelId = router.currentRoute.value.params.id?.toString()
   if (levelId) {
     level.value = await roleStore.getLevelById(levelId)
-    role.value = await roleStore.loadRoleById(level.value.roleId!.toString())
+    role.value = await roleStore.loadRoleById(level.value.roleId!)
+    console.log(role.value)
+    localLevel.value = { ...level.value }
+    isEditMode.value = true
+  } else {
+    roleId.value = router.currentRoute.value.query.roleId
+    role.value = await roleStore.loadRoleById(roleId.value)
+    isEditMode.value = false
+    localLevel.value = { name: '', minCoefficient: 0, maxCoefficient: 0, link: '' }
   }
 })
 
-const redirectToRoleView = () => {
-  router.push({ name: 'RoleView', params: { id: level.value?.roleId } })
-  SuccessMessage('Your level was created')
-}
-const hideDialog = () => {
-  emits('update:visible', false)
-}
-
 const saveForm = async () => {
-  try {
-    if (isEditMode.value) {
-      level!.value.name = localLevel.value.name
-      level!.value.minCoefficient = localLevel.value.minCoefficient
-      level!.value.maxCoefficient = localLevel.value.maxCoefficient
-      level!.value.link = localLevel.value.link
-      await levelsStore.editLevel(level!.value)
-      SuccessMessage('Knowledge updated successfully')
-      emits('confirm-edit')
-    } else {
-      await levelsStore.addLevel(localLevel.value, role.value!)
-      localLevel.value = { name: '', minCoefficient: 0, maxCoefficient: 0, link: '' }
-      SuccessMessage('Level created successfully')
-      emits('confirm-create')
-    }
-    hideDialog()
-  } catch (error: any) {
-    if (error.status === HttpServerError.HTTP_STATUS_CODE_CONFLICT) {
-      ErrorMessage('This name already exists')
-    } else {
-      ErrorMessage('Unexpected error updating the knowledge')
-    }
-  }
-}
-const createLevel = async () => {
-  try {
-    if (newLevel.value.name == '' || newLevel.value.link == '') {
-      ErrorMessage('You need to fill all the fields')
-      return
-    }
-    if (newLevel.value.maxCoefficient == 0 || newLevel.value.maxCoefficient > 100) {
-      ErrorMessage('MaxRange should be bigger than 0 and smaller than 100')
-      return
-    }
-    if (newLevel.value.maxCoefficient <= newLevel.value.minCoefficient) {
-      ErrorMessage('MaxRange should be bigger than MinRange')
-      return
-    }
-    await levelsStore.addLevel(newLevel.value, role.value!)
-    redirectToRoleView()
-  } catch (error: any) {
-    if (error.status === HttpServerError.HTTP_STATUS_CODE_CONFLICT) {
-      ErrorMessage('This level name already exists')
-    }
-    if (error.status === HttpServerError.HTTP_SERVER_ERROR) {
-      ErrorMessage('Maximum and Minimum range overlap')
+  if (isAllGapsCorrectlyFilled()) {
+    try {
+      if (isEditMode.value) {
+        level!.value.name = localLevel.value.name
+        level!.value.minCoefficient = localLevel.value.minCoefficient
+        level!.value.maxCoefficient = localLevel.value.maxCoefficient
+        level!.value.link = localLevel.value.link
+        await levelsStore.editLevel(level!.value)
+        SuccessMessage('Level updated successfully')
+        redirectToRoleView()
+      } else {
+        createLevel(localLevel.value, role.value)
+        localLevel.value = { name: '', minCoefficient: 0, maxCoefficient: 0, link: '' }
+        SuccessMessage('Level created successfully')
+        redirectToRoleView()
+      }
+    } catch (error: any) {
+      if (error.status === HttpServerError.HTTP_STATUS_CODE_CONFLICT) {
+        ErrorMessage('This name already exists')
+      } else {
+        ErrorMessage('Unexpected error updating the level')
+      }
     }
   }
 }
 
-const updateLevel = async () => {
-  try {
-    if (level.value.name === '' || level.value.link === '') {
-      ErrorMessage('You need to fill all the fields')
-      return
-    }
-    if (level.value.maxCoefficient === 0 || level.value.maxCoefficient > 100) {
-      ErrorMessage('MaxRange should be bigger than 0 and smaller than 100')
-      return
-    }
-    if (level.value.maxCoefficient <= level.value.minCoefficient) {
-      ErrorMessage('MaxRange should be bigger than MinRange')
-      return
-    }
+const isAllGapsCorrectlyFilled = () => {
+  if (!localLevel.value.name || !localLevel.value.link) {
+    ErrorMessage('You need to fill all the fields')
+    return false
+  }
+  if (localLevel.value.maxCoefficient === 0 || localLevel.value.maxCoefficient > 100) {
+    ErrorMessage('MaxRange should be greater than 0 and smaller than 100')
+    return false
+  }
+  if (localLevel.value.maxCoefficient <= localLevel.value.minCoefficient) {
+    ErrorMessage('MaxRange should be greater than MinRange')
+    return false
+  }
+  return true
+}
 
-    await editLevel(level.value)
+const createLevel = async (newLevel: Level, role: Role) => {
+  try {
+    await levelsStore.addLevel(newLevel, role!)
     redirectToRoleView()
   } catch (error: any) {
     if (error.status === HttpServerError.HTTP_STATUS_CODE_CONFLICT) {
       ErrorMessage('This level name already exists')
-    }
-    if (error.status === HttpServerError.HTTP_SERVER_ERROR) {
+    } else if (error.status === HttpServerError.HTTP_SERVER_ERROR) {
       ErrorMessage('Maximum and Minimum range overlap')
+    } else {
+      ErrorMessage('Unexpected error creating the level')
     }
   }
+}
+
+const redirectToRoleView = () => {
+  router.push({ name: 'RoleView', params: { roleId: role.value?.id } })
 }
 </script>
 

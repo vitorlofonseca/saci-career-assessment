@@ -21,13 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUpdated, ref } from 'vue'
+import { onUpdated, ref } from 'vue'
 import { ElTable, ElTableColumn, ElButton } from 'element-plus'
-import type { Role } from '@/domain/Role'
 import type { Level } from '@/domain/Level'
 import RemoveLevelDialog from '@/components/RemoveLevelDialog.vue'
 import { useRouter } from 'vue-router'
-import { id } from 'element-plus/es/locale/index.mjs'
 
 const props = defineProps<{
   levels?: Level[]
@@ -37,14 +35,11 @@ const router = useRouter()
 const roleId = ref<number>()
 
 const redirectToLevelView = () => {
-  // router.push({ path: `/role/${roleId.value}/level-view/create` })
-  router.push({ name: 'Testa', params: { id: 1, roleId: 1 } })
+  router.push({ name: 'CreateLevel', query: { roleId: roleId.value } })
 }
 
 const onEditRow = (row: Level) => {
-  router.push({
-    path: `/role/${roleId.value}/level-view/${row.id}`
-  })
+  router.push({ name: 'EditLevel', params: { id: row.id } })
 }
 
 const deleteDialogVisible = ref(false)

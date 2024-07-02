@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import saci.domain.model.Level;
-import saci.domain.model.Role;
 import saci.domain.service.LevelService;
 import saci.domain.service.exceptions.NotFoundException;
 
