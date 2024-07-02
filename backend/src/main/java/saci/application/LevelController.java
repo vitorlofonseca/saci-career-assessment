@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import saci.domain.model.Level;
 import saci.domain.service.LevelService;
-import saci.domain.service.exceptions.NotFoundException;
 
 @RestController
 @RequestMapping("/api/levels")
@@ -36,12 +35,8 @@ public class LevelController {
             })
     @DeleteMapping("/{levelId}")
     public ResponseEntity<Void> deleteLevelById(@PathVariable long levelId) {
-        try {
-            LevelService.deleteLevelById(levelId);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+        LevelService.deleteLevelById(levelId);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Create a Level")
@@ -77,11 +72,7 @@ public class LevelController {
             })
     @GetMapping("/sorted/{roleId}")
     public ResponseEntity<List<Level>> getSortedLevels(@PathVariable Long roleId) {
-        try {
-            List<Level> levels = LevelService.getSortedLevelsByRoleIdAsc(roleId);
-            return ResponseEntity.ok(levels);
-        } catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        List<Level> levels = LevelService.getSortedLevelsByRoleIdAsc(roleId);
+        return ResponseEntity.ok(levels);
     }
 }

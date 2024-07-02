@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -28,6 +29,7 @@ import saci.domain.service.exceptions.AlreadyExistsException;
 @RequestMapping("/api/roles")
 @RequiredArgsConstructor
 @Validated
+@Slf4j
 public class RoleController {
 
     private final RoleService roleService;
@@ -35,14 +37,14 @@ public class RoleController {
     @Operation(summary = "Create a role")
     @ApiResponses(
             value = {
-                @ApiResponse(
-                        responseCode = "201",
-                        description = "The role was created",
-                        content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    schema = @Schema(implementation = Role.class))
-                        })
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "The role was created",
+                            content = {
+                                    @Content(
+                                            mediaType = "application/json",
+                                            schema = @Schema(implementation = Role.class))
+                            })
             })
     @PostMapping
     public ResponseEntity<Role> createRole(@Valid @RequestBody Role role) {
@@ -50,6 +52,7 @@ public class RoleController {
             roleService.createRole(role);
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (AlreadyExistsException ex) {
+            log.error("Role creation failed, already exists: {}", role.getName(), ex);
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
@@ -57,22 +60,24 @@ public class RoleController {
     @Operation(summary = "Get all of the roles")
     @ApiResponses(
             value = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "List of all roles",
-                        content = {
-                            @Content(
-                                    mediaType = "application/json",
-                                    array =
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "List of all roles",
+                            content = {
+                                    @Content(
+                                            mediaType = "application/json",
+                                            array =
                                             @ArraySchema(
                                                     schema = @Schema(implementation = Role.class)))
-                        })
+                            })
             })
     @GetMapping
     public ResponseEntity<List<Role>> getRoles() {
-
         List<Role> roles = roleService.getRoles();
-        return roles.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(roles);
+        if (roles.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(roles);
     }
 
     @Operation(
@@ -80,47 +85,60 @@ public class RoleController {
             description = "Edit an existing role with the provided role ID")
     @ApiResponses(
             value = {
-                @ApiResponse(responseCode = "200", description = "Role edited successfully"),
-                @ApiResponse(responseCode = "400", description = "Invalid input data"),
-                @ApiResponse(responseCode = "404", description = "Role not found"),
-                @ApiResponse(responseCode = "500", description = "Internal server error")
+                    @ApiResponse(responseCode = "200", description = "Role edited successfully"),
+                    @ApiResponse(responseCode = "400", description = "Invalid input data"),
+                    @ApiResponse(responseCode = "404", description = "Role not found"),
+                    @ApiResponse(responseCode = "500", description = "Internal server error")
             })
     @PutMapping("/{roleId}")
     public ResponseEntity<Role> editRole(
             @PathVariable Long roleId, @Valid @RequestBody Role updatedRole) {
-        Role editedRole = roleService.editRole(roleId, updatedRole);
-        return ResponseEntity.ok(editedRole);
+        try {
+            Role editedRole = roleService.editRole(roleId, updatedRole);
+            return ResponseEntity.ok(editedRole);
+        } catch (Exception ex) {
+            log.error("Error editing role with ID: {}", roleId, ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @Operation(summary = "Delete role by ID", description = "Deletes a role based on its ID")
     @ApiResponses(
             value = {
-                @ApiResponse(responseCode = "200", description = "Role deleted successfully"),
-                @ApiResponse(responseCode = "404", description = "Role not found")
+                    @ApiResponse(responseCode = "200", description = "Role deleted successfully"),
+                    @ApiResponse(responseCode = "404", description = "Role not found")
             })
     @DeleteMapping("/{roleId}")
     public ResponseEntity<Void> deleteRole(@PathVariable long roleId) {
-
-        roleService.deleteRoleById(roleId);
-        return ResponseEntity.ok().build();
+        try {
+            roleService.deleteRoleById(roleId);
+            return ResponseEntity.ok().build();
+        } catch (Exception ex) {
+            log.error("Error deleting role with ID: {}", roleId, ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @Operation(summary = "Get a role by ID", description = "Retrieve a role by its ID")
     @ApiResponses(
             value = {
-                @ApiResponse(
-                        responseCode = "200",
-                        description = "Role found",
-                        content =
-                                @Content(
-                                        mediaType = "application/json",
-                                        schema = @Schema(implementation = Role.class))),
-                @ApiResponse(responseCode = "404", description = "Role not found")
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Role found",
+                            content =
+                            @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = Role.class))),
+                    @ApiResponse(responseCode = "404", description = "Role not found")
             })
     @GetMapping("/{roleId}")
     public ResponseEntity<Role> getRoleById(@PathVariable Long roleId) {
-        Role role = roleService.getRoleById(roleId);
-
-        return ResponseEntity.ok(role);
+        try {
+            Role role = roleService.getRoleById(roleId);
+            return ResponseEntity.ok(role);
+        } catch (Exception ex) {
+            log.error("Error retrieving role with ID: {}", roleId, ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
