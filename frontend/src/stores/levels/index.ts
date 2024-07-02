@@ -7,7 +7,7 @@ export const useLevelStore = defineStore('levels', () => {
     editLevel,
     getLevelById,
     getLevelsByRoleId,
-    addLevel,
-    removeLevel
+    removeLevel,
+    addLevel
   }
 })

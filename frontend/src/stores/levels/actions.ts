@@ -2,13 +2,15 @@ import { deleteRequest, get, post, put } from '@/services/http'
 import { roles } from '../roles/state'
 import type { Level } from '@/domain/Level'
 import type { Role } from '@/domain/Role'
-import { get, post, put } from '@/services/http'
 import { levels } from './state'
 
 async function removeLevel(levelId: number) {
   await deleteRequest(`/levels/${levelId}`)
+  roles.value = roles.value.map((role) => {
+    role.levels = role.levels?.filter((level) => level.id !== levelId)
+    return role
+  })
 }
-
 async function addLevel(level: Level, role: Role): Promise<void> {
   const levelWithRoleId = { ...level, roleId: role.id }
   await post<Level[]>('/levels', levelWithRoleId)
@@ -25,4 +27,4 @@ async function editLevel(level: Level): Promise<void> {
   })
 }
 
-export { editLevel, removeLevel, addLevel, getLevelsByRoleId }
+export { editLevel, removeLevel, addLevel }

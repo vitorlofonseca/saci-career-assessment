@@ -57,13 +57,12 @@ import { ErrorMessage } from '@/services/messages'
 
 const role = ref<Role>()
 const router = useRouter()
-
 const roleStore = useRolesStore()
 
 onMounted(async () => {
   const roleId = router.currentRoute.value.params.roleId as string
   try {
-    role.value = await roleStore.loadRoleById(roleId)
+    role.value = await roleStore.loadRoleById(parseInt(roleId))
   } catch (error) {
     ErrorMessage('Error Loading Role')
   }

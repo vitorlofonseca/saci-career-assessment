@@ -104,4 +104,23 @@ public class LevelService {
 
         return levelRepository.save(existingLevel);
     }
+
+    public Level editLevel(Long levelId, Level updatedLevel) {
+        Level existingLevel =
+                levelRepository
+                        .findById(levelId)
+                        .orElseThrow(() -> new NotFoundException("Level not found"));
+
+        Optional<Level> levelWithSameName = levelRepository.findByName(updatedLevel.getName());
+        if (levelWithSameName.isPresent() && !levelWithSameName.get().getId().equals(levelId)) {
+            throw new AlreadyExistsException("Another level with the same name already exists");
+        }
+
+        existingLevel.setName(updatedLevel.getName());
+        existingLevel.setMinCoefficient(updatedLevel.getMinCoefficient());
+        existingLevel.setMaxCoefficient(updatedLevel.getMaxCoefficient());
+        existingLevel.setLink(updatedLevel.getLink());
+
+        return levelRepository.save(existingLevel);
+    }
 }

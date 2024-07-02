@@ -27,7 +27,9 @@
     </div>
     <div class="SaveButton">
       <ElButton type="primary" @click="saveForm()"> Save </ElButton>
+      <<<<<<< HEAD
       {{ JSON.stringify(router.currentRoute) }}
+      ======= >>>>>>> 3215bbd358c95aea101e30b4873fe0a3735319e5
     </div>
   </div>
 </template>
@@ -56,11 +58,11 @@ const level = ref<Level>({} as Level)
 
 const dialogTitle = computed(() => (isEditMode.value ? 'Edit Knowledge' : 'Create Knowledge'))
 const dialogButtonLabel = computed(() => (isEditMode.value ? 'Save' : 'Create'))
-const props = defineProps<{
+defineProps<{
   visible: boolean
   roleId: number
 }>()
-const isEditMode = !!level.value
+const isEditMode = ref(!!level.value)
 const localLevel = ref<Level>({ name: '', minCoefficient: 0, maxCoefficient: 0, link: '' })
 
 const router = useRouter()
@@ -73,11 +75,14 @@ const emits = defineEmits(['update:visible', 'confirm-edit', 'confirm-create'])
 
 onMounted(async () => {
   const levelId = router.currentRoute.value.params.id?.toString()
-  level.value = await roleStore.getLevelById(levelId.toString())
+  if (levelId) {
+    level.value = await roleStore.getLevelById(levelId)
+    role.value = await roleStore.loadRoleById(level.value.roleId!.toString())
+  }
 })
 
 const redirectToRoleView = () => {
-  router.push({ name: 'RoleView', params: { id: level.value?.id } })
+  router.push({ name: 'RoleView', params: { id: level.value?.roleId } })
   SuccessMessage('Your level was created')
 }
 const hideDialog = () => {
@@ -87,15 +92,15 @@ const hideDialog = () => {
 const saveForm = async () => {
   try {
     if (isEditMode.value) {
-      props.level!.name = localLevel.value.name
-      props.level!.minCoefficient = localLevel.value.minCoefficient
-      props.level!.maxCoefficient = localLevel.value.maxCoefficient
-      props.level!.link = localLevel.value.link
-      await levelsStore.editLevel(props.level!)
+      level!.value.name = localLevel.value.name
+      level!.value.minCoefficient = localLevel.value.minCoefficient
+      level!.value.maxCoefficient = localLevel.value.maxCoefficient
+      level!.value.link = localLevel.value.link
+      await levelsStore.editLevel(level!.value)
       SuccessMessage('Knowledge updated successfully')
       emits('confirm-edit')
     } else {
-      await levelsStore.addLevel(localLevel.value, role)
+      await levelsStore.addLevel(localLevel.value, role.value!)
       localLevel.value = { name: '', minCoefficient: 0, maxCoefficient: 0, link: '' }
       SuccessMessage('Level created successfully')
       emits('confirm-create')
