@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import saci.domain.model.Role;
 import saci.domain.service.RoleService;
 import saci.domain.service.exceptions.AlreadyExistsException;
+import saci.domain.service.exceptions.NotFoundException;
 
 @RestController
 @RequestMapping("/api/roles")
@@ -31,6 +33,11 @@ import saci.domain.service.exceptions.AlreadyExistsException;
 public class RoleController {
 
     private final RoleService roleService;
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleNotFoundException(NotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 
     @Operation(summary = "Create a role")
     @ApiResponses(
@@ -70,7 +77,6 @@ public class RoleController {
             })
     @GetMapping
     public ResponseEntity<List<Role>> getRoles() {
-
         List<Role> roles = roleService.getRoles();
         return roles.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(roles);
     }
@@ -100,7 +106,6 @@ public class RoleController {
             })
     @DeleteMapping("/{roleId}")
     public ResponseEntity<Void> deleteRole(@PathVariable long roleId) {
-
         roleService.deleteRoleById(roleId);
         return ResponseEntity.ok().build();
     }
@@ -120,7 +125,6 @@ public class RoleController {
     @GetMapping("/{roleId}")
     public ResponseEntity<Role> getRoleById(@PathVariable Long roleId) {
         Role role = roleService.getRoleById(roleId);
-
         return ResponseEntity.ok(role);
     }
 }
