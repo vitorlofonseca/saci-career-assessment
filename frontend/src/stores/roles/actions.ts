@@ -22,8 +22,8 @@ async function addRole(role: Role): Promise<void> {
 }
 
 async function editRoleAction(role: Role): Promise<void> {
-  await put<Role>(`/roles/${role.id}`, role)
-  roles.value = roles.value.map((item) => (item.id === role.id ? role : item))
+  const updatedRole = await put<Role>(`/roles/${role.id}`, role)
+  roles.value = roles.value.map((item) => (item.id === role.id ? updatedRole : item))
 }
 
 async function removeRole(roleId: number): Promise<void> {
