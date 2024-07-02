@@ -50,7 +50,6 @@ public class RoleController {
     public ResponseEntity<Role> createRole(@Valid @RequestBody Role role) {
         try {
             roleService.createRole(role);
-            log.info("Role created: {}", role.getName());
             return ResponseEntity.status(HttpStatus.CREATED).build();
         } catch (AlreadyExistsException ex) {
             log.error("Role creation failed, already exists: {}", role.getName(), ex);
@@ -76,10 +75,8 @@ public class RoleController {
     public ResponseEntity<List<Role>> getRoles() {
         List<Role> roles = roleService.getRoles();
         if (roles.isEmpty()) {
-            log.info("No roles found");
             return ResponseEntity.noContent().build();
         }
-        log.info("Retrieved {} roles", roles.size());
         return ResponseEntity.ok(roles);
     }
 
@@ -98,7 +95,6 @@ public class RoleController {
             @PathVariable Long roleId, @Valid @RequestBody Role updatedRole) {
         try {
             Role editedRole = roleService.editRole(roleId, updatedRole);
-            log.info("Role edited: {}", updatedRole.getName());
             return ResponseEntity.ok(editedRole);
         } catch (Exception ex) {
             log.error("Error editing role with ID: {}", roleId, ex);
@@ -116,7 +112,6 @@ public class RoleController {
     public ResponseEntity<Void> deleteRole(@PathVariable long roleId) {
         try {
             roleService.deleteRoleById(roleId);
-            log.info("Role deleted with ID: {}", roleId);
             return ResponseEntity.ok().build();
         } catch (Exception ex) {
             log.error("Error deleting role with ID: {}", roleId, ex);
@@ -140,7 +135,6 @@ public class RoleController {
     public ResponseEntity<Role> getRoleById(@PathVariable Long roleId) {
         try {
             Role role = roleService.getRoleById(roleId);
-            log.info("Role retrieved with ID: {}", roleId);
             return ResponseEntity.ok(role);
         } catch (Exception ex) {
             log.error("Error retrieving role with ID: {}", roleId, ex);

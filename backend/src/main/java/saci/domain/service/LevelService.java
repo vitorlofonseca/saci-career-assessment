@@ -24,7 +24,6 @@ public class LevelService {
         Optional<Level> level = levelRepository.findById(levelId);
         if (level.isPresent()) {
             levelRepository.deleteById(levelId);
-            log.info("Deleted level with ID: {}", levelId);
         } else {
             log.error("Level not found with ID: {}", levelId);
             throw new NotFoundException("Level not found with ID: " + levelId);
@@ -38,7 +37,6 @@ public class LevelService {
             log.error(message);
             throw new NotFoundException(message);
         }
-        log.info("Found {} levels for role ID: {}", levels.size(), roleId);
         return levels;
     }
 
@@ -54,21 +52,18 @@ public class LevelService {
         }
         Optional<Level> optionalLevel = levelRepository.findByName(level.getName());
         if (optionalLevel.isPresent()) {
-            String messagelevels = "Level name already exists: {}";
+            String messagelevels = "Level name already exists: " + level.getName();
             log.error(messagelevels, level.getName());
             throw new AlreadyExistsException(messagelevels);
         }
-        log.info("Creating level: {}", level.getName());
         return levelRepository.save(level);
     }
 
     public Optional<Level> findLevelByScore(Long roleId, double score) {
-        log.info("Finding level by score {} for role ID: {}", score, roleId);
         return levelRepository.findLevelByRoleIdAndScore(roleId, score);
     }
 
     public Optional<Level> findNextLevelBasedOfScore(Long roleId, double score) {
-        log.info("Finding next level by score {} for role ID: {}", score, roleId);
         return levelRepository.findNextLevelByRoleIdAndScore(roleId, score);
     }
 }
