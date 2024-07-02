@@ -2,7 +2,9 @@ package saci.domain.service;
 
 import java.util.List;
 import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import saci.domain.model.Level;
 import saci.domain.service.exceptions.AlreadyExistsException;
@@ -13,6 +15,7 @@ import saci.infrastructure.LevelRepository;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LevelService {
 
     private final LevelRepository levelRepository;
@@ -21,7 +24,9 @@ public class LevelService {
         Optional<Level> level = levelRepository.findById(levelId);
         if (level.isPresent()) {
             levelRepository.deleteById(levelId);
+            log.info("Deleted level with ID: {}", levelId);
         } else {
+            log.error("Level not found with ID: {}", levelId);
             throw new NotFoundException("Level not found with ID: " + levelId);
         }
     }
@@ -29,8 +34,11 @@ public class LevelService {
     public List<Level> getSortedLevelsByRoleIdAsc(Long roleId) {
         List<Level> levels = levelRepository.findSortedLevelsByRoleId(roleId);
         if (levels.isEmpty()) {
-            throw new NotFoundException("No levels found for role ID: " + roleId);
+            String message = "No levels found for role ID: " + roleId;
+            log.error(message);
+            throw new NotFoundException(message);
         }
+        log.info("Found {} levels for role ID: {}", levels.size(), roleId);
         return levels;
     }
 
@@ -40,21 +48,27 @@ public class LevelService {
                         level.getRoleId(), level.getMinCoefficient(), level.getMaxCoefficient());
 
         if (!LevelValidator.levelIsValid(level, overlappingLevels)) {
-            throw new CoefficientOverlapException(
-                    "Error Creating the Level: Overlapping Coefficients or Invalid Coefficients");
+            String messagelevel = "Error Creating the Level: Overlapping Coefficients or Invalid Coefficients";
+            log.error(messagelevel);
+            throw new CoefficientOverlapException(messagelevel);
         }
         Optional<Level> optionalLevel = levelRepository.findByName(level.getName());
         if (optionalLevel.isPresent()) {
-            throw new AlreadyExistsException("Level name already exists");
+            String messagelevels = "Level name already exists: {}";
+            log.error(messagelevels, level.getName());
+            throw new AlreadyExistsException(messagelevels);
         }
+        log.info("Creating level: {}", level.getName());
         return levelRepository.save(level);
     }
 
     public Optional<Level> findLevelByScore(Long roleId, double score) {
+        log.info("Finding level by score {} for role ID: {}", score, roleId);
         return levelRepository.findLevelByRoleIdAndScore(roleId, score);
     }
 
     public Optional<Level> findNextLevelBasedOfScore(Long roleId, double score) {
+        log.info("Finding next level by score {} for role ID: {}", score, roleId);
         return levelRepository.findNextLevelByRoleIdAndScore(roleId, score);
     }
 }

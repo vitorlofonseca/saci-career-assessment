@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import saci.domain.model.Knowledge;
 import saci.domain.service.KnowledgeService;
-import saci.domain.service.exceptions.AlreadyExistsException;
-import saci.domain.service.exceptions.NotFoundException;
 
 @RestController
 @RequestMapping("/api/knowledges")
@@ -86,12 +84,8 @@ public class KnowledgeController {
             })
     @DeleteMapping("/{knowledgeId}")
     public ResponseEntity<Void> deleteKnowledgeById(@PathVariable long knowledgeId) {
-        try {
-            knowledgeService.deleteKnowledgeById(knowledgeId);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+        knowledgeService.deleteKnowledgeById(knowledgeId);
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Edit an existing knowledge entry")
@@ -104,13 +98,8 @@ public class KnowledgeController {
     @PutMapping("/{knowledgeId}")
     public ResponseEntity<Void> editKnowledge(
             @PathVariable Long knowledgeId, @Valid @RequestBody Knowledge updatedKnowledge) {
-        try {
-            knowledgeService.editKnowledge(knowledgeId, updatedKnowledge);
-            return ResponseEntity.ok().build();
-        } catch (NotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (AlreadyExistsException ex) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+
+        knowledgeService.editKnowledge(knowledgeId, updatedKnowledge);
+        return ResponseEntity.ok().build();
     }
 }
